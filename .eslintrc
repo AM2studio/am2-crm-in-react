@@ -5,7 +5,7 @@
     },
     "parser": "babel-eslint",
     "plugins": ["prettier"],
-    "extends": ["airbnb", "prettier"],
+    "extends": ["airbnb", "prettier", "prettier/react"],
     "rules": {
         "prettier/prettier": ["error"],
         "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
