@@ -1,17 +1,21 @@
 import React, { Component } from 'react';
 import HeaderContainer from './components/Header/HeaderContainer';
+import FooterContainer from './components/Footer/FooterContainer';
+import Sidebar from './components/Sidebar/Sidebar';
+import AppRouter from './routers/AppRouter';
+
+import './styles/style.css';
 
 class App extends Component {
     render() {
         return (
             <div className="App">
-                <HeaderContainer />
-                <div className="App-header">
-                    <h2>Welcome to React</h2>
+                <Sidebar />
+                <div id="wrapper">
+                    <HeaderContainer />
+                    <AppRouter />
+                    <FooterContainer />
                 </div>
-                <p className="App-intro">
-                    To get started, edit <code>src/App.js</code> and save to reload.
-                </p>
             </div>
         );
     }
