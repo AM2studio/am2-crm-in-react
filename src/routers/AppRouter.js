@@ -1,17 +1,17 @@
 import React from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import NotFound from '../views/NotFound';
 import Dashboard from '../views/Dashboard';
+import Projects from '../views/Projects';
+import Users from '../views/Users';
 
 const Routes = () => (
-    <BrowserRouter>
-        <div>
-            <Switch>
-                <Route path="/" component={Dashboard} exact />
-                <Route component={NotFound} />
-            </Switch>
-        </div>
-    </BrowserRouter>
+    <Switch>
+        <Route path="/" component={Dashboard} exact />
+        <Route path="/projects" component={Projects} />
+        <Route path="/users" component={Users} />
+        <Route component={NotFound} />
+    </Switch>
 );
 
 export default Routes;

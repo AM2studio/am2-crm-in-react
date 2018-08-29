@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 export default () => (
     <aside id="sidebar" className="sidebar">
@@ -44,79 +45,19 @@ export default () => (
         <nav className="main-navigation nano">
             <ul className="menu menu--main nano-content">
                 <li className="menu__item  ">
-                    <a href="dashboard.html" className="menu__link effect effect--waves">
+                    <Link to="/" className="menu__link effect effect--waves">
                         Dashboard
-                    </a>
+                    </Link>
                 </li>
-                <li className="menu__item ">
-                    <a href="/" className="menu__link menu__item--toggle effect effect--waves">
-                        <span className="menu__item-label">UI Elements</span>
-                        <span className="menu__item-toggle-button">
-                            <svg className="svg-arrow--left-dims">
-                                <use xlinkHref="../static/images/sprite.svg#arrow--left" />
-                            </svg>
-                        </span>
-                    </a>
-                    <ul className="menu menu--submenu">
-                        <li className="menu__item ">
-                            <a href="typography.html" className="menu__link effect effect--waves">
-                                Typography
-                            </a>
-                        </li>
-                        <li className="menu__item ">
-                            <a href="colors.html" className="menu__link effect effect--waves">
-                                Colors
-                            </a>
-                        </li>
-                        <li className="menu__item  ">
-                            <a href="grid.html" className="menu__link effect effect--waves">
-                                Grid
-                            </a>
-                        </li>
-                        <li className="menu__item ">
-                            <a href="sections.html" className="menu__link effect effect--waves">
-                                Sections
-                            </a>
-                        </li>
-                        <li className="menu__item ">
-                            <a href="buttons.html" className="menu__link effect effect--waves">
-                                Buttons
-                            </a>
-                        </li>
-                        <li className="menu__item toggle-button ">
-                            <a
-                                href="notifications.html"
-                                className="menu__link effect effect--waves"
-                            >
-                                Notifications
-                            </a>
-                        </li>
-                        <li className="menu__item ">
-                            <a href="elements.html" className="menu__link effect effect--waves">
-                                Elements
-                            </a>
-                        </li>
-                        <li className="menu__item ">
-                            <a href="svg-icons.html" className="menu__link effect effect--waves">
-                                SVG Icons
-                            </a>
-                        </li>
-                        <li className="menu__item ">
-                            <a href="tabs.html" className="menu__link effect effect--waves">
-                                Tabs
-                            </a>
-                        </li>
-                        <li className="menu__item ">
-                            <a href="accordions.html" className="menu__link effect effect--waves">
-                                Accordions
-                            </a>
-                        </li>
-                        <li className="menu__item toggle-button ">
-                            <a href="modals.html" className="menu__link effect effect--waves">
-                                Modals
-                            </a>
-                        </li>
-                    </ul>
+                <li className="menu__item  ">
+                    <Link to="/users" className="menu__link effect effect--waves">
+                        Users
+                    </Link>
+                </li>
+                <li className="menu__item  ">
+                    <Link to="/projects" className="menu__link effect effect--waves">
+                        Projects
+                    </Link>
                 </li>
                 <li className="menu__item ">
                     <a href="/" className="menu__link menu__item--toggle effect effect--waves">
@@ -139,68 +80,6 @@ export default () => (
                             </a>
                         </li>
                     </ul>
-                </li>
-                <li className="menu__item ">
-                    <a href="charts.html" className="menu__link effect effect--waves">
-                        Charts
-                    </a>
-                </li>
-                <li className="menu__item ">
-                    <a href="/" className="menu__link menu__item--toggle effect effect--waves">
-                        <span className="menu__item-label">Materialize</span>
-                        <span className="menu__item-toggle-button">
-                            <svg className="svg-arrow--left-dims">
-                                <use xlinkHref="../static/images/sprite.svg#arrow--left" />
-                            </svg>
-                        </span>
-                    </a>
-                    <ul className="menu menu--submenu">
-                        <li className="menu__item toggle-button ">
-                            <a
-                                href="materialize-forms.html"
-                                className="menu__link effect effect--waves"
-                            >
-                                Materialize Forms
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li className="menu__item ">
-                    <a href="/" className="menu__link menu__item--toggle effect effect--waves">
-                        <span className="menu__item-label">Tables</span>
-                        <span className="menu__item-toggle-button">
-                            <svg className="svg-arrow--left-dims">
-                                <use xlinkHref="../static/images/sprite.svg#arrow--left" />
-                            </svg>
-                        </span>
-                    </a>
-                    <ul className="menu menu--submenu">
-                        <li className="menu__item toggle-button ">
-                            <a href="tables.html" className="menu__link effect effect--waves">
-                                Tables
-                            </a>
-                        </li>
-                        <li className="menu__item toggle-button ">
-                            <a href="data-tables.html" className="menu__link effect effect--waves">
-                                Data Tables
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li className="menu__item ">
-                    <a href="maps.html" className="menu__link effect effect--waves">
-                        Maps
-                    </a>
-                </li>
-                <li className="menu__item ">
-                    <a href="effects.html" className="menu__link effect effect--waves">
-                        Effects
-                    </a>
-                </li>
-                <li className="menu__item ">
-                    <a href="editor.html" className="menu__link effect effect--waves">
-                        Editor
-                    </a>
                 </li>
             </ul>
         </nav>
