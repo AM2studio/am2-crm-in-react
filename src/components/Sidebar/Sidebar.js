@@ -1,7 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Navigation from './Navigation';
+import logo from '../../styles/images/avatar.png';
 
+console.log(logo);
 export default () => (
     <aside id="sidebar" className="sidebar">
         <h5 className="logo">
@@ -14,11 +16,7 @@ export default () => (
         <div className="user-box">
             <figure className="user-box__image js-user-box-dropdown-toggle">
                 <a href="/">
-                    <img
-                        className="user-box__img"
-                        src="'http://localhost:8080/styles/images/avatar.png"
-                        alt=""
-                    />
+                    <img className="user-box__img" src={logo} alt="" width="400" height="500" />
                 </a>
             </figure>
             <div className="user-box__text js-user-box-dropdown-toggle">
