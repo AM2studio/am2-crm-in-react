@@ -36,6 +36,17 @@ const Navigation = props => {
                 Users
             </NavLink>
             <NavLink
+                to="/companies"
+                parentClass={
+                    activeClass(location.pathname, '/companies')
+                        ? 'menu__item menu__item--active'
+                        : 'menu__item'
+                }
+                linkClass="menu__link effect effect--waves"
+            >
+                Companies
+            </NavLink>
+            <NavLink
                 to="/projects"
                 parentClass={
                     activeClass(location.pathname, '/projects')
