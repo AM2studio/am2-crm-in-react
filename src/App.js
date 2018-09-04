@@ -16,7 +16,13 @@ class App extends Component {
                     <Sidebar />
                     <div id="wrapper">
                         <HeaderContainer />
-                        <AppRouter />
+                        <main id="content" className="main">
+                            <div className="container">
+                                <div className="section">
+                                    <AppRouter />
+                                </div>
+                            </div>
+                        </main>
                         <FooterContainer />
                     </div>
                 </React.Fragment>

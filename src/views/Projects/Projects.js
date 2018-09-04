@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import WP_API from '../../Data/Api';
+import WP_API from '../../data/Api';
 
 class Projects extends Component {
     constructor() {
