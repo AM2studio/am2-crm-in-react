@@ -49,8 +49,8 @@ const Header = props => {
 
             <div className="header__bottom clearfix">
                 <div className="header__left">
-                    <h2 className="header__title">Header Title .header__title</h2>
-                    <p className="header__subtitle">Header Subtitle .header__subtitle</p>
+                    <h2 className="header__title">AM2Studio CRM</h2>
+                    <p className="header__subtitle">Rewritten in React</p>
                 </div>
                 <div className="header__right">
                     <div className="header__info">

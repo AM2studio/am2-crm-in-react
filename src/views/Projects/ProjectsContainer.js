@@ -1,23 +1,23 @@
 import React, { Component } from 'react';
-import Companies from './Companies';
+import Projects from './Projects';
 import WP_API from '../../data/Api';
 
-class CompaniesContainer extends Component {
+class ProjectsContainer extends Component {
     constructor() {
         super();
         this.state = {
-            companies: []
+            projects: []
         };
     }
 
     componentDidMount() {
-        const cachedCompanies = localStorage.getItem('companies');
-        const url = 'http://crm.am2studio.com/wp-json/wp/v2/companies/';
-        if (cachedCompanies) {
-            this.setState({ companies: JSON.parse(cachedCompanies) });
+        const cachedProjects = localStorage.getItem('projects');
+        const url = 'http://crm.am2studio.com/wp-json/wp/v2/projects/';
+        if (cachedProjects) {
+            this.setState({ projects: JSON.parse(cachedProjects) });
         } else {
-            const companies = new WP_API(url);
-            companies.getPosts().then(result => {
+            const projects = new WP_API(url);
+            projects.getPosts().then(result => {
                 const posts = result.map(post => ({
                     id: post.id,
                     title: post.title.rendered,
@@ -29,18 +29,18 @@ class CompaniesContainer extends Component {
     }
 
     setData = data => {
-        const { companies } = this.state;
-        const newData = companies.concat(data);
-        localStorage.setItem('companies', JSON.stringify(newData));
-        this.setState({ companies: newData });
+        const { projects } = this.state;
+        const newData = projects.concat(data);
+        localStorage.setItem('projects', JSON.stringify(newData));
+        this.setState({ projects: newData });
     };
 
-    editCompany = (e, id) => {
-        console.log(`Editing company with id: ${id}`);
+    editProject = (e, id) => {
+        console.log(`Editing project with id: ${id}`);
     };
 
-    deleteCompany = (e, id) => {
-        console.log(`Deleting company with id: ${id}`);
+    deleteProject = (e, id) => {
+        console.log(`Deleting project with id: ${id}`);
     };
 
     actionBtns = id => (
@@ -49,7 +49,7 @@ class CompaniesContainer extends Component {
                 type="button"
                 className="button button--primary button--small button--bold"
                 onClick={e => {
-                    this.editCompany(e, id);
+                    this.editProject(e, id);
                 }}
             >
                 Edit
@@ -58,7 +58,7 @@ class CompaniesContainer extends Component {
                 type="button"
                 className="button button--danger button--small button--bold"
                 onClick={e => {
-                    this.deleteCompany(e, id);
+                    this.deleteProject(e, id);
                 }}
             >
                 Delete
@@ -67,9 +67,9 @@ class CompaniesContainer extends Component {
     );
 
     render() {
-        const { companies } = this.state;
+        const { projects } = this.state;
 
-        const newComp = companies.map(value => {
+        const newComp = projects.map(value => {
             const newValue = value;
             newValue.btn = this.actionBtns(value.id);
             return newValue;
@@ -80,8 +80,8 @@ class CompaniesContainer extends Component {
             { key: 'city', title: 'City' },
             { key: 'btn', title: 'Action' }
         ];
-        return <Companies columns={columns} data={newComp} />;
+        return <Projects columns={columns} data={newComp} />;
     }
 }
 
-export default CompaniesContainer;
+export default ProjectsContainer;

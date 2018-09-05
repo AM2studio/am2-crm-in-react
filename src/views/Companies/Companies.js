@@ -1,16 +1,13 @@
 import React from 'react';
-import ComponentHeader from '../../components/General/ComponentHeader';
+import ViewWrapper from '../../components/General/ViewWrapper';
 import AM2Table from '../../components/Table/AM2Table';
 
 const Companies = props => {
     const { data, columns } = props;
     return (
-        <div>
-            <ComponentHeader title="Companies" />
-            <div className="section__content">
-                <AM2Table data={data} columns={columns} itemsPerPage={10} />
-            </div>
-        </div>
+        <ViewWrapper title="Companies">
+            <AM2Table rows={data} columns={columns} itemsPerPage={10} />
+        </ViewWrapper>
     );
 };
 
