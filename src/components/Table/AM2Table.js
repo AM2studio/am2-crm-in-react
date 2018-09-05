@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import AM2TableSort from './AM2TableSort';
+import AM2TableFilter from './AM2TableFilter';
 
 class AM2Table extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            page: 1,
-            numPages: 1,
+            page: 1, // eslint-disable-line
+            numPages: 1, // eslint-disable-line
             sortedBy: '',
-            sortMode: 'ASC'
+            sortMode: 'ASC',
+            filter: undefined
         };
     }
 
@@ -25,16 +27,31 @@ class AM2Table extends Component {
             sortedBy: index,
             sortMode: prevState.sortMode === 'ASC' ? 'DESC' : 'ASC'
         }));
+    };
+
+    filterColumn = (event, key) => {
+        const val = event.target.value;
+        if (val) {
+            this.setState(() => ({
+                filter: { column: key, value: val }
+            }));
+        } else {
+            this.setState({ filter: undefined });
+        }
+
         console.log(this.state);
     };
 
     render() {
         const { columns } = this.props;
         let { rows } = this.props;
-        const { sortedBy, sortMode } = this.state;
+        const { sortedBy, sortMode, filter } = this.state;
         // Sorting?
         if (sortedBy) {
             rows = AM2TableSort(rows, sortedBy, sortMode);
+        }
+        if (filter !== undefined) {
+            rows = AM2TableFilter(rows, filter);
         }
 
         return (
@@ -48,6 +65,19 @@ class AM2Table extends Component {
                                 onClick={this.sortColumn.bind(this, column.key)}
                             >
                                 {column.title}
+                            </th>
+                        ))}
+                    </tr>
+                    <tr className="table__row">
+                        {columns.map(column => (
+                            <th key={column.key}>
+                                <input
+                                    autoComplete="off"
+                                    type="text"
+                                    className="table__heading text-left"
+                                    name={column.key}
+                                    onChange={e => this.filterColumn(e, column.key)}
+                                />
                             </th>
                         ))}
                     </tr>
@@ -73,7 +103,5 @@ export default AM2Table;
 AM2Table.defaultProps = {
     rows: [],
     columns: [],
-    pageSize: 10,
-    filter: [],
-    sort: []
+    itemsPerPage: 10
 };
