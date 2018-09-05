@@ -31,15 +31,20 @@ class AM2Table extends Component {
 
     filterColumn = (event, key) => {
         const val = event.target.value;
+        const { filter } = this.state;
+        // Clear other input element
+        if (filter && filter.column !== key) {
+            document.getElementsByName(filter.column)[0].value = '';
+        }
+
         if (val) {
             this.setState(() => ({
                 filter: { column: key, value: val }
             }));
         } else {
+            // Clear state when input is removed
             this.setState({ filter: undefined });
         }
-
-        console.log(this.state);
     };
 
     render() {
@@ -74,7 +79,7 @@ class AM2Table extends Component {
                                 <input
                                     autoComplete="off"
                                     type="text"
-                                    className="table__heading text-left"
+                                    className="input__standard"
                                     name={column.key}
                                     onChange={e => this.filterColumn(e, column.key)}
                                 />
