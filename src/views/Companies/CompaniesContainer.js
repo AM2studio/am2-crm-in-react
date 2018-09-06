@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import Companies from './Companies';
+import AM2Modal from '../../components/General/AM2Modal';
+import CompaniesEdit from './CompaniesEdit';
 import WP_API from '../../data/Api';
 
 class CompaniesContainer extends Component {
@@ -8,18 +10,17 @@ class CompaniesContainer extends Component {
         this.state = {
             companies: [],
             modal: false,
-            editId: ''
+            singleCompanyData: {}
         };
     }
 
     componentDidMount() {
         const cachedCompanies = localStorage.getItem('companies');
-        const url = 'http://crm.am2studio.com/wp-json/wp/v2/companies/';
         if (cachedCompanies) {
             this.setState({ companies: JSON.parse(cachedCompanies) });
         } else {
-            const companies = new WP_API(url);
-            companies.getPosts().then(result => {
+            const companies = new WP_API();
+            companies.getPosts('companies').then(result => {
                 const posts = result.map(post => ({
                     id: post.id,
                     title: post.title.rendered,
@@ -38,8 +39,27 @@ class CompaniesContainer extends Component {
     };
 
     editCompany = (e, id) => {
-        this.setState(state => ({ modal: !state.modal, edit: id }));
         console.log(`Editing company with id: ${id}`);
+        const dataToFetch = [
+            'id',
+            'title',
+            'address',
+            'city',
+            'contact_email',
+            'country',
+            'province',
+            'phone',
+            'zip',
+            'website'
+        ];
+        const data = new WP_API();
+        data.getPost('companies', id, dataToFetch);
+        data.get().then(result => {
+            this.setState(() => ({
+                modal: true,
+                singleCompanyData: result
+            }));
+        });
     };
 
     handleModalClose = () => {
@@ -74,7 +94,7 @@ class CompaniesContainer extends Component {
     );
 
     render() {
-        const { companies, modal, editId } = this.state;
+        const { companies, modal, singleCompanyData } = this.state;
 
         const newComp = companies.map(value => {
             const newValue = value;
@@ -88,13 +108,22 @@ class CompaniesContainer extends Component {
             { key: 'btn', title: 'Action' }
         ];
         return (
-            <Companies
-                columns={columns}
-                data={newComp}
-                modal={modal}
-                editId={editId}
-                handleModalClose={this.handleModalClose}
-            />
+            <React.Fragment>
+                <Companies
+                    columns={columns}
+                    data={newComp}
+                    modal={modal}
+                    singleCompanyData={singleCompanyData}
+                    handleModalClose={this.handleModalClose}
+                />
+                <AM2Modal open={modal} handleModalClose={this.handleModalClose}>
+                    <CompaniesEdit
+                        singleCompanyData={singleCompanyData}
+                        handleModalClose={this.handleModalClose}
+                        inputChangeEvent={this.inputChangeEvent}
+                    />
+                </AM2Modal>
+            </React.Fragment>
         );
     }
 }

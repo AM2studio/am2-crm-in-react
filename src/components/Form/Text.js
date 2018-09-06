@@ -1,7 +1,7 @@
 import React from 'react';
 
 export default props => {
-    const { title, name, parentClass, email } = props;
+    const { title, name, parentClass, email, value, inputChangeEvent } = props;
     let { required, className = 'form__input' } = props;
     let type = 'text';
 
@@ -19,7 +19,15 @@ export default props => {
                 {title}
                 {required}
             </label>
-            <input required id={name} type={type} className={className} />
+            <input
+                required
+                name={name}
+                id={name}
+                type={type}
+                className={className}
+                value={value}
+                onChange={inputChangeEvent}
+            />
         </div>
     );
 };
