@@ -1,13 +1,13 @@
 import React from 'react';
 
 const Header = props => {
-    const { naslov } = props;
+    const { logout } = props;
     return (
         <header id="header" className="header">
             <div className="mobile-header">
                 <div className="mobile-header__logo">
                     <a href="page/dashboard.html" className="mobile-header__logo-link">
-                        <h1>{naslov}</h1>
+                        <h1>AM2Studio CRM</h1>
                     </a>
                     <span className="mobile-header__logo-subtitle">admin v.1.0</span>
                 </div>
@@ -37,12 +37,16 @@ const Header = props => {
                         </a>
                     </li>
                     <li className="user-menu__item">
-                        <a href="/" className="user-menu__link effect effect--waves">
+                        <button
+                            type="button"
+                            onClick={logout}
+                            className="user-menu__link effect effect--waves"
+                        >
                             <svg className="user-menu__icon">
                                 <use xlinkHref="../static/images/sprite.svg#icon--logout" />
                             </svg>{' '}
                             Logout
-                        </a>
+                        </button>
                     </li>
                 </ul>
             </div>
