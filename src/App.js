@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import HeaderContainer from './components/Header/HeaderContainer';
-import FooterContainer from './components/Footer/FooterContainer';
+import Footer from './components/Footer/Footer';
 import Sidebar from './components/Sidebar/Sidebar';
 import AppRouter from './routers/AppRouter';
 
@@ -23,7 +23,7 @@ class App extends Component {
                                 </div>
                             </div>
                         </main>
-                        <FooterContainer />
+                        <Footer />
                     </div>
                 </React.Fragment>
             </BrowserRouter>
