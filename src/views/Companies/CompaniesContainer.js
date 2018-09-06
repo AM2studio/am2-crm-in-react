@@ -6,7 +6,9 @@ class CompaniesContainer extends Component {
     constructor() {
         super();
         this.state = {
-            companies: []
+            companies: [],
+            modal: false,
+            editId: ''
         };
     }
 
@@ -36,7 +38,12 @@ class CompaniesContainer extends Component {
     };
 
     editCompany = (e, id) => {
+        this.setState(state => ({ modal: !state.modal, edit: id }));
         console.log(`Editing company with id: ${id}`);
+    };
+
+    handleModalClose = () => {
+        this.setState({ modal: false });
     };
 
     deleteCompany = (e, id) => {
@@ -67,7 +74,7 @@ class CompaniesContainer extends Component {
     );
 
     render() {
-        const { companies } = this.state;
+        const { companies, modal, editId } = this.state;
 
         const newComp = companies.map(value => {
             const newValue = value;
@@ -80,7 +87,15 @@ class CompaniesContainer extends Component {
             { key: 'city', title: 'City' },
             { key: 'btn', title: 'Action' }
         ];
-        return <Companies columns={columns} data={newComp} />;
+        return (
+            <Companies
+                columns={columns}
+                data={newComp}
+                modal={modal}
+                editId={editId}
+                handleModalClose={this.handleModalClose}
+            />
+        );
     }
 }
 
