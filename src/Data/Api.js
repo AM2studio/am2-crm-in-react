@@ -1,19 +1,20 @@
 import axios from 'axios';
 
 class WP_API {
-    constructor(url) {
-        this.url = url;
+    constructor() {
+        this.url = 'http://crm.am2studio.com/wp-json/wp/v2/';
+        this.dataToFetch = undefined;
     }
 
-    getPosts() {
+    getPosts(type) {
         const results = [];
         return axios
-            .get(this.url)
+            .get(`${this.url}${type}/`)
             .then(response => {
                 const pageDataQueriesPromises = [];
                 const totalPages = response.headers['x-wp-totalpages'];
                 for (let i = 1; i <= totalPages; i += 1) {
-                    pageDataQueriesPromises.push(axios.get(`${this.url}?page=${i}`));
+                    pageDataQueriesPromises.push(axios.get(`${this.url}${type}?page=${i}`));
                 }
                 return Promise.all(pageDataQueriesPromises);
             })
@@ -23,6 +24,34 @@ class WP_API {
                     results.push(...response.data);
                 }
                 return results;
+            });
+    }
+
+    /*
+    params: type = post_type, id = post_id
+    */
+    getPost(type, id = undefined, dataToFetch = undefined) {
+        this.url = `${this.url}${type}/`;
+        if (id) {
+            this.url = `${this.url}${id}/`;
+        }
+        this.dataToFetch = dataToFetch;
+    }
+
+    get() {
+        return axios
+            .get(this.url)
+            .then(response => {
+                const fetchedData = this.dataToFetch.reduce((obj, value) => {
+                    obj[value] = response.data[value]; // eslint-disable-line no-param-reassign
+                    return obj;
+                }, {});
+                console.log(fetchedData);
+                return fetchedData;
+            })
+            .catch(error => {
+                // handle error
+                console.log(error);
             });
     }
 }
