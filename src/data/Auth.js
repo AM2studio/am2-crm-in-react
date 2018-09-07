@@ -5,6 +5,7 @@ class WP_AUTH {
         this.url = 'http://crm.am2studio.com/wp-json/jwt-auth/v1/token';
         this.validateUrl = 'http://crm.am2studio.com/wp-json/jwt-auth/v1/token/validate';
         this.tokenKey = 'crmTokenKey';
+        this.userName = 'crmUserName';
     }
 
     getSessionToken = () => sessionStorage.getItem(this.tokenKey);
@@ -39,6 +40,7 @@ class WP_AUTH {
             .then(response => {
                 console.log(response);
                 sessionStorage.setItem(this.tokenKey, response.data.token);
+                sessionStorage.setItem(this.userName, response.data.user_display_name);
                 return response.status;
             })
             .catch(error => {

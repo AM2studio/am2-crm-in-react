@@ -917,10 +917,13 @@ $component_margin
   .user-menu__link {
     display: block;
     padding: 20px;
-    color: #333333; }
+    color: #333333;
+    box-shadow:none;
+    font-weight:bold; }
     .user-menu__link:hover {
       background: #ecedf0;
-      color: #333333; }
+      color: #333333;
+    box-shadow: none!important; }
   .user-menu__icon {
     display: inline-block;
     width: 16px;
@@ -5971,7 +5974,7 @@ $color_dark
   -webkit-tap-highlight-color: transparent;
   vertical-align: middle;
   z-index: 1;
-  /* Firefox Bug: link not triggered */ }
+ }
   .effect--waves .waves-ripple {
     position: absolute;
     border-radius: 50%;

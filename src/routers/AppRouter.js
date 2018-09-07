@@ -1,21 +1,22 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Switch } from 'react-router-dom';
 import NotFound from '../views/NotFound';
 import Dashboard from '../views/Dashboard';
+import LoginContainer from '../views/Login/LoginContainer';
 import ProjectsContainer from '../views/Projects/ProjectsContainer';
 import CompaniesContainer from '../views/Companies/CompaniesContainer';
-import Login from '../views/Login';
 import Users from '../views/Users';
 import PrivateRoute from './PrivateRoute';
+import PublicRoute from './PublicRoute';
 
 const Routes = () => (
     <Switch>
         <PrivateRoute path="/" component={Dashboard} exact />
-        <Route path="/login" component={Login} />
         <PrivateRoute path="/projects" component={ProjectsContainer} />
         <PrivateRoute path="/companies" component={CompaniesContainer} />
         <PrivateRoute path="/users" component={Users} />
-        <Route component={NotFound} />
+        <PublicRoute path="/login" component={LoginContainer} />
+        <PublicRoute component={NotFound} />
     </Switch>
 );
 

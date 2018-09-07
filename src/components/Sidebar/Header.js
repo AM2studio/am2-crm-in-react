@@ -54,7 +54,7 @@ class Header extends Component {
                         onKeyPress={this.toggleMenu}
                         tabIndex="0"
                     >
-                        Administrator
+                        {sessionStorage.getItem('crmUserName')}
                         <svg className="svg-icon svg-icon--small user-box__toggle-icon" />
                     </div>
                     <ul className="user-box__dropdown">

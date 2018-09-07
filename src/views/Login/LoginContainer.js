@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-import WP_AUTH from '../data/Auth';
+import WP_AUTH from '../../data/Auth';
+import Login from './Login';
 
 class LoginForm extends Component {
     constructor() {
@@ -27,6 +28,7 @@ class LoginForm extends Component {
     }
 
     handleChange(e) {
+        console.log(e);
         const { id, value } = e.target;
         this.setState({
             [id]: value
@@ -39,32 +41,7 @@ class LoginForm extends Component {
             return <Redirect to="/" />;
         }
 
-        return (
-            <div className="row">
-                <div className="form-group">
-                    <label htmlFor="username">User Name</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="username"
-                        onChange={this.handleChange}
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="password">Password</label>
-                    <input
-                        type="password"
-                        className="form-control"
-                        id="password"
-                        onChange={this.handleChange}
-                    />
-                </div>
-
-                <button type="submit" className="btn btn-default" onClick={this.login}>
-                    Login
-                </button>
-            </div>
-        );
+        return <Login login={this.login} handleChange={this.handleChange} />;
     }
 }
 
