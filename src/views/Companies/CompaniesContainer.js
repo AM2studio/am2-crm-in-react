@@ -16,7 +16,7 @@ class CompaniesContainer extends Component {
 
     componentDidMount() {
         const cachedCompanies = localStorage.getItem('companies');
-        if (cachedCompanies) {
+        if (!cachedCompanies) {
             this.setState({ companies: JSON.parse(cachedCompanies) });
         } else {
             const companies = new WP_API();
@@ -32,10 +32,8 @@ class CompaniesContainer extends Component {
     }
 
     setData = data => {
-        const { companies } = this.state;
-        const newData = companies.concat(data);
-        localStorage.setItem('companies', JSON.stringify(newData));
-        this.setState({ companies: newData });
+        localStorage.setItem('companies', JSON.stringify(data));
+        this.setState({ companies: data });
     };
 
     updateLocalDataAFterEdit = (type, id, title, city) => {

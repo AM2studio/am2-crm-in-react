@@ -3,6 +3,7 @@
     margin: auto;
     background-color: #fff !important;
     bottom: auto !important;
+    overflow: visible !important;
 }
 .ReactModal__Overlay {
     z-index: 9;
