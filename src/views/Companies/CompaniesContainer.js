@@ -16,7 +16,7 @@ class CompaniesContainer extends Component {
 
     componentDidMount() {
         const cachedCompanies = localStorage.getItem('companies');
-        if (!cachedCompanies) {
+        if (cachedCompanies) {
             this.setState({ companies: JSON.parse(cachedCompanies) });
         } else {
             const companies = new WP_API();

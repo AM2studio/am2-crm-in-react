@@ -58,7 +58,7 @@ export default class extends Component {
                             <Text
                                 name="title"
                                 parentClass="form__column col-12"
-                                title="Company Title"
+                                label="Company Title"
                                 required
                                 value={title}
                                 inputChangeEvent={this.inputChangeEvent}
@@ -66,7 +66,7 @@ export default class extends Component {
                             <Text
                                 name="address"
                                 parentClass="form__column col-12"
-                                title="Address"
+                                label="Address"
                                 required
                                 value={address}
                                 inputChangeEvent={this.inputChangeEvent}
@@ -76,7 +76,7 @@ export default class extends Component {
                             <Text
                                 name="city"
                                 parentClass="form__column col-12"
-                                title="City"
+                                label="City"
                                 required
                                 value={city}
                                 inputChangeEvent={this.inputChangeEvent}
@@ -84,7 +84,7 @@ export default class extends Component {
                             <Text
                                 name="zip"
                                 parentClass="form__column col-12"
-                                title="ZIP / Postal code"
+                                label="ZIP / Postal code"
                                 value={zip}
                                 inputChangeEvent={this.inputChangeEvent}
                             />
@@ -93,14 +93,14 @@ export default class extends Component {
                             <Text
                                 name="province"
                                 parentClass="form__column col-12"
-                                title="State / Province"
+                                label="State / Province"
                                 value={province}
                                 inputChangeEvent={this.inputChangeEvent}
                             />
                             <Text
                                 name="country"
                                 parentClass="form__column col-12"
-                                title="Country"
+                                label="Country"
                                 value={country}
                                 inputChangeEvent={this.inputChangeEvent}
                             />
@@ -109,7 +109,7 @@ export default class extends Component {
                             <Text
                                 name="phone"
                                 parentClass="form__column col-12"
-                                title="Phone Number"
+                                label="Phone Number"
                                 value={phone}
                                 required
                                 inputChangeEvent={this.inputChangeEvent}
@@ -117,7 +117,7 @@ export default class extends Component {
                             <Text
                                 name="contact_email"
                                 parentClass="form__column col-12"
-                                title="Contact Email"
+                                label="Contact Email"
                                 value={contact_email} // eslint-disable-line camelcase
                                 inputChangeEvent={this.inputChangeEvent}
                                 required
@@ -128,7 +128,7 @@ export default class extends Component {
                             <Text
                                 name="website"
                                 parentClass="form__column col-1"
-                                title="Website"
+                                label="Website"
                                 value={website}
                                 inputChangeEvent={this.inputChangeEvent}
                             />
