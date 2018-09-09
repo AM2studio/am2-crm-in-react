@@ -10,13 +10,9 @@ export default class DatePicker extends Component {
         super(props);
         let { value } = this.props;
 
-        console.log(value);
-
         if (typeof value === 'undefined' || value === '') {
             value = moment().format('DD/MM/YYYY');
         }
-
-        console.log(value);
 
         this.state = {
             date: moment(value, 'DD/MM/YYYY'),
