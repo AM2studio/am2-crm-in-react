@@ -17,7 +17,7 @@ class ProjectsContainer extends Component {
             this.setState({ projects: JSON.parse(cachedProjects) });
         } else {
             const projects = new WP_API(url);
-            projects.getPosts().then(result => {
+            projects.getAllPosts().then(result => {
                 const posts = result.map(post => ({
                     id: post.id,
                     title: post.title.rendered,

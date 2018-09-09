@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Text from '../../components/Form/Text';
+import WP_API from '../../data/Api';
 
 export default class extends Component {
     constructor(props) {
@@ -12,6 +13,21 @@ export default class extends Component {
         }, {});
         this.state = result;
     }
+
+    updateCompanyData = () => {
+        const { id, title, city } = this.state;
+        const { handleModalClose, updateLocalDataAFterEdit } = this.props;
+        const data = new WP_API();
+        data.setPost('companies', id, this.state);
+        data.set().then(result => {
+            if (result.success === true) {
+                updateLocalDataAFterEdit(id, title, city);
+                handleModalClose();
+            } else {
+                console.log('Something went wrong!');
+            }
+        });
+    };
 
     inputChangeEvent = e => {
         const { name, value } = e.target;
@@ -118,7 +134,11 @@ export default class extends Component {
                             />
                         </div>
                         <div className="form__row">
-                            <button type="button" className="button button--primary">
+                            <button
+                                type="button"
+                                className="button button--primary"
+                                onClick={this.updateCompanyData}
+                            >
                                 Submit
                             </button>
                             <button

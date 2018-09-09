@@ -20,10 +20,10 @@ class CompaniesContainer extends Component {
             this.setState({ companies: JSON.parse(cachedCompanies) });
         } else {
             const companies = new WP_API();
-            companies.getPosts('companies').then(result => {
+            companies.getAllPosts('companies').then(result => {
                 const posts = result.map(post => ({
                     id: post.id,
-                    title: post.title.rendered,
+                    title: post.title,
                     city: post.city
                 }));
                 this.setData(posts);
@@ -36,6 +36,14 @@ class CompaniesContainer extends Component {
         const newData = companies.concat(data);
         localStorage.setItem('companies', JSON.stringify(newData));
         this.setState({ companies: newData });
+    };
+
+    updateLocalDataAFterEdit = (id, title, city) => {
+        const { companies } = this.state;
+        const updatedCompanies = companies.map(
+            company => (company.id === id ? { ...company, title, city } : company)
+        );
+        this.setState({ companies: updatedCompanies });
     };
 
     editCompany = (e, id) => {
@@ -109,18 +117,13 @@ class CompaniesContainer extends Component {
         ];
         return (
             <React.Fragment>
-                <Companies
-                    columns={columns}
-                    data={newComp}
-                    modal={modal}
-                    singleCompanyData={singleCompanyData}
-                    handleModalClose={this.handleModalClose}
-                />
+                <Companies columns={columns} data={newComp} />
                 <AM2Modal open={modal} handleModalClose={this.handleModalClose}>
                     <CompaniesEdit
                         singleCompanyData={singleCompanyData}
                         handleModalClose={this.handleModalClose}
                         inputChangeEvent={this.inputChangeEvent}
+                        updateLocalDataAFterEdit={this.updateLocalDataAFterEdit}
                     />
                 </AM2Modal>
             </React.Fragment>
