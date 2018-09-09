@@ -38,12 +38,31 @@ class CompaniesContainer extends Component {
         this.setState({ companies: newData });
     };
 
-    updateLocalDataAFterEdit = (id, title, city) => {
+    updateLocalDataAFterEdit = (type, id, title, city) => {
         const { companies } = this.state;
-        const updatedCompanies = companies.map(
-            company => (company.id === id ? { ...company, title, city } : company)
-        );
+        let updatedCompanies = companies;
+        if (type === 'edit') {
+            updatedCompanies = companies.map(
+                company => (company.id === id ? { ...company, title, city } : company)
+            );
+        } else {
+            updatedCompanies = [
+                {
+                    id,
+                    title,
+                    city
+                }
+            ].concat(companies);
+        }
+
         this.setState({ companies: updatedCompanies });
+    };
+
+    addCompany = () => {
+        this.setState(() => ({
+            modal: true,
+            singleCompanyData: false
+        }));
     };
 
     editCompany = (e, id) => {
@@ -117,7 +136,7 @@ class CompaniesContainer extends Component {
         ];
         return (
             <React.Fragment>
-                <Companies columns={columns} data={newComp} />
+                <Companies columns={columns} data={newComp} addCompany={this.addCompany} />
                 <AM2Modal open={modal} handleModalClose={this.handleModalClose}>
                     <CompaniesEdit
                         singleCompanyData={singleCompanyData}

@@ -21,7 +21,7 @@ export default class extends Component {
         data.setPost('companies', id, this.state);
         data.set().then(result => {
             if (result.success === true) {
-                updateLocalDataAFterEdit(id, title, city);
+                updateLocalDataAFterEdit(result.data.type, result.data.id, title, city);
                 handleModalClose();
             } else {
                 console.log('Something went wrong!');
