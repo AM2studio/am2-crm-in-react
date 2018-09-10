@@ -35,13 +35,20 @@ class WP_API {
     }
 
     get() {
-        return axios
-            .get(this.url)
+        return axios({
+            method: 'get',
+            url: this.url,
+            headers: {
+                Authorization: `Bearer ${this.auth.getSessionToken()}`
+            }
+        })
             .then(response => {
+                console.log(response);
                 const fetchedData = this.dataToFetch.reduce((obj, value) => {
-                    obj[value] = response.data[value]; // eslint-disable-line no-param-reassign
+                    obj[value] = response.data[0][value]; // eslint-disable-line no-param-reassign
                     return obj;
                 }, {});
+                console.log(fetchedData);
                 return fetchedData;
             })
             .catch(error => {
