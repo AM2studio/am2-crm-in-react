@@ -6,7 +6,7 @@ const Companies = props => {
     const { data, columns, addCompany } = props;
     return (
         <ViewWrapper title="Companies">
-            <p className="text-right">
+            <p className="negative-margin text-right">
                 <button type="button" className="button button--primary" onClick={addCompany}>
                     Add New
                 </button>

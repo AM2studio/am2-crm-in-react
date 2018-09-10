@@ -5975,6 +5975,7 @@ $color_dark
   vertical-align: middle;
   z-index: 1;
  }
+ .negative-margin { margin-top: -70px; }
   .effect--waves .waves-ripple {
     position: absolute;
     border-radius: 50%;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch } from 'react-router-dom';
 import NotFound from '../views/NotFound';
-import Dashboard from '../views/Dashboard';
+import Dashboard from '../views/Dashboard/Dashboard';
 import LoginContainer from '../views/Login/LoginContainer';
 import ProjectsContainer from '../views/Projects/ProjectsContainer';
 import CompaniesContainer from '../views/Companies/CompaniesContainer';

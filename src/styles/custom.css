@@ -1,0 +1,9 @@
+.widget .section__header {
+    padding: 15px 20px;
+    background-color: #006683;
+    border-left: 0;
+}
+.widget .section__header .section__title {
+    font-size: 21px;
+    color: #fff;
+}
