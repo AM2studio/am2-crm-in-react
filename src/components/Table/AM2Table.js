@@ -63,40 +63,44 @@ class AM2Table extends Component {
             <table className="table__table">
                 <thead className="table__header">
                     <tr className="table__row">
-                        {columns.map(column => (
-                            <th
-                                className="table__heading text-left"
-                                key={column.key}
-                                onClick={this.sortColumn.bind(this, column.key)}
-                            >
-                                {column.title}
-                            </th>
-                        ))}
+                        {columns &&
+                            columns.map(column => (
+                                <th
+                                    className="table__heading text-left"
+                                    key={column.key}
+                                    onClick={this.sortColumn.bind(this, column.key)}
+                                >
+                                    {column.title}
+                                </th>
+                            ))}
                     </tr>
                     <tr className="table__row">
-                        {columns.map(column => (
-                            <th key={column.key}>
-                                <input
-                                    autoComplete="off"
-                                    type="text"
-                                    className="input__standard"
-                                    name={column.key}
-                                    onChange={e => this.filterColumn(e, column.key)}
-                                />
-                            </th>
-                        ))}
+                        {columns &&
+                            columns.map(column => (
+                                <th key={column.key}>
+                                    <input
+                                        autoComplete="off"
+                                        type="text"
+                                        className="input__standard"
+                                        name={column.key}
+                                        onChange={e => this.filterColumn(e, column.key)}
+                                    />
+                                </th>
+                            ))}
                     </tr>
                 </thead>
                 <tbody className="table__body">
-                    {rows.map(rowData => (
-                        <tr key={rowData.id} className="table__row">
-                            {columns.map(element => (
-                                <td key={element.key} className="table__cell text-left">
-                                    {this.deep(rowData, element.key)}
-                                </td>
-                            ))}
-                        </tr>
-                    ))}
+                    {rows &&
+                        rows.map(rowData => (
+                            <tr key={rowData.id} className="table__row">
+                                {columns &&
+                                    columns.map(element => (
+                                        <td key={element.key} className="table__cell text-left">
+                                            {this.deep(rowData, element.key)}
+                                        </td>
+                                    ))}
+                            </tr>
+                        ))}
                 </tbody>
             </table>
         );

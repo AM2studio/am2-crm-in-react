@@ -15,14 +15,9 @@ class ProjectsContainer extends Component {
         };
     }
 
-    componentDidMount() {
-        const cachedProjects = localStorage.getItem('projects');
-        // Skip until redux
-        if (!cachedProjects) {
-            this.setState({ projects: JSON.parse(cachedProjects) });
-        } else {
-            this.getProjects();
-        }
+    componentWillMount() {
+        // Skip catching until redux
+        this.getProjects();
     }
 
     getProjects = () => {
@@ -94,11 +89,13 @@ class ProjectsContainer extends Component {
 
     render() {
         const { projects, modal, singleProjectData, companies } = this.state;
-        const newComp = projects.map(value => {
-            const newValue = value;
-            newValue.btn = this.actionBtns(value.id);
-            return newValue;
-        });
+        const newComp =
+            projects &&
+            projects.map(value => {
+                const newValue = value;
+                newValue.btn = this.actionBtns(value.id);
+                return newValue;
+            });
         const columns = [
             { key: 'id', title: 'ID' },
             { key: 'title', title: 'Title' },

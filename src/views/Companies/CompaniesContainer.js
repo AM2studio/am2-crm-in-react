@@ -14,7 +14,7 @@ class CompaniesContainer extends Component {
         };
     }
 
-    componentDidMount() {
+    componentWillMount() {
         const cachedCompanies = localStorage.getItem('companies');
         if (cachedCompanies) {
             this.setState({ companies: JSON.parse(cachedCompanies) });
