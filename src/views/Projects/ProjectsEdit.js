@@ -4,7 +4,7 @@ import Select from '../../components/Form/Select';
 import WP_API from '../../data/Api';
 import DatePicker from '../../components/Form/DatePicker';
 
-export default class extends Component {
+class ProjectsEdit extends Component {
     constructor(props) {
         super(props);
         const obj = {};
@@ -37,28 +37,14 @@ export default class extends Component {
     };
 
     render() {
-        const { handleModalClose, companies } = this.props;
-        const currencies = [
-            { id: 'USD', title: 'USD' },
-            { id: 'HRK', title: 'HRK' },
-            { id: 'AUD', title: 'AUD' },
-            { id: 'CAD', title: 'CAD' }
-        ];
-        const paymentTypes = [
-            { id: 'per_project', title: 'Per project' },
-            { id: 'hourly', title: 'Hourly' }
-        ];
-        const departments = [
-            { id: 2, title: 'WP' },
-            { id: 3, title: 'Design' },
-            { id: 4, title: 'Enterprise' }
-        ];
-        const projectMngrs = [
-            { id: 51, title: 'Brankica Basta' },
-            { id: 59, title: 'Lynette Sawyer' },
-            { id: 32, title: 'Pero Tolic' },
-            { id: 4, title: 'Nikola Latin' }
-        ];
+        const {
+            handleModalClose,
+            companies,
+            currencies,
+            paymentTypes,
+            departments,
+            projectMngrs
+        } = this.props;
 
         const {
             title,
@@ -255,3 +241,26 @@ export default class extends Component {
         );
     }
 }
+
+export default ProjectsEdit;
+
+ProjectsEdit.defaultProps = {
+    currencies: [
+        { id: 'USD', title: 'USD' },
+        { id: 'HRK', title: 'HRK' },
+        { id: 'AUD', title: 'AUD' },
+        { id: 'CAD', title: 'CAD' }
+    ],
+    paymentTypes: [{ id: 'per_project', title: 'Per project' }, { id: 'hourly', title: 'Hourly' }],
+    departments: [
+        { id: 2, title: 'WP' },
+        { id: 3, title: 'Design' },
+        { id: 4, title: 'Enterprise' }
+    ],
+    projectMngrs: [
+        { id: 51, title: 'Brankica Basta' },
+        { id: 59, title: 'Lynette Sawyer' },
+        { id: 32, title: 'Pero Tolic' },
+        { id: 4, title: 'Nikola Latin' }
+    ]
+};
