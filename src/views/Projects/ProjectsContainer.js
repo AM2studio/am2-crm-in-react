@@ -9,7 +9,7 @@ class ProjectsContainer extends Component {
         super();
         this.state = {
             projects: [],
-            companies: [],
+            companies: JSON.parse(localStorage.getItem('companies')),
             modal: false,
             singleProjectData: {}
         };
@@ -17,47 +17,25 @@ class ProjectsContainer extends Component {
 
     componentDidMount() {
         const cachedProjects = localStorage.getItem('projects');
-        const cachedCompanies = localStorage.getItem('companies');
-        if (cachedProjects) {
+        // Skip until redux
+        if (!cachedProjects) {
             this.setState({ projects: JSON.parse(cachedProjects) });
-            this.setState({ companies: JSON.parse(cachedCompanies) });
         } else {
-            const projects = new WP_API();
-            projects.getAllPosts('projects').then(result => {
-                const projectsList = result.map(post => ({
-                    id: post.id,
-                    title: post.title,
-                    company: post.company_name
-                }));
-                this.setData(projectsList, result[0].companies);
-            });
+            this.getProjects();
         }
     }
 
-    setData = (projects, companies) => {
-        localStorage.setItem('projects', JSON.stringify(projects));
-        localStorage.setItem('companies', JSON.stringify(companies));
-        this.setState(() => ({ projects, companies }));
-    };
-
-    updateLocalDataAFterEdit = (type, id, title, company) => {
-        const { projects } = this.state;
-        let updatedProjects = projects;
-        if (type === 'edit') {
-            updatedProjects = projects.map(
-                project => (project.id === id ? { ...project, title, company } : project)
-            );
-        } else {
-            updatedProjects = [
-                {
-                    id,
-                    title,
-                    company
-                }
-            ].concat(projects);
-        }
-
-        this.setState({ projects: updatedProjects });
+    getProjects = () => {
+        const projects = new WP_API();
+        projects.getAllPosts('projects').then(result => {
+            const projectsList = result.map(post => ({
+                id: post.id,
+                title: post.title,
+                company: post.company_name
+            }));
+            localStorage.setItem('projects', JSON.stringify(projectsList));
+            this.setState(() => ({ projects: projectsList }));
+        });
     };
 
     addProject = () => {
@@ -69,31 +47,10 @@ class ProjectsContainer extends Component {
 
     editProject = (e, id) => {
         console.log(`Editing project with id: ${id}`);
-        const dataToFetch = [
-            'id',
-            'title',
-            'company_name',
-            'company_id',
-            'department_id',
-            'total_price',
-            'quoted_hours',
-            'completion_rate',
-            'hourly_rate',
-            'payment_type',
-            'currency',
-            'project_mngr',
-            'active_project',
-            'start_date',
-            'end_date',
-            'rep_link',
-            'staging_link',
-            'slack_channel',
-            'project_features'
-        ];
+        const { dataToFetch } = this.props;
         const data = new WP_API();
         data.getPost('projects', id, dataToFetch);
         data.get().then(result => {
-            console.log(result);
             this.setState(() => ({
                 modal: true,
                 singleProjectData: result
@@ -101,8 +58,11 @@ class ProjectsContainer extends Component {
         });
     };
 
-    handleModalClose = () => {
+    handleModalClose = updated => {
         this.setState({ modal: false });
+        if (updated === true) {
+            this.getProjects();
+        }
     };
 
     deleteProject = (e, id) => {
@@ -134,7 +94,6 @@ class ProjectsContainer extends Component {
 
     render() {
         const { projects, modal, singleProjectData, companies } = this.state;
-        console.log(this.state);
         const newComp = projects.map(value => {
             const newValue = value;
             newValue.btn = this.actionBtns(value.id);
@@ -155,12 +114,35 @@ class ProjectsContainer extends Component {
                         companies={companies}
                         handleModalClose={this.handleModalClose}
                         inputChangeEvent={this.inputChangeEvent}
-                        updateLocalDataAFterEdit={this.updateLocalDataAFterEdit}
                     />
                 </AM2Modal>
             </React.Fragment>
         );
     }
 }
+
+ProjectsContainer.defaultProps = {
+    dataToFetch: [
+        'id',
+        'title',
+        'company_name',
+        'company_id',
+        'department_id',
+        'total_price',
+        'quoted_hours',
+        'completion_rate',
+        'hourly_rate',
+        'payment_type',
+        'currency',
+        'project_mngr',
+        'active_project',
+        'start_date',
+        'end_date',
+        'rep_link',
+        'staging_link',
+        'slack_channel',
+        'project_features'
+    ]
+};
 
 export default ProjectsContainer;

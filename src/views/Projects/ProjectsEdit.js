@@ -17,16 +17,14 @@ export default class extends Component {
     }
 
     updateProjectData = () => {
-        const { id, title, company_id } = this.state; // eslint-disable-line camelcase
-        const { handleModalClose, updateLocalDataAFterEdit } = this.props;
+        const { id } = this.state; // eslint-disable-line camelcase
+        const { handleModalClose } = this.props;
         const data = new WP_API();
 
-        console.log(this.state);
         data.setPost('projects', id, this.state);
         data.set().then(result => {
             if (result.success === true) {
-                updateLocalDataAFterEdit(result.data.type, result.data.id, title, company_id); // eslint-disable-line camelcase
-                handleModalClose();
+                handleModalClose(true);
             } else {
                 console.log('Something went wrong!');
             }
@@ -81,6 +79,7 @@ export default class extends Component {
             // active_project,
             // project_features // eslint-disable-line camelcase
         } = this.state;
+
         const fields = [
             {
                 type: Text,
