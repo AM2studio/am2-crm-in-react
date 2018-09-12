@@ -19,6 +19,12 @@
 .picker_container {
     margin: 20px auto;
 }
+.negative-margin {
+    padding-bottom: 10px;
+}
+.table__heading {
+    padding: 10px !important;
+}
 .button--custom {
     width: 100%;
     font-weight: bold !important;
