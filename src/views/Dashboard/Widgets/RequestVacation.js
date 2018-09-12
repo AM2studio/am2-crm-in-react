@@ -8,17 +8,49 @@ class RequestVacation extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {};
+        this.state = {
+            startDate: '',
+            endDate: '',
+            days: ''
+        };
     }
 
     inputChangeEvent = e => {
-        console.log(e);
-        //  const { name, value } = e.target;
-        //        this.setState({ [name]: value });
+        const { name, value } = e.target;
+        this.setState({ [name]: value });
     };
 
     render() {
-        const { inputs } = this.props;
+        const { startDate, endDate, days } = this.state;
+
+        const inputs = [
+            {
+                type: DatePicker,
+                name: 'startDate',
+                label: 'Start Date',
+                required: true,
+                value: startDate,
+                parentClass: 'form__row'
+            },
+            {
+                type: DatePicker,
+                name: 'endDate',
+                label: 'End Date',
+                required: true,
+                value: endDate,
+                parentClass: 'form__row'
+            },
+            {
+                type: Text,
+                name: 'days',
+                label: 'Working Days',
+                propType: 'number',
+                required: true,
+                value: days,
+                parentClass: 'form__row'
+            }
+        ];
+
         return (
             <div className="section col-14 widget widget--vacation">
                 <header className="section__header">
@@ -56,32 +88,3 @@ class RequestVacation extends Component {
 }
 
 export default RequestVacation;
-
-RequestVacation.defaultProps = {
-    inputs: [
-        {
-            type: DatePicker,
-            name: 'start_date',
-            label: 'Start Date',
-            required: true,
-            value: '',
-            parentClass: 'form__row'
-        },
-        {
-            type: DatePicker,
-            name: 'end_date',
-            label: 'End Date',
-            required: true,
-            value: '',
-            parentClass: 'form__row'
-        },
-        {
-            type: Text,
-            name: 'days',
-            label: 'Working Days',
-            required: true,
-            value: '',
-            parentClass: 'form__row'
-        }
-    ]
-};
