@@ -35,7 +35,7 @@ const Login = props => {
                                 name="username"
                                 id="username"
                                 onChange={handleChange}
-                                placeholder="Username or Email"
+                                placeholder="Username"
                             />
                             <span className="focus-input100" />
                         </div>

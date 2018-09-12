@@ -52,7 +52,7 @@ class AddHighFive extends Component {
                 const notificationTitle = 'New highfive is added!';
                 const user = sessionStorage.getItem('crmUserName');
                 const title = `${user} gave high5 to ${selectedUser}:`;
-                slackAPI.send(notificationTitle, title, content, 'testni');
+                slackAPI.send(notificationTitle, title, content, 'highfive');
             } else {
                 this.setState(() => ({ status: 'error' }));
                 console.log('Something went wrong!');
