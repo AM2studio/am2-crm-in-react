@@ -1,33 +1,26 @@
 import React from 'react';
 
 export default props => {
-    const { title, name, parentClass, list, value, inputChangeEvent } = props;
-    let { required, className = 'form__input' } = props;
+    const { label, name, parentClass, list, inputChangeEvent, ...rest } = props;
+    let { required } = props;
 
     if (required) {
-        className += ' validate';
         required = <span className="form__required">* (required)</span>;
     }
 
     return (
         <div className={parentClass}>
             <label htmlFor={name}>
-                {title}
+                {label}
                 {required}
             </label>
-            <select
-                required
-                name={name}
-                id={name}
-                className={className}
-                value={value}
-                onChange={inputChangeEvent}
-            >
-                {list.map(item => (
-                    <option value={item.id} selected={item.id === value ? 'selected' : ''}>
-                        {item.title}
-                    </option>
-                ))}
+            <select name={name} id={name} onChange={inputChangeEvent} {...rest}>
+                {list &&
+                    list.map(item => (
+                        <option key={item.id} value={item.id}>
+                            {item.title}
+                        </option>
+                    ))}
             </select>
         </div>
     );

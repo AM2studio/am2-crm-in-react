@@ -30,17 +30,11 @@ const Header = props => {
                 <ul className="user-menu right">
                     <li className="user-menu__item">
                         <a href="/" className="user-menu__link effect effect--waves">
-                            <svg className="user-menu__icon">
-                                <use xlinkHref="../static/images/sprite.svg#icon--settings" />
-                            </svg>{' '}
                             Settings
                         </a>
                     </li>
                     <li className="user-menu__item">
                         <button type="button" onClick={logout} className="user-menu__link">
-                            <svg className="user-menu__icon">
-                                <use xlinkHref="../static/images/sprite.svg#icon--logout" />
-                            </svg>{' '}
                             Logout
                         </button>
                     </li>

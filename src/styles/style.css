@@ -1180,8 +1180,6 @@ textarea, .form__input, .dataTables_filter input[type="search"], .dataTables_len
   border-bottom-color: #d0d2da;
   border-bottom-width: 2px; }
 
-textarea {
-  height: 302px; }
   @media (max-width: mobilepx) {
     textarea {
       height: 130px; } }

@@ -1,15 +1,11 @@
 import React from 'react';
 
 export default props => {
-    const { label, name, parentClass, inputChangeEvent, propType, ...rest } = props;
+    const { label, parentClass, name, inputChangeEvent, ...rest } = props;
     let { required } = props;
-    let type = 'text';
 
     if (required) {
         required = <span className="form__required">* (required)</span>;
-    }
-    if (propType) {
-        type = propType;
     }
 
     return (
@@ -18,7 +14,7 @@ export default props => {
                 {label}
                 {required}
             </label>
-            <input name={name} id={name} type={type} onChange={inputChangeEvent} {...rest} />
+            <textarea name={name} onChange={inputChangeEvent} {...rest} />
         </div>
     );
 };

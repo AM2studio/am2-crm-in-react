@@ -60,17 +60,11 @@ class Header extends Component {
                     <ul className="user-box__dropdown">
                         <li className="user-box__dropdown-item">
                             <a href="/" className="user-box__dropdown-item-anchor">
-                                <svg className="svg-icon svg-icon--small">
-                                    <use xlinkHref="../static/images/sprite.svg#icon--user" />
-                                </svg>
                                 Profile
                             </a>
                         </li>
                         <li className="user-box__dropdown-item">
                             <a href="/" className="user-box__dropdown-item-anchor">
-                                <svg className="svg-icon svg-icon--small">
-                                    <use xlinkHref="../static/images/sprite.svg#icon--logout" />
-                                </svg>
                                 Log Out
                             </a>
                         </li>

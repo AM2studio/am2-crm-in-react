@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import Time from '../../../components/Form/TimePicker';
 import Text from '../../../components/Form/Text';
 import DatePicker from '../../../components/Form/DatePicker';
 
 import '../../../styles/custom.css';
 
-class AddTime extends Component {
+class RequestVacation extends Component {
     constructor(props) {
         super(props);
 
@@ -21,9 +20,9 @@ class AddTime extends Component {
     render() {
         const { inputs } = this.props;
         return (
-            <div className="section col-14 widget">
+            <div className="section col-14 widget widget--vacation">
                 <header className="section__header">
-                    <h4 className="section__title">Add New Task</h4>
+                    <h4 className="section__title">Request Vacation</h4>
                 </header>
                 <div className="section__content">
                     <div className="widget">
@@ -53,73 +52,33 @@ class AddTime extends Component {
     }
 }
 
-export default AddTime;
+export default RequestVacation;
 
-AddTime.defaultProps = {
+RequestVacation.defaultProps = {
     inputs: [
         {
-            type: Text,
-            name: 'title',
-            label: 'Project Title',
+            type: DatePicker,
+            name: 'start_date',
+            label: 'Start Date',
             required: true,
             value: '',
-            parentClass: 'form__column col-1 form__row'
+            parentClass: 'form__row'
         },
         {
             type: DatePicker,
-            name: 'date',
-            label: 'Date',
+            name: 'end_date',
+            label: 'End Date',
             required: true,
-            parentClass: 'form__column col-1 form__row'
-        },
-        {
-            type: Time,
-            name: 'time',
-            label: 'Hours of Work',
-            required: true,
-            value: '01:00',
-            parentClass: 'form__column col-1 form__row'
-        },
-        {
-            type: Time,
-            name: 'billable_hours',
-            label: 'Billable Hours',
-            required: true,
-            value: '01:30',
-            parentClass: 'form__column col-1 form__row'
+            value: '',
+            parentClass: 'form__row'
         },
         {
             type: Text,
-            name: 'project_id',
-            label: 'Project',
+            name: 'days',
+            label: 'Working Days',
             required: true,
             value: '',
-            parentClass: 'form__column col-1 form__row'
-        },
-        {
-            type: Text,
-            propType: 'number',
-            name: 'job_type',
-            label: 'Job Type',
-            required: true,
-            value: '',
-            parentClass: 'form__column col-1 form__row'
-        },
-        {
-            type: Text,
-            name: 'asana_url',
-            label: 'Asana URL',
-            required: true,
-            value: '',
-            parentClass: 'form__column col-1 form__row'
-        },
-        {
-            type: Text,
-            name: 'comment',
-            label: 'Comment',
-            required: true,
-            value: '',
-            parentClass: 'form__column col-1 form__row'
+            parentClass: 'form__row'
         }
     ]
 };

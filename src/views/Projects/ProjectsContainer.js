@@ -21,16 +21,21 @@ class ProjectsContainer extends Component {
     }
 
     getProjects = () => {
-        const projects = new WP_API();
-        projects.getAllPosts('projects').then(result => {
-            const projectsList = result.map(post => ({
-                id: post.id,
-                title: post.title,
-                company: post.company_name
-            }));
-            localStorage.setItem('projects', JSON.stringify(projectsList));
-            this.setState(() => ({ projects: projectsList }));
-        });
+        const cachedProjects = localStorage.getItem('projects');
+        if (cachedProjects) {
+            this.setState({ projects: JSON.parse(cachedProjects) });
+        } else {
+            const api = new WP_API();
+            api.getAllPosts('projects').then(result => {
+                const projectsList = result.map(post => ({
+                    id: post.id,
+                    title: post.title,
+                    company: post.company_name
+                }));
+                localStorage.setItem('projects', JSON.stringify(projectsList));
+                this.setState(() => ({ projects: projectsList }));
+            });
+        }
     };
 
     addProject = () => {
