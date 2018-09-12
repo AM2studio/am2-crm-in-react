@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import Textarea from '../../../components/Form/Textarea';
-import Select from '../../../components/Form/Select';
 import WP_API from '../../../data/Api';
+import Select from '../../../components/Form/Select';
+import Textarea from '../../../components/Form/Textarea';
 import Notification from '../../../components/Form/Notification';
 
 import '../../../styles/custom.css';
