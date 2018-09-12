@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import WP_API from '../../../data/Api';
+import SlackAPI from '../../../data/SlackAPI';
 import Select from '../../../components/Form/Select';
 import Textarea from '../../../components/Form/Textarea';
 import Notification from '../../../components/Form/Notification';
@@ -13,13 +14,24 @@ class AddHighFive extends Component {
         this.state = {
             hf_user_to_id: '',
             content: '',
+            selectedUser: '',
             status: false
         };
     }
 
     inputChangeEvent = e => {
         const { name, value } = e.target;
-        this.setState({ [name]: value });
+        // Goran: check how to clean this up.
+        if (name === 'hf_user_to_id') {
+            this.setState({
+                [name]: value,
+                selectedUser: e.target.options ? e.target.options[e.target.selectedIndex].text : ''
+            });
+        } else {
+            this.setState({
+                [name]: value
+            });
+        }
     };
 
     closeNotification = () => {
@@ -27,11 +39,20 @@ class AddHighFive extends Component {
     };
 
     giveHighFive = () => {
+        const { content, selectedUser } = this.state;
         const api = new WP_API();
+
         api.setPost('high-five', '', this.state);
         api.set().then(result => {
             if (result.success === true) {
+                // Pop a success message
                 this.setState(() => ({ status: 'success' }));
+                // Notify everyone on slack
+                const slackAPI = new SlackAPI();
+                const notificationTitle = 'New highfive is added!';
+                const user = sessionStorage.getItem('crmUserName');
+                const title = `${user} gave high5 to ${selectedUser}:`;
+                slackAPI.send(notificationTitle, title, content, 'testni');
             } else {
                 this.setState(() => ({ status: 'error' }));
                 console.log('Something went wrong!');
