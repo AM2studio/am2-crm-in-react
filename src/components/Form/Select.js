@@ -15,6 +15,7 @@ export default props => {
                 {required}
             </label>
             <select name={name} id={name} onChange={inputChangeEvent} {...rest}>
+                <option>Select</option>
                 {list &&
                     list.map(item => (
                         <option key={item.id} value={item.id}>

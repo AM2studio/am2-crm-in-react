@@ -17,14 +17,14 @@ export default class extends Component {
     updateCompanyData = () => {
         const { id, title, city } = this.state;
         const { handleModalClose, updateLocalDataAFterEdit } = this.props;
-        const data = new WP_API();
-        data.setPost('companies', id, this.state);
-        data.set().then(result => {
+        const api = new WP_API();
+        api.setPost('companies', id, this.state);
+        api.set().then(result => {
             if (result.success === true) {
                 updateLocalDataAFterEdit(result.data.type, result.data.id, title, city);
                 handleModalClose();
             } else {
-                console.log('Something went wrong!');
+                console.log(result.data.error);
             }
         });
     };
@@ -62,6 +62,7 @@ export default class extends Component {
                                 required
                                 value={title}
                                 inputChangeEvent={this.inputChangeEvent}
+                                className="form__input"
                             />
                             <Text
                                 name="address"
@@ -70,6 +71,7 @@ export default class extends Component {
                                 required
                                 value={address}
                                 inputChangeEvent={this.inputChangeEvent}
+                                className="form__input"
                             />
                         </div>
                         <div className="form__row">
@@ -80,6 +82,7 @@ export default class extends Component {
                                 required
                                 value={city}
                                 inputChangeEvent={this.inputChangeEvent}
+                                className="form__input"
                             />
                             <Text
                                 name="zip"
@@ -87,6 +90,7 @@ export default class extends Component {
                                 label="ZIP / Postal code"
                                 value={zip}
                                 inputChangeEvent={this.inputChangeEvent}
+                                className="form__input"
                             />
                         </div>
                         <div className="form__row">
@@ -96,6 +100,7 @@ export default class extends Component {
                                 label="State / Province"
                                 value={province}
                                 inputChangeEvent={this.inputChangeEvent}
+                                className="form__input"
                             />
                             <Text
                                 name="country"
@@ -103,6 +108,7 @@ export default class extends Component {
                                 label="Country"
                                 value={country}
                                 inputChangeEvent={this.inputChangeEvent}
+                                className="form__input"
                             />
                         </div>
                         <div className="form__row">
@@ -113,6 +119,7 @@ export default class extends Component {
                                 value={phone}
                                 required
                                 inputChangeEvent={this.inputChangeEvent}
+                                className="form__input"
                             />
                             <Text
                                 name="contact_email"
@@ -120,8 +127,9 @@ export default class extends Component {
                                 label="Contact Email"
                                 value={contact_email} // eslint-disable-line camelcase
                                 inputChangeEvent={this.inputChangeEvent}
+                                className="form__input"
                                 required
-                                email
+                                propType="email"
                             />
                         </div>
                         <div className="form__row">
@@ -131,6 +139,7 @@ export default class extends Component {
                                 label="Website"
                                 value={website}
                                 inputChangeEvent={this.inputChangeEvent}
+                                className="form__input"
                             />
                         </div>
                         <div className="form__row">

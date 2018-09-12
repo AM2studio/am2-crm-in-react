@@ -215,6 +215,7 @@ class ProjectsEdit extends Component {
                                     required={field.required}
                                     value={field.value}
                                     list={field.list}
+                                    className="form__input"
                                     inputChangeEvent={this.inputChangeEvent}
                                 />
                             ))}
