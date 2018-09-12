@@ -1,7 +1,7 @@
 import React from 'react';
 
 export default props => {
-    const { label, parentClass, name, inputChangeEvent, ...rest } = props;
+    const { label, parentClass, name, propType, inputChangeEvent, ...rest } = props;
     let { required } = props;
 
     if (required) {

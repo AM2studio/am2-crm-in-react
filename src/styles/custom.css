@@ -30,3 +30,6 @@
     font-weight: bold !important;
     text-transform: uppercase;
 }
+select {
+    height: 32px;
+}
