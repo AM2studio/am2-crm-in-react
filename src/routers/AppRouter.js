@@ -5,7 +5,7 @@ import Dashboard from '../views/Dashboard/Dashboard';
 import LoginContainer from '../views/Login/LoginContainer';
 import ProjectsContainer from '../views/Projects/ProjectsContainer';
 import CompaniesContainer from '../views/Companies/CompaniesContainer';
-import Users from '../views/Users/Users';
+import UsersContainer from '../views/Users/UsersContainer';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 
@@ -14,7 +14,7 @@ const Routes = () => (
         <PrivateRoute path="/" component={Dashboard} exact />
         <PrivateRoute path="/projects" component={ProjectsContainer} />
         <PrivateRoute path="/companies" component={CompaniesContainer} />
-        <PrivateRoute path="/users" component={Users} />
+        <PrivateRoute path="/users" component={UsersContainer} />
         <PublicRoute path="/login" component={LoginContainer} />
         <PublicRoute component={NotFound} />
     </Switch>

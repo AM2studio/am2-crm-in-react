@@ -2,7 +2,7 @@ import React from 'react';
 import ViewWrapper from '../../components/General/ViewWrapper';
 import AM2Table from '../../components/Table/AM2Table';
 
-const Users = props => {
+const UsersEdit = props => {
     const { data, columns, addUser } = props;
     return (
         <ViewWrapper title="Users">
@@ -16,4 +16,4 @@ const Users = props => {
     );
 };
 
-export default Users;
+export default UsersEdit;
