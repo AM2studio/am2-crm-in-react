@@ -11,7 +11,8 @@ class Dashboard extends Component {
         super();
         this.state = {
             companies: [],
-            projects: []
+            projects: [],
+            users: []
         };
 
         const { companies, projects } = this.state;
@@ -21,6 +22,7 @@ class Dashboard extends Component {
     componentDidMount() {
         const cachedCompanies = localStorage.getItem('companies');
         const cachedProjects = localStorage.getItem('projects');
+        const cachedUsers = localStorage.getItem('users');
         // Get Companies
         if (cachedCompanies) {
             this.setState({ companies: JSON.parse(cachedCompanies) });
@@ -34,6 +36,25 @@ class Dashboard extends Component {
                 }));
                 localStorage.setItem('companies', JSON.stringify(posts));
                 this.setState(() => ({ companies: posts }));
+            });
+        }
+        // Get Users
+        if (cachedUsers) {
+            this.setState({ users: JSON.parse(cachedUsers) });
+        } else {
+            const api = new WP_API();
+            api.getAllPosts('users').then(result => {
+                const posts = result.map(post => ({
+                    id: post.id,
+                    first_name: post.first_name,
+                    last_name: post.last_name,
+                    company_role: post.company_role,
+                    department: post.department,
+                    email: post.email,
+                    role: post.role
+                }));
+                localStorage.setItem('users', JSON.stringify(posts));
+                this.setState(() => ({ users: posts }));
             });
         }
         // Get Projects
@@ -54,11 +75,11 @@ class Dashboard extends Component {
     }
 
     render() {
-        const { companies } = this.state;
+        const { users } = this.state;
         return (
             <React.Fragment>
                 <AddTime />
-                <AddNote companies={companies} />
+                <AddNote users={users} />
                 <RequestVacation />
                 <AddHighFive />
             </React.Fragment>
