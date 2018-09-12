@@ -81,7 +81,7 @@ class Dashboard extends Component {
                 <AddTime />
                 <AddNote users={users} />
                 <RequestVacation />
-                <AddHighFive />
+                <AddHighFive users={users} />
             </React.Fragment>
         );
     }

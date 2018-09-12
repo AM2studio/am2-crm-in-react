@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import Textarea from '../../../components/Form/Textarea';
+import WP_API from '../../../data/Api';
 import Select from '../../../components/Form/Select';
+import Textarea from '../../../components/Form/Textarea';
+import Notification from '../../../components/Form/Notification';
 
 import '../../../styles/custom.css';
 
@@ -9,8 +11,9 @@ class AddHighFive extends Component {
         super(props);
 
         this.state = {
-            hfUser: '',
-            hfContent: ''
+            hf_user_to_id: '',
+            content: '',
+            status: false
         };
     }
 
@@ -19,30 +22,58 @@ class AddHighFive extends Component {
         this.setState({ [name]: value });
     };
 
+    closeNotification = () => {
+        this.setState(() => ({ status: false }));
+    };
+
+    giveHighFive = () => {
+        const api = new WP_API();
+        api.setPost('high-five', '', this.state);
+        api.set().then(result => {
+            if (result.success === true) {
+                this.setState(() => ({ status: 'success' }));
+            } else {
+                this.setState(() => ({ status: 'error' }));
+                console.log('Something went wrong!');
+            }
+        });
+    };
+
     render() {
-        const { hfUser, hfContent } = this.state;
+        const { users } = this.props;
+        const { hf_user_to_id, content, status } = this.state; // eslint-disable-line camelcase
+
+        const userList = users.map(user => ({
+            id: user.id,
+            title: `${user.first_name} ${user.last_name}`
+        }));
 
         const inputs = [
             {
                 type: Select,
-                name: 'hfUser',
+                name: 'hf_user_to_id',
                 label: 'To user',
-                list: JSON.parse(localStorage.getItem('projects')),
+                list: userList,
                 required: true,
                 className: 'form__input',
-                value: hfUser,
+                value: hf_user_to_id,
                 parentClass: 'form__column col-1 form__row'
             },
             {
                 type: Textarea,
                 rows: '4',
-                name: 'hfContent',
+                name: 'content',
                 label: 'For',
                 required: true,
-                value: hfContent,
+                value: content,
                 parentClass: 'form__column col-1 form__row'
             }
         ];
+        // Notification Text
+        let msgText = 'Wooot a high five? You are a good friend!';
+        if (status === 'error') {
+            msgText = 'Upss.. something went wrong! Check with Goran.';
+        }
 
         return (
             <div className="section col-14 widget widget--highfive">
@@ -52,6 +83,15 @@ class AddHighFive extends Component {
                 <div className="section__content">
                     <div className="widget">
                         <form className="form">
+                            {status ? (
+                                <Notification
+                                    text={msgText}
+                                    type={status}
+                                    close={this.closeNotification}
+                                />
+                            ) : (
+                                ''
+                            )}
                             <div className="form__row">
                                 {inputs.map(field => (
                                     <field.type
@@ -68,7 +108,11 @@ class AddHighFive extends Component {
                                     />
                                 ))}
                             </div>
-                            <button type="button" className="button button--primary button--custom">
+                            <button
+                                type="button"
+                                className="button button--primary button--custom"
+                                onClick={this.giveHighFive}
+                            >
                                 Submit
                             </button>
                         </form>
