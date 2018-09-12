@@ -45,6 +45,9 @@ class AddTime extends Component {
                                     />
                                 ))}
                             </div>
+                            <button type="button" className="button button--primary button--custom">
+                                Submit
+                            </button>
                         </form>
                     </div>
                 </div>

@@ -59,22 +59,8 @@ class Dashboard extends Component {
             <React.Fragment>
                 <AddTime />
                 <AddNote companies={companies} />
-                <AddHighFive />
                 <RequestVacation />
-                <div className="section col-14">
-                    <div className="section__content">
-                        <div className="widget">
-                            <span className="widget__title">Todays online sales</span>
-                            <span className="widget__value">559</span>
-                            <span className="widget__status color-primary">9%</span>
-                            <span className="widget__status">
-                                <strong>123</strong> last hour
-                            </span>
-                            <div className="widget__chart c3-mini" id="chart1" />
-                            <script defer="defer" />
-                        </div>
-                    </div>
-                </div>
+                <AddHighFive />
             </React.Fragment>
         );
     }
