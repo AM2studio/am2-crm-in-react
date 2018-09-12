@@ -1,6 +1,8 @@
 import React from 'react';
 
 const Header = props => {
+    const companies = 111; // Fix this with redux and array length.
+    const projects = 435; // JSON.parse(localStorage.getItem('projects'));
     const { logout } = props;
     return (
         <header id="header" className="header">
@@ -48,26 +50,27 @@ const Header = props => {
                 </div>
                 <div className="header__right">
                     <div className="header__info">
-                        <span className="header__info-value">16</span>
+                        <span className="header__info-value">{companies}</span>
                         <span className="header__info-text">
-                            New <br />
-                            Orders
+                            Num of.
+                            <br />
+                            Companies
                         </span>
                     </div>
 
                     <div className="header__info">
-                        <span className="header__info-value">29</span>
+                        <span className="header__info-value">{projects}</span>
                         <span className="header__info-text">
-                            Orders <br />
-                            In Progress
+                            Num of. <br />
+                            Projects
                         </span>
                     </div>
 
                     <div className="header__info">
                         <span className="header__info-value">44</span>
                         <span className="header__info-text">
-                            Total <br />
-                            Orders
+                            AM2Studio <br />
+                            Ninjas
                         </span>
                     </div>
                 </div>

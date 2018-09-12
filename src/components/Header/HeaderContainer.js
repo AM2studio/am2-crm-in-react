@@ -12,7 +12,6 @@ class HeaderContainer extends Component {
     }
 
     logout = () => {
-        console.log('ne radi');
         const auth = new WP_AUTH();
         auth.removeSessionToken();
         this.setState({ redirectTo: true });

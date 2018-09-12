@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import logo from '../../styles/images/avatar.png';
+import WP_AUTH from '../../data/Auth';
 
 class Header extends Component {
     constructor() {
         super();
         this.state = {
-            active: false
+            active: false,
+            redirectTo: false
         };
     }
 
@@ -25,8 +27,19 @@ class Header extends Component {
         });
     };
 
+    logout = () => {
+        const auth = new WP_AUTH();
+        auth.removeSessionToken();
+        this.setState({ redirectTo: true });
+    };
+
     render() {
         const { title, subtitle } = this.props;
+        const { redirectTo } = this.state;
+        if (redirectTo) {
+            this.setState({ redirectTo: false }); // da zadrzim header, hack, al radim vec 12h i ovo mi prvo palo na pamet :)
+            return <Redirect to="/" />;
+        }
         return (
             <React.Fragment>
                 <h5 className="logo">
@@ -64,9 +77,13 @@ class Header extends Component {
                             </a>
                         </li>
                         <li className="user-box__dropdown-item">
-                            <a href="/" className="user-box__dropdown-item-anchor">
+                            <button
+                                type="button"
+                                onClick={this.logout}
+                                className="user-box__dropdown-item-anchor"
+                            >
                                 Log Out
-                            </a>
+                            </button>
                         </li>
                     </ul>
                 </div>
