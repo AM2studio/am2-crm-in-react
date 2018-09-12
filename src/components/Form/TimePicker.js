@@ -21,7 +21,7 @@ class Time extends Component {
     handleTimeChange = time => {
         const { name, inputChangeEvent } = this.props;
         const { hour, minute } = time;
-        this.state.time = `${hour}:${minute}`;
+        this.setState(() => ({ time: `${hour}:${minute}` }));
         const e = { target: { name, value: `${hour}:${minute}` } };
         inputChangeEvent(e);
     };
