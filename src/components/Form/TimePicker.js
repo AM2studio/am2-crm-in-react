@@ -15,7 +15,6 @@ class Time extends Component {
         this.state = {
             time: value
         };
-        console.log(this.state);
     }
 
     handleTimeChange = time => {

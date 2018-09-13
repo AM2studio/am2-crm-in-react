@@ -68,7 +68,7 @@ class AddNote extends Component {
             {
                 type: Select,
                 name: 'note_type',
-                placeholder: 'Select User',
+                placeholder: 'Note Type',
                 label: 'Type',
                 list: noteType,
                 required: true,

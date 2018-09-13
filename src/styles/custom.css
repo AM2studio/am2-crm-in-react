@@ -58,3 +58,9 @@ select {
 .loadComponentHighFive-appear.loadComponentHighFive-appear-active {
     transition-delay: 700ms;
 }
+.DayPicker_transitionContainer__horizontal {
+    min-height: 400px;
+}
+.header__bottom {
+    background: #2ab7a9 !important;
+}
