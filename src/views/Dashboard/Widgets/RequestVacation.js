@@ -22,6 +22,10 @@ class RequestVacation extends Component {
         };
     }
 
+    componentWillMount() {
+        this.initialState = this.state;
+    }
+
     inputChangeEvent = e => {
         const { name, value } = e.target;
         this.setState({ [name]: value });
@@ -39,7 +43,8 @@ class RequestVacation extends Component {
         api.set().then(result => {
             if (result.success === true) {
                 // Pop a success message
-                this.setState(() => ({ status: 'success', loader: false }));
+                this.setState(this.initialState);
+                this.setState(() => ({ status: 'success' }));
                 // Notify everyone on slack
                 const user = sessionStorage.getItem('crmUserName');
                 const slackAPI = new SlackAPI(
@@ -48,8 +53,7 @@ class RequestVacation extends Component {
                 const notificationTitle = `New vacation request by ${user} From ${start_date} until ${end_date} Working days: ${days}. ${note}`; // eslint-disable-line camelcase
                 slackAPI.send(notificationTitle, 'management');
             } else {
-                this.setState(() => ({ status: 'error' }));
-                console.log('Something went wrong!');
+                this.setState(() => ({ status: 'error', loader: false }));
             }
         });
     };

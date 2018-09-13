@@ -1,5 +1,5 @@
 import React from 'react';
-import loader from '../../../styles/images/loader.gif';
+import loader from '../../../styles/images/animation.gif';
 
 const loadingWidget = props => {
     const { title, className } = props;
@@ -12,7 +12,7 @@ const loadingWidget = props => {
             <div className="section__content">
                 <div className="widget">
                     <div className="loaderWidget">
-                        <img alt="loader" src={loader} width="64" height="64" />
+                        <img alt="loader" src={loader} width="400" height="300" />
                     </div>
                 </div>
             </div>

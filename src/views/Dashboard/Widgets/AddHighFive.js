@@ -20,6 +20,10 @@ class AddHighFive extends Component {
         };
     }
 
+    componentWillMount() {
+        this.initialState = this.state;
+    }
+
     inputChangeEvent = e => {
         const { name, value } = e.target;
         // Goran: check how to clean this up.
@@ -48,7 +52,8 @@ class AddHighFive extends Component {
         api.set().then(result => {
             if (result.success === true) {
                 // Pop a success message
-                this.setState(() => ({ status: 'success', loader: false }));
+                this.setState(this.initialState);
+                this.setState(() => ({ status: 'success' }));
                 // Notify everyone on slack
                 const slackAPI = new SlackAPI();
                 const notificationTitle = 'New highfive is added!';
@@ -56,8 +61,7 @@ class AddHighFive extends Component {
                 const title = `${user} gave high5 to ${selectedUser}:`;
                 slackAPI.send(notificationTitle, 'highfive', title, content);
             } else {
-                this.setState(() => ({ status: 'error' }));
-                console.log('Something went wrong!');
+                this.setState(() => ({ status: 'error', loader: false }));
             }
         });
     };

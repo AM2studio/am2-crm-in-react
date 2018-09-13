@@ -19,6 +19,10 @@ class AddNote extends Component {
         };
     }
 
+    componentWillMount() {
+        this.initialState = this.state;
+    }
+
     inputChangeEvent = e => {
         const { name, value } = e.target;
         this.setState({ [name]: value });
@@ -36,9 +40,10 @@ class AddNote extends Component {
         api.setPost('user-note', '', this.state);
         api.set().then(result => {
             if (result.success === true) {
-                this.setState(() => ({ status: 'success', loader: false }));
+                this.setState(this.initialState);
+                this.setState(() => ({ status: 'success' }));
             } else {
-                this.setState(() => ({ status: 'error' }));
+                this.setState(() => ({ status: 'error', loader: false }));
                 console.log('Something went wrong!');
             }
         });

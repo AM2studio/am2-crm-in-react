@@ -69,6 +69,6 @@ select {
     background: #2ab7a9 !important;
 }
 .loaderWidget {
-    margin: 102px 0;
+    margin: auto;
     text-align: center;
 }

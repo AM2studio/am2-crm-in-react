@@ -4,7 +4,6 @@ import AddNote from './Widgets/AddNote';
 import AddHighFive from './Widgets/AddHighFive';
 import RequestVacation from './Widgets/RequestVacation';
 import WP_API from '../../data/Api';
-// import WP_AUTH from '../data/Auth';
 
 class Dashboard extends Component {
     constructor() {
