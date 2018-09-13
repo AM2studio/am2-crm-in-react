@@ -40,11 +40,15 @@ select {
     opacity: 0.01;
     transform: translateY(20px);
 }
+.loadComponentLogin-appear {
+    transform: translateY(60px);
+}
 
 .loadComponent-appear.loadComponent-appear-active,
 .loadComponentVacation-appear.loadComponentVacation-appear-active,
 .loadComponentNotes-appear.loadComponentNotes-appear-active,
-.loadComponentHighFive-appear.loadComponentHighFive-appear-active {
+.loadComponentHighFive-appear.loadComponentHighFive-appear-active,
+.loadComponentLogin-appear.loadComponentLogin-appear-active {
     opacity: 1;
     transform: translateY(0);
     transition: all 400ms ease-in 100ms;
@@ -63,4 +67,8 @@ select {
 }
 .header__bottom {
     background: #2ab7a9 !important;
+}
+.loaderWidget {
+    margin: 102px 0;
+    text-align: center;
 }

@@ -8,6 +8,7 @@ import Select from '../../../components/Form/Select';
 import Textarea from '../../../components/Form/Textarea';
 import DatePicker from '../../../components/Form/DatePicker';
 import Notification from '../../../components/Form/Notification';
+import LoadingWidget from './LoadingWidget';
 
 class AddTime extends Component {
     constructor(props) {
@@ -21,8 +22,8 @@ class AddTime extends Component {
             job_type: 'Dev',
             asana_url: '',
             comment: '',
-            status: false
-            //     status: false
+            status: false,
+            loader: false
         };
     }
 
@@ -32,7 +33,6 @@ class AddTime extends Component {
         if (name === 'time') {
             this.setState({ billable_hours: value });
         }
-        console.log(this.state);
     };
 
     closeNotification = () => {
@@ -40,13 +40,12 @@ class AddTime extends Component {
     };
 
     addUserEntry = () => {
-        console.log(this.state);
-
+        this.setState(() => ({ loader: true }));
         const api = new WP_API();
         api.setPost('time-entry', '', this.state);
         api.set().then(result => {
             if (result.success === true) {
-                this.setState(() => ({ status: 'success' }));
+                this.setState(() => ({ status: 'success', loader: false }));
             } else {
                 this.setState(() => ({ status: 'error' }));
                 console.log('Something went wrong!');
@@ -64,7 +63,8 @@ class AddTime extends Component {
             job_type, // eslint-disable-line camelcase
             asana_url, // eslint-disable-line camelcase
             comment,
-            status
+            status,
+            loader
         } = this.state;
 
         const jobType = [
@@ -151,6 +151,9 @@ class AddTime extends Component {
         let msgText = 'Entry Added!';
         if (status === 'error') {
             msgText = 'Upss.. something went wrong! Check with Goran.';
+        }
+        if (loader === true) {
+            return <LoadingWidget title="Add New Time Entry" />;
         }
         return (
             <ReactCSSTransitionGroup

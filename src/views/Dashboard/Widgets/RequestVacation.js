@@ -6,6 +6,7 @@ import Text from '../../../components/Form/Text';
 import Textarea from '../../../components/Form/Textarea';
 import DatePicker from '../../../components/Form/DatePicker';
 import Notification from '../../../components/Form/Notification';
+import LoadingWidget from './LoadingWidget';
 
 class RequestVacation extends Component {
     constructor(props) {
@@ -16,7 +17,8 @@ class RequestVacation extends Component {
             end_date: '',
             days: '',
             note: '',
-            status: false
+            status: false,
+            loader: false
         };
     }
 
@@ -30,13 +32,14 @@ class RequestVacation extends Component {
     };
 
     requestVacation = () => {
+        this.setState(() => ({ loader: true }));
         const api = new WP_API();
         const { start_date, end_date, days, note } = this.state; // eslint-disable-line camelcase
         api.setPost('vacations', '', this.state);
         api.set().then(result => {
             if (result.success === true) {
                 // Pop a success message
-                this.setState(() => ({ status: 'success' }));
+                this.setState(() => ({ status: 'success', loader: false }));
                 // Notify everyone on slack
                 const user = sessionStorage.getItem('crmUserName');
                 const slackAPI = new SlackAPI(
@@ -52,7 +55,7 @@ class RequestVacation extends Component {
     };
 
     render() {
-        const { start_date, end_date, days, note, status } = this.state; // eslint-disable-line camelcase
+        const { start_date, end_date, days, note, status, loader } = this.state; // eslint-disable-line camelcase
 
         const inputs = [
             {
@@ -95,7 +98,9 @@ class RequestVacation extends Component {
         if (status === 'error') {
             msgText = 'Upss.. something went wrong! Check with Goran.';
         }
-
+        if (loader === true) {
+            return <LoadingWidget className="widget--vacation" title="Request Vacation" />;
+        }
         return (
             <ReactCSSTransitionGroup
                 component="div"

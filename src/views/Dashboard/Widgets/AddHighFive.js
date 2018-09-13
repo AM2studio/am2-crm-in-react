@@ -15,7 +15,8 @@ class AddHighFive extends Component {
             hf_user_to_id: '',
             content: '',
             selectedUser: '',
-            status: false
+            status: false,
+            loader: false
         };
     }
 
@@ -39,6 +40,7 @@ class AddHighFive extends Component {
     };
 
     giveHighFive = () => {
+        this.setState(() => ({ loader: true }));
         const { content, selectedUser } = this.state;
         const api = new WP_API();
 
@@ -46,7 +48,7 @@ class AddHighFive extends Component {
         api.set().then(result => {
             if (result.success === true) {
                 // Pop a success message
-                this.setState(() => ({ status: 'success' }));
+                this.setState(() => ({ status: 'success', loader: false }));
                 // Notify everyone on slack
                 const slackAPI = new SlackAPI();
                 const notificationTitle = 'New highfive is added!';
@@ -62,7 +64,7 @@ class AddHighFive extends Component {
 
     render() {
         const { users } = this.props;
-        const { hf_user_to_id, content, status } = this.state; // eslint-disable-line camelcase
+        const { hf_user_to_id, content, status, loader } = this.state; // eslint-disable-line camelcase
 
         const userList = users.map(user => ({
             id: user.id,
@@ -95,8 +97,8 @@ class AddHighFive extends Component {
         if (status === 'error') {
             msgText = 'Upss.. something went wrong! Check with Goran.';
         }
-        if (users.length === 0) {
-            return <LoadingWidget />;
+        if (loader === true || users.length === 0) {
+            return <LoadingWidget className="widget--highfive" title="Give High Five" />;
         }
         return (
             <ReactCSSTransitionGroup

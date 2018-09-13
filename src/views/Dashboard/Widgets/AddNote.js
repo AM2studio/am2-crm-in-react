@@ -14,7 +14,8 @@ class AddNote extends Component {
             note_for: '',
             note_type: '',
             content: '',
-            status: false
+            status: false,
+            loader: false
         };
     }
 
@@ -28,11 +29,14 @@ class AddNote extends Component {
     };
 
     addUserNote = () => {
+        // Fire loader
+        this.setState(() => ({ loader: true }));
+        // Fetch API
         const api = new WP_API();
         api.setPost('user-note', '', this.state);
         api.set().then(result => {
             if (result.success === true) {
-                this.setState(() => ({ status: 'success' }));
+                this.setState(() => ({ status: 'success', loader: false }));
             } else {
                 this.setState(() => ({ status: 'error' }));
                 console.log('Something went wrong!');
@@ -42,7 +46,7 @@ class AddNote extends Component {
 
     render() {
         const { users } = this.props;
-        const { note_for, content, note_type, status } = this.state; // eslint-disable-line  camelcase
+        const { note_for, content, note_type, status, loader } = this.state; // eslint-disable-line  camelcase
 
         const userList = users.map(user => ({
             id: user.id,
@@ -90,8 +94,8 @@ class AddNote extends Component {
         if (status === 'error') {
             msgText = 'Upss.. something went wrong! Check with Goran.';
         }
-        if (users.length === 0) {
-            return <LoadingWidget />;
+        if (loader === true || users.length === 0) {
+            return <LoadingWidget className="widget--usernotes" title="Add New User Note" />;
         }
         return (
             <ReactCSSTransitionGroup

@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 import './login.css';
 
@@ -14,7 +15,15 @@ const Login = props => {
     return (
         <div className="limiter">
             <div className="container-login100">
-                <div className="wrap-login100">
+                <ReactCSSTransitionGroup
+                    component="div"
+                    className="wrap-login100"
+                    transitionAppear
+                    transitionName="loadComponentLogin"
+                    transitionEnterTimeout={600}
+                    transitionLeaveTimeout={300}
+                    transitionAppearTimeout={0}
+                >
                     <form className="login100-form validate-form">
                         <div className="w-full text-center logo">
                             <img
@@ -63,7 +72,7 @@ const Login = props => {
                     </form>
 
                     <div className="login100-more" style={divStyle} />
-                </div>
+                </ReactCSSTransitionGroup>
             </div>
         </div>
     );
