@@ -102,7 +102,12 @@ class AddHighFive extends Component {
             msgText = 'Upss.. something went wrong! Check with Goran.';
         }
         if (loader === true || users.length === 0) {
-            return <LoadingWidget className="widget--highfive" title="Give High Five" />;
+            return (
+                <LoadingWidget
+                    className="section col-14 widget widget--highfive"
+                    title="Give High Five"
+                />
+            );
         }
         return (
             <ReactCSSTransitionGroup

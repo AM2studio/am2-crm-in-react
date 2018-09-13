@@ -5,7 +5,7 @@ const loadingWidget = props => {
     const { title, className } = props;
 
     return (
-        <div className={`section col-14 widget ${className}`}>
+        <div className={className}>
             <header className="section__header">
                 <h4 className="section__title">{title}</h4>
             </header>

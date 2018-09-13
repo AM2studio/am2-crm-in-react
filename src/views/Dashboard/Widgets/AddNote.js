@@ -100,7 +100,12 @@ class AddNote extends Component {
             msgText = 'Upss.. something went wrong! Check with Goran.';
         }
         if (loader === true || users.length === 0) {
-            return <LoadingWidget className="widget--usernotes" title="Add New User Note" />;
+            return (
+                <LoadingWidget
+                    className="section col-14 widget widget--usernotes"
+                    title="Add New User Note"
+                />
+            );
         }
         return (
             <ReactCSSTransitionGroup

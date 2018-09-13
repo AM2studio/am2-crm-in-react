@@ -103,7 +103,12 @@ class RequestVacation extends Component {
             msgText = 'Upss.. something went wrong! Check with Goran.';
         }
         if (loader === true) {
-            return <LoadingWidget className="widget--vacation" title="Request Vacation" />;
+            return (
+                <LoadingWidget
+                    className="section col-14 widget widget--vacation"
+                    title="Request Vacation"
+                />
+            );
         }
         return (
             <ReactCSSTransitionGroup

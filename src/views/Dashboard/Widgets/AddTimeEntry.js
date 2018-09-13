@@ -158,7 +158,7 @@ class AddTime extends Component {
             msgText = 'Upss.. something went wrong! Check with Goran.';
         }
         if (loader === true) {
-            return <LoadingWidget title="Add New Time Entry" />;
+            return <LoadingWidget className="section col-14 widget" title="Add New Time Entry" />;
         }
         return (
             <ReactCSSTransitionGroup

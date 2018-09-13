@@ -72,3 +72,18 @@ select {
     margin: auto;
     text-align: center;
 }
+.note-type-positive {
+    color: #177448;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+.note-type-negative {
+    color: #a42d14;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+.note-type-neutral {
+    color: orange;
+    font-weight: bold;
+    text-transform: uppercase;
+}
