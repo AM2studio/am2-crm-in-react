@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import WP_API from '../../../data/Api';
+import SlackAPI from '../../../data/SlackAPI';
 import Text from '../../../components/Form/Text';
 import Textarea from '../../../components/Form/Textarea';
 import DatePicker from '../../../components/Form/DatePicker';
@@ -30,10 +31,19 @@ class RequestVacation extends Component {
 
     requestVacation = () => {
         const api = new WP_API();
+        const { start_date, end_date, days, note } = this.state; // eslint-disable-line camelcase
         api.setPost('vacations', '', this.state);
         api.set().then(result => {
             if (result.success === true) {
+                // Pop a success message
                 this.setState(() => ({ status: 'success' }));
+                // Notify everyone on slack
+                const user = sessionStorage.getItem('crmUserName');
+                const slackAPI = new SlackAPI(
+                    'https://hooks.slack.com/services/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'
+                );
+                const notificationTitle = `New vacation request by ${user} From ${start_date} until ${end_date} Working days: ${days}. ${note}`; // eslint-disable-line camelcase
+                slackAPI.send(notificationTitle, 'management');
             } else {
                 this.setState(() => ({ status: 'error' }));
                 console.log('Something went wrong!');
@@ -94,6 +104,7 @@ class RequestVacation extends Component {
                 transitionName="loadComponentVacation"
                 transitionEnterTimeout={600}
                 transitionLeaveTimeout={300}
+                transitionAppearTimeout={500}
             >
                 <header className="section__header">
                     <h4 className="section__title">Request Vacation</h4>

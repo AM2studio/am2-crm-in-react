@@ -52,7 +52,7 @@ class AddHighFive extends Component {
                 const notificationTitle = 'New highfive is added!';
                 const user = sessionStorage.getItem('crmUserName');
                 const title = `${user} gave high5 to ${selectedUser}:`;
-                slackAPI.send(notificationTitle, title, content, 'highfive');
+                slackAPI.send(notificationTitle, 'highfive', title, content);
             } else {
                 this.setState(() => ({ status: 'error' }));
                 console.log('Something went wrong!');
@@ -106,6 +106,7 @@ class AddHighFive extends Component {
                 transitionName="loadComponentHighFive"
                 transitionEnterTimeout={600}
                 transitionLeaveTimeout={300}
+                transitionAppearTimeout={500}
             >
                 <header className="section__header">
                     <h4 className="section__title">Give High Five</h4>

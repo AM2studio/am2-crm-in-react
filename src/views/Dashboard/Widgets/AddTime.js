@@ -27,6 +27,7 @@ class AddTime extends Component {
                 transitionName="loadComponent"
                 transitionEnterTimeout={600}
                 transitionLeaveTimeout={300}
+                transitionAppearTimeout={500}
             >
                 <header className="section__header">
                     <h4 className="section__title">Add New Task</h4>

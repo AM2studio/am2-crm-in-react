@@ -101,6 +101,7 @@ class AddNote extends Component {
                 transitionName="loadComponentNotes"
                 transitionEnterTimeout={600}
                 transitionLeaveTimeout={300}
+                transitionAppearTimeout={500}
             >
                 <header className="section__header">
                     <h4 className="section__title">Add New User Note</h4>
