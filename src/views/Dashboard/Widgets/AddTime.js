@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import Time from '../../../components/Form/TimePicker';
 import Text from '../../../components/Form/Text';
 import DatePicker from '../../../components/Form/DatePicker';
-
-import '../../../styles/custom.css';
 
 class AddTime extends Component {
     constructor(props) {
@@ -21,7 +20,14 @@ class AddTime extends Component {
     render() {
         const { inputs } = this.props;
         return (
-            <div className="section col-14 widget">
+            <ReactCSSTransitionGroup
+                component="div"
+                className="section col-14 widget widget"
+                transitionAppear
+                transitionName="loadComponent"
+                transitionEnterTimeout={600}
+                transitionLeaveTimeout={300}
+            >
                 <header className="section__header">
                     <h4 className="section__title">Add New Task</h4>
                 </header>
@@ -51,7 +57,7 @@ class AddTime extends Component {
                         </form>
                     </div>
                 </div>
-            </div>
+            </ReactCSSTransitionGroup>
         );
     }
 }

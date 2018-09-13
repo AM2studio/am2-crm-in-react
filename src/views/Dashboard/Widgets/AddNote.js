@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import WP_API from '../../../data/Api';
 import Select from '../../../components/Form/Select';
 import Textarea from '../../../components/Form/Textarea';
 import Notification from '../../../components/Form/Notification';
-
-import '../../../styles/custom.css';
+import LoadingWidget from './LoadingWidget';
 
 class AddNote extends Component {
     constructor(props) {
@@ -60,6 +60,7 @@ class AddNote extends Component {
                 name: 'note_for',
                 label: 'For user',
                 list: userList,
+                placeholder: 'Select User',
                 required: true,
                 value: note_for,
                 parentClass: 'form__column col-1 form__row'
@@ -67,6 +68,7 @@ class AddNote extends Component {
             {
                 type: Select,
                 name: 'note_type',
+                placeholder: 'Select User',
                 label: 'Type',
                 list: noteType,
                 required: true,
@@ -88,8 +90,18 @@ class AddNote extends Component {
         if (status === 'error') {
             msgText = 'Upss.. something went wrong! Check with Goran.';
         }
+        if (users.length === 0) {
+            return <LoadingWidget />;
+        }
         return (
-            <div className="section col-14 widget widget--usernotes">
+            <ReactCSSTransitionGroup
+                component="div"
+                className="section col-14 widget widget--usernotes"
+                transitionAppear
+                transitionName="loadComponentNotes"
+                transitionEnterTimeout={600}
+                transitionLeaveTimeout={300}
+            >
                 <header className="section__header">
                     <h4 className="section__title">Add New User Note</h4>
                 </header>
@@ -117,6 +129,7 @@ class AddNote extends Component {
                                         list={field.list}
                                         rows={field.rows}
                                         className="form__input"
+                                        placeholder={field.placeholder}
                                         inputChangeEvent={this.inputChangeEvent}
                                     />
                                 ))}
@@ -133,7 +146,7 @@ class AddNote extends Component {
                         </form>
                     </div>
                 </div>
-            </div>
+            </ReactCSSTransitionGroup>
         );
     }
 }

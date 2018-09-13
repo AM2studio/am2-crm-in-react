@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import WP_API from '../../../data/Api';
 import SlackAPI from '../../../data/SlackAPI';
 import Select from '../../../components/Form/Select';
 import Textarea from '../../../components/Form/Textarea';
 import Notification from '../../../components/Form/Notification';
-
-import '../../../styles/custom.css';
+import LoadingWidget from './LoadingWidget';
 
 class AddHighFive extends Component {
     constructor(props) {
@@ -95,9 +95,18 @@ class AddHighFive extends Component {
         if (status === 'error') {
             msgText = 'Upss.. something went wrong! Check with Goran.';
         }
-
+        if (users.length === 0) {
+            return <LoadingWidget />;
+        }
         return (
-            <div className="section col-14 widget widget--highfive">
+            <ReactCSSTransitionGroup
+                component="div"
+                className="section col-14 widget widget--highfive"
+                transitionAppear
+                transitionName="loadComponentHighFive"
+                transitionEnterTimeout={600}
+                transitionLeaveTimeout={300}
+            >
                 <header className="section__header">
                     <h4 className="section__title">Give High Five</h4>
                 </header>
@@ -139,7 +148,7 @@ class AddHighFive extends Component {
                         </form>
                     </div>
                 </div>
-            </div>
+            </ReactCSSTransitionGroup>
         );
     }
 }

@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import WP_API from '../../../data/Api';
 import Text from '../../../components/Form/Text';
 import Textarea from '../../../components/Form/Textarea';
 import DatePicker from '../../../components/Form/DatePicker';
 import Notification from '../../../components/Form/Notification';
-
-import '../../../styles/custom.css';
 
 class RequestVacation extends Component {
     constructor(props) {
@@ -88,7 +87,14 @@ class RequestVacation extends Component {
         }
 
         return (
-            <div className="section col-14 widget widget--vacation">
+            <ReactCSSTransitionGroup
+                component="div"
+                className="section col-14 widget widget--vacation"
+                transitionAppear
+                transitionName="loadComponentVacation"
+                transitionEnterTimeout={600}
+                transitionLeaveTimeout={300}
+            >
                 <header className="section__header">
                     <h4 className="section__title">Request Vacation</h4>
                 </header>
@@ -131,7 +137,7 @@ class RequestVacation extends Component {
                         </form>
                     </div>
                 </div>
-            </div>
+            </ReactCSSTransitionGroup>
         );
     }
 }
