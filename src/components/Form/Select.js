@@ -1,7 +1,15 @@
 import React from 'react';
 
 export default props => {
-    const { label, name, parentClass, list, inputChangeEvent, ...rest } = props;
+    const {
+        label,
+        name,
+        parentClass,
+        list,
+        placeholder = 'Select',
+        inputChangeEvent,
+        ...rest
+    } = props;
     let { required } = props;
 
     if (required) {
@@ -15,7 +23,7 @@ export default props => {
                 {required}
             </label>
             <select name={name} id={name} onChange={inputChangeEvent} {...rest}>
-                <option>Select</option>
+                <option>{placeholder}</option>
                 {list &&
                     list.map(item => (
                         <option key={item.id} value={item.id}>

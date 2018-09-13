@@ -12,6 +12,9 @@
 .widget.widget--vacation .section__header {
     background-color: #177448;
 }
+.widget.widget--vacation {
+    transition-delay: 1s;
+}
 .widget .section__header .section__title {
     font-size: 21px;
     color: #fff;
@@ -32,4 +35,31 @@
 }
 select {
     height: 32px;
+}
+.loadComponent-appear {
+    opacity: 0.01;
+    transform: translateY(20px);
+}
+.loadComponent-appear.loadComponent-appear-active {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 400ms ease-in;
+}
+.loadComponent-enter {
+    opacity: 0.01;
+    transform: translateY(20px);
+}
+.loadComponent-enter.loadComponent-enter-active {
+    opacity: 1;
+    transition: all 400ms ease-in;
+    transform: translateY(0);
+}
+.loadComponent-leave {
+    opacity: 1;
+    position: absolute;
+}
+.loadComponent-leave.loadComponent-leave-active {
+    opacity: 0.01;
+    transition: all 300ms ease-in;
+    position: absolute;
 }

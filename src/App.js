@@ -3,6 +3,7 @@ import { BrowserRouter } from 'react-router-dom';
 import AppRouter from './routers/AppRouter';
 
 import './styles/style.css';
+import './styles/custom.css';
 
 /* browser router at the top ? */
 class App extends Component {

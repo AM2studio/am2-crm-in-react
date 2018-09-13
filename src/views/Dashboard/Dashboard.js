@@ -79,8 +79,8 @@ class Dashboard extends Component {
         return (
             <React.Fragment>
                 <AddTime />
-                <AddNote users={users} />
                 <RequestVacation />
+                <AddNote users={users} />
                 <AddHighFive users={users} />
             </React.Fragment>
         );
