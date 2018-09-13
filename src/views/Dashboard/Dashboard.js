@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import AddTime from './Widgets/AddTime';
+import AddTimeEntry from './Widgets/AddTimeEntry';
 import AddNote from './Widgets/AddNote';
 import AddHighFive from './Widgets/AddHighFive';
 import RequestVacation from './Widgets/RequestVacation';
@@ -75,10 +75,10 @@ class Dashboard extends Component {
     }
 
     render() {
-        const { users } = this.state;
+        const { users, projects } = this.state;
         return (
             <React.Fragment>
-                <AddTime />
+                <AddTimeEntry projects={projects} />
                 <RequestVacation />
                 <AddNote users={users} />
                 <AddHighFive users={users} />

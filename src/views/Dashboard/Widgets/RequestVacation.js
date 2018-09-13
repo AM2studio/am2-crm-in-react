@@ -104,7 +104,7 @@ class RequestVacation extends Component {
                 transitionName="loadComponentVacation"
                 transitionEnterTimeout={600}
                 transitionLeaveTimeout={300}
-                transitionAppearTimeout={500}
+                transitionAppearTimeout={0}
             >
                 <header className="section__header">
                     <h4 className="section__title">Request Vacation</h4>
