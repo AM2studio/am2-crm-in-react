@@ -10,7 +10,8 @@ class LoginForm extends Component {
             redirectTo: false,
             username: null,
             password: null,
-            loader: false
+            loader: false,
+            error: false
         };
 
         this.login = this.login.bind(this);
@@ -25,24 +26,32 @@ class LoginForm extends Component {
             if (result === 200) {
                 this.setState({ redirectTo: true });
             }
-            this.setState({ loader: false });
+            this.setState({ loader: false, error: true });
         });
     }
 
     handleChange(e) {
         const { id, value } = e.target;
         this.setState({
-            [id]: value
+            [id]: value,
+            error: false
         });
     }
 
     render() {
-        const { redirectTo, loader } = this.state;
+        const { redirectTo, loader, error } = this.state;
         if (redirectTo) {
             return <Redirect to="/" />;
         }
 
-        return <Login login={this.login} handleChange={this.handleChange} loader={loader} />;
+        return (
+            <Login
+                login={this.login}
+                handleChange={this.handleChange}
+                loader={loader}
+                error={error}
+            />
+        );
     }
 }
 

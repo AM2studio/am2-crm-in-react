@@ -12,7 +12,7 @@ const logoStyle = {
 };
 
 const Login = props => {
-    const { handleChange, login, loader } = props;
+    const { handleChange, login, loader, error } = props;
     return (
         <div className="limiter">
             <div className="container-login100">
@@ -40,6 +40,23 @@ const Login = props => {
                         ) : (
                             <React.Fragment>
                                 <span className="login100-form-title p-b-34">Account Login</span>
+                                {error ? (
+                                    <div className="notification notification--error" role="alert">
+                                        <button
+                                            type="button"
+                                            className="notification__close"
+                                            data-dismiss="alert"
+                                            aria-label="Close"
+                                        >
+                                            <span aria-hidden="true">×</span>
+                                        </button>
+                                        <p>
+                                            <strong>Error:</strong> Wrong username or password.
+                                        </p>
+                                    </div>
+                                ) : (
+                                    ''
+                                )}
                                 <div
                                     className="wrap-input100 validate-input m-b-20"
                                     data-validate="Type user name"
