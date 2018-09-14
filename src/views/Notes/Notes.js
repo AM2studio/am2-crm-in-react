@@ -2,7 +2,7 @@ import React from 'react';
 import ViewWrapper from '../../components/General/ViewWrapper';
 import AM2Table from '../../components/Table/AM2Table';
 
-const Users = props => {
+const Notes = props => {
     const { data, columns } = props;
     return (
         <ViewWrapper title="User Notes">
@@ -11,4 +11,4 @@ const Users = props => {
     );
 };
 
-export default Users;
+export default Notes;

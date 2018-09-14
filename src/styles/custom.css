@@ -87,3 +87,6 @@ select {
     font-weight: bold;
     text-transform: uppercase;
 }
+.table__cell {
+    padding: 7px 10px;
+}

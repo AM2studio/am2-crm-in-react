@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import UserNotes from './UserNotes';
+import Notes from './Notes';
 import WP_API from '../../data/Api';
 import LoadingWidget from '../Dashboard/Widgets/LoadingWidget';
 
-class UserNotesContainer extends Component {
+class NotesContainer extends Component {
     constructor() {
         super();
         this.state = {
@@ -61,7 +61,7 @@ class UserNotesContainer extends Component {
         return (
             <React.Fragment>
                 {notes.length > 0 ? (
-                    <UserNotes columns={columns} data={filteredData} addUser={this.addUser} />
+                    <Notes columns={columns} data={filteredData} addUser={this.addUser} />
                 ) : (
                     <LoadingWidget className="section" title="User Notes" />
                 )}
@@ -70,4 +70,4 @@ class UserNotesContainer extends Component {
     }
 }
 
-export default UserNotesContainer;
+export default NotesContainer;
