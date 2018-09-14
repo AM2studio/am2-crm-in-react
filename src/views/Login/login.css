@@ -312,3 +312,6 @@ input.input100 {
         border-left: 1px solid #e6e6e6;
     }
 }
+.login-animation {
+    min-height: 474px;
+}

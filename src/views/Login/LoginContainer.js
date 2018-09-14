@@ -9,7 +9,8 @@ class LoginForm extends Component {
         this.state = {
             redirectTo: false,
             username: null,
-            password: null
+            password: null,
+            loader: false
         };
 
         this.login = this.login.bind(this);
@@ -17,18 +18,18 @@ class LoginForm extends Component {
     }
 
     login() {
+        this.setState(() => ({ loader: true }));
         const auth = new WP_AUTH();
         const { username, password } = this.state;
         auth.authenticate(username, password).then(result => {
-            console.log(result);
             if (result === 200) {
                 this.setState({ redirectTo: true });
             }
+            this.setState({ loader: false });
         });
     }
 
     handleChange(e) {
-        console.log(e);
         const { id, value } = e.target;
         this.setState({
             [id]: value
@@ -36,12 +37,12 @@ class LoginForm extends Component {
     }
 
     render() {
-        const { redirectTo } = this.state;
+        const { redirectTo, loader } = this.state;
         if (redirectTo) {
             return <Redirect to="/" />;
         }
 
-        return <Login login={this.login} handleChange={this.handleChange} />;
+        return <Login login={this.login} handleChange={this.handleChange} loader={loader} />;
     }
 }
 
