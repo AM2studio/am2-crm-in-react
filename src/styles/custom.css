@@ -41,7 +41,7 @@ select {
     transform: translateY(20px);
 }
 .loadComponentLogin-appear {
-    transform: translateY(60px);
+    transform: translateY(30px);
 }
 
 .loadComponent-appear.loadComponent-appear-active,
@@ -51,16 +51,16 @@ select {
 .loadComponentLogin-appear.loadComponentLogin-appear-active {
     opacity: 1;
     transform: translateY(0);
-    transition: all 400ms ease-in 100ms;
+    transition: all 400ms ease-in;
 }
 .loadComponentVacation-appear.loadComponentVacation-appear-active {
-    transition-delay: 300ms;
+    transition-delay: 200ms;
 }
 .loadComponentNotes-appear.loadComponentNotes-appear-active {
-    transition-delay: 500ms;
+    transition-delay: 400ms;
 }
 .loadComponentHighFive-appear.loadComponentHighFive-appear-active {
-    transition-delay: 700ms;
+    transition-delay: 600ms;
 }
 .DayPicker_transitionContainer__horizontal {
     min-height: 400px;
@@ -89,4 +89,15 @@ select {
 }
 .table__cell {
     padding: 7px 10px;
+}
+
+.ReactModal__Content {
+    max-width: 960px;
+    margin: auto;
+    background-color: #fff !important;
+    bottom: auto !important;
+}
+.ReactModal__Overlay {
+    z-index: 9;
+    background-color: rgba(16, 16, 16, 0.75) !important;
 }
