@@ -58,11 +58,26 @@ const Navigation = props => {
                 Projects
             </NavLink>
             <NavLink
-                href="http://google.com"
-                parentClass="menu__item"
+                to="/notes"
+                parentClass={
+                    activeClass(location.pathname, '/notes')
+                        ? 'menu__item menu__item--active'
+                        : 'menu__item'
+                }
                 linkClass="menu__link effect effect--waves"
             >
-                Google
+                Notes
+            </NavLink>
+            <NavLink
+                to="/vacations"
+                parentClass={
+                    activeClass(location.pathname, '/vacations')
+                        ? 'menu__item menu__item--active'
+                        : 'menu__item'
+                }
+                linkClass="menu__link effect effect--waves"
+            >
+                Vacations
             </NavLink>
         </ul>
     );
