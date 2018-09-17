@@ -15,6 +15,7 @@ class AddHighFive extends Component {
             hf_user_to_id: '',
             content: '',
             selectedUser: '',
+            msgText: '',
             status: false,
             loader: false
         };
@@ -30,11 +31,13 @@ class AddHighFive extends Component {
         if (name === 'hf_user_to_id') {
             this.setState({
                 [name]: value,
-                selectedUser: e.target.options ? e.target.options[e.target.selectedIndex].text : ''
+                selectedUser: e.target.options ? e.target.options[e.target.selectedIndex].text : '',
+                status: false
             });
         } else {
             this.setState({
-                [name]: value
+                [name]: value,
+                status: false
             });
         }
     };
@@ -44,16 +47,24 @@ class AddHighFive extends Component {
     };
 
     giveHighFive = () => {
-        this.setState(() => ({ loader: true }));
-        const { content, selectedUser } = this.state;
-        const api = new WP_API();
+        // Validation
+        const { hf_user_to_id: userId, content, selectedUser } = this.state; // eslint-disable-line camelcase
+        if (userId === '' || content === '') {
+            this.setState(() => ({ status: 'error', msgText: 'Required fields are missing.' }));
+            return;
+        }
 
+        this.setState(() => ({ loader: true }));
+        const api = new WP_API();
         api.setPost('high-five', '', this.state);
         api.set().then(result => {
             if (result.success === true) {
                 // Pop a success message
                 this.setState(this.initialState);
-                this.setState(() => ({ status: 'success' }));
+                this.setState(() => ({
+                    status: 'success',
+                    msgText: 'Wooot a high five? You are a good friend!'
+                }));
                 // Notify everyone on slack
                 const slackAPI = new SlackAPI();
                 const notificationTitle = 'New highfive is added!';
@@ -61,14 +72,18 @@ class AddHighFive extends Component {
                 const title = `${user} gave high5 to ${selectedUser}:`;
                 slackAPI.send(notificationTitle, 'highfive', title, content);
             } else {
-                this.setState(() => ({ status: 'error', loader: false }));
+                this.setState(() => ({
+                    status: 'error',
+                    loader: false,
+                    msgText: 'Ups..something went wrong. Check with Goran!'
+                }));
             }
         });
     };
 
     render() {
         const { users } = this.props;
-        const { hf_user_to_id, content, status, loader } = this.state; // eslint-disable-line camelcase
+        const { hf_user_to_id, content, status, loader, msgText } = this.state; // eslint-disable-line camelcase
 
         const userList = users.map(user => ({
             id: user.id,
@@ -96,11 +111,7 @@ class AddHighFive extends Component {
                 parentClass: 'form__column col-1 form__row'
             }
         ];
-        // Notification Text
-        let msgText = 'Wooot a high five? You are a good friend!';
-        if (status === 'error') {
-            msgText = 'Upss.. something went wrong! Check with Goran.';
-        }
+
         if (loader === true || users.length === 0) {
             return (
                 <LoadingWidget

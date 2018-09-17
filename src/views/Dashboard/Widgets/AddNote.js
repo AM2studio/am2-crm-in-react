@@ -14,6 +14,7 @@ class AddNote extends Component {
             note_for: '',
             note_type: '',
             content: '',
+            msgText: '',
             status: false,
             loader: false
         };
@@ -25,7 +26,7 @@ class AddNote extends Component {
 
     inputChangeEvent = e => {
         const { name, value } = e.target;
-        this.setState({ [name]: value });
+        this.setState({ [name]: value, status: false });
     };
 
     closeNotification = () => {
@@ -33,6 +34,12 @@ class AddNote extends Component {
     };
 
     addUserNote = () => {
+        // Validation
+        const { note_for: noteFor, note_type: noteType, content } = this.state; // eslint-disable-line camelcase
+        if (noteFor === '' || noteType === '' || content === '') {
+            this.setState(() => ({ status: 'error', msgText: 'Required fields are missing.' }));
+            return;
+        }
         // Fire loader
         this.setState(() => ({ loader: true }));
         // Fetch API
@@ -41,9 +48,13 @@ class AddNote extends Component {
         api.set().then(result => {
             if (result.success === true) {
                 this.setState(this.initialState);
-                this.setState(() => ({ status: 'success' }));
+                this.setState(() => ({ status: 'success', msgText: 'Thanks for the Note!' }));
             } else {
-                this.setState(() => ({ status: 'error', loader: false }));
+                this.setState(() => ({
+                    status: 'error',
+                    msgText: 'Ups..something went wrong. Check with Goran!',
+                    loader: false
+                }));
                 console.log('Something went wrong!');
             }
         });
@@ -51,7 +62,7 @@ class AddNote extends Component {
 
     render() {
         const { users } = this.props;
-        const { note_for, content, note_type, status, loader } = this.state; // eslint-disable-line  camelcase
+        const { note_for, content, note_type, status, loader, msgText } = this.state; // eslint-disable-line  camelcase
 
         const userList = users.map(user => ({
             id: user.id,
@@ -94,11 +105,7 @@ class AddNote extends Component {
                 parentClass: 'form__column col-1 form__row'
             }
         ];
-        // Notification Text
-        let msgText = 'Thanks for the Note!';
-        if (status === 'error') {
-            msgText = 'Upss.. something went wrong! Check with Goran.';
-        }
+
         if (loader === true || users.length === 0) {
             return (
                 <LoadingWidget

@@ -17,6 +17,7 @@ class RequestVacation extends Component {
             end_date: '',
             days: '',
             note: '',
+            msgText: '',
             status: false,
             loader: false
         };
@@ -28,7 +29,7 @@ class RequestVacation extends Component {
 
     inputChangeEvent = e => {
         const { name, value } = e.target;
-        this.setState({ [name]: value });
+        this.setState({ [name]: value, status: false });
     };
 
     closeNotification = () => {
@@ -36,30 +37,43 @@ class RequestVacation extends Component {
     };
 
     requestVacation = () => {
+        const { start_date: startDate, end_date: endDate, days, note } = this.state; // eslint-disable-line camelcase
+        // Validation
+        if (startDate === '' || endDate === '' || days === '') {
+            this.setState(() => ({ status: 'error', msgText: 'Required fields are missing.' }));
+            return;
+        }
+        // Proceed
         this.setState(() => ({ loader: true }));
         const api = new WP_API();
-        const { start_date, end_date, days, note } = this.state; // eslint-disable-line camelcase
         api.setPost('vacations', '', this.state);
         api.set().then(result => {
             if (result.success === true) {
                 // Pop a success message
                 this.setState(this.initialState);
-                this.setState(() => ({ status: 'success' }));
+                this.setState(() => ({
+                    status: 'success',
+                    msgText: 'Request sent! We will get back to you soon.'
+                }));
                 // Notify everyone on slack
                 const user = sessionStorage.getItem('crmUserName');
                 const slackAPI = new SlackAPI(
                     'https://hooks.slack.com/services/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'
                 );
-                const notificationTitle = `New vacation request by ${user} From ${start_date} until ${end_date} Working days: ${days}. ${note}`; // eslint-disable-line camelcase
+                const notificationTitle = `New vacation request by ${user} From ${startDate} until ${endDate} Working days: ${days}. ${note}`; // eslint-disable-line camelcase
                 slackAPI.send(notificationTitle, 'management');
             } else {
-                this.setState(() => ({ status: 'error', loader: false }));
+                this.setState(() => ({
+                    status: 'error',
+                    msgText: 'Ups..something went wrong. Check with Goran!',
+                    loader: false
+                }));
             }
         });
     };
 
     render() {
-        const { start_date, end_date, days, note, status, loader } = this.state; // eslint-disable-line camelcase
+        const { start_date, end_date, days, note, status, loader, msgText } = this.state; // eslint-disable-line camelcase
 
         const inputs = [
             {
@@ -97,11 +111,7 @@ class RequestVacation extends Component {
                 parentClass: 'form__column col-1 form__row'
             }
         ];
-        // Notification Text
-        let msgText = 'Request sent! We will get back to you soon.';
-        if (status === 'error') {
-            msgText = 'Upss.. something went wrong! Check with Goran.';
-        }
+
         if (loader === true) {
             return (
                 <LoadingWidget

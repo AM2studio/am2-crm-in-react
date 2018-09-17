@@ -22,6 +22,7 @@ class AddTime extends Component {
             job_type: 'Dev',
             asana_url: '',
             comment: '',
+            msgText: '',
             status: false,
             loader: false
         };
@@ -33,7 +34,7 @@ class AddTime extends Component {
 
     inputChangeEvent = e => {
         const { name, value } = e.target;
-        this.setState({ [name]: value });
+        this.setState({ [name]: value, status: false });
         if (name === 'time') {
             this.setState({ billable_hours: value });
         }
@@ -44,15 +45,26 @@ class AddTime extends Component {
     };
 
     addUserEntry = () => {
+        const { project_id: projectId, comment } = this.state;
+        // Validation
+        if (projectId === '' || comment === '') {
+            this.setState(() => ({ status: 'error', msgText: 'Required fields are missing.' }));
+            return;
+        }
+        // Proceed
         this.setState(() => ({ loader: true }));
         const api = new WP_API();
         api.setPost('time-entry', '', this.state);
         api.set().then(result => {
             if (result.success === true) {
                 this.setState(this.initialState);
-                this.setState(() => ({ status: 'success' }));
+                this.setState(() => ({ status: 'success', msgText: 'Entry Added!' }));
             } else {
-                this.setState(() => ({ status: 'error', loader: false }));
+                this.setState(() => ({
+                    status: 'error',
+                    msgText: 'Upss.. something went wrong! Check with Goran.',
+                    loader: false
+                }));
                 console.log('Something went wrong!');
             }
         });
@@ -69,7 +81,8 @@ class AddTime extends Component {
             asana_url, // eslint-disable-line camelcase
             comment,
             status,
-            loader
+            loader,
+            msgText
         } = this.state;
 
         const jobType = [
@@ -138,7 +151,6 @@ class AddTime extends Component {
                 type: Text,
                 name: 'asana_url',
                 label: 'Asana URL',
-                required: true,
                 value: asana_url,
                 parentClass: 'form__column col-1 form__row'
             },
@@ -152,11 +164,7 @@ class AddTime extends Component {
                 parentClass: 'form__column col-1 form__row'
             }
         ];
-        // Notification Text
-        let msgText = 'Entry Added!';
-        if (status === 'error') {
-            msgText = 'Upss.. something went wrong! Check with Goran.';
-        }
+
         if (loader === true) {
             return <LoadingWidget className="section col-14 widget" title="Add New Time Entry" />;
         }
