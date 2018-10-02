@@ -66,7 +66,7 @@ select {
     min-height: 400px;
 }
 .header__bottom {
-    background: #2ab7a9 !important;
+    background: #39b449 !important;
 }
 .loaderWidget {
     margin: auto;
@@ -100,4 +100,7 @@ select {
 .ReactModal__Overlay {
     z-index: 9;
     background-color: rgba(16, 16, 16, 0.75) !important;
+}
+.form__row .form__column {
+    margin-bottom: 15px;
 }
