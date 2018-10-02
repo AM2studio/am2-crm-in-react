@@ -40,24 +40,6 @@ class UsersContainer extends Component {
         this.setState({ users: data });
     };
 
-    updateLocalDataAFterEdit = (type, id, title, city) => {
-        const { users } = this.state;
-        let updatedUsers = users;
-        if (type === 'edit') {
-            updatedUsers = users.map(user => (user.id === id ? { ...user, title, city } : user));
-        } else {
-            updatedUsers = [
-                {
-                    id,
-                    title,
-                    city
-                }
-            ].concat(users);
-        }
-
-        this.setState({ users: updatedUsers });
-    };
-
     addUser = () => {
         this.setState(() => ({
             modal: true,
@@ -69,15 +51,14 @@ class UsersContainer extends Component {
         console.log(`Editing user with id: ${id}`);
         const dataToFetch = [
             'id',
-            'title',
-            'address',
-            'city',
-            'contact_email',
+            'first_name',
+            'last_name',
+            'email',
+            'department',
             'country',
-            'province',
-            'phone',
-            'zip',
-            'website'
+            'company_role',
+            'track_resources',
+            'am2Permissions'
         ];
         const data = new WP_API();
         data.getPost('users', id, dataToFetch);
@@ -150,22 +131,19 @@ class UsersContainer extends Component {
 
     render() {
         const { users, modal, singleUserData } = this.state;
-
-        const filteredData = users.map(user => {
-            const filteredUser = user;
-            filteredUser.btn = this.actionBtns(user.id);
-            filteredUser.company_role = this.filterRole(user.company_role);
-            filteredUser.department = this.filterDepartment(user.department);
-            filteredUser.email = <a href={`mailto:${user.email}`}>{user.email}</a>;
-            return filteredUser;
-        });
+        const filteredData = users.map(user => ({
+            ...user,
+            btn: this.actionBtns(user.id),
+            company_role: this.filterRole(user.company_role),
+            department: this.filterDepartment(user.department),
+            email: <a href={`mailto:${user.email}`}>{user.email}</a>
+        }));
         const columns = [
             { key: 'first_name', title: 'First Name' },
             { key: 'last_name', title: 'Last Name' },
             { key: 'email', title: 'Email' },
             { key: 'company_role', title: 'Company Role' },
             { key: 'department', title: 'Department' },
-            //            { key: 'role', title: 'Role' },
             { key: 'btn', title: 'Action' }
         ];
         return (
@@ -176,7 +154,6 @@ class UsersContainer extends Component {
                         singleUserData={singleUserData}
                         handleModalClose={this.handleModalClose}
                         inputChangeEvent={this.inputChangeEvent}
-                        updateLocalDataAFterEdit={this.updateLocalDataAFterEdit}
                     />
                 </AM2Modal>
             </React.Fragment>
