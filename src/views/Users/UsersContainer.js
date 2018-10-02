@@ -58,6 +58,8 @@ class UsersContainer extends Component {
             'country',
             'company_role',
             'track_resources',
+            'hourly_rate',
+            'daily_workable_hours',
             'am2Permissions'
         ];
         const data = new WP_API();

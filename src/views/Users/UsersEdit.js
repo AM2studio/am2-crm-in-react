@@ -75,7 +75,10 @@ class UsersEdit extends Component {
             country,
             company_role, // eslint-disable-line camelcase
             am2Permissions,
-            track_resources // eslint-disable-line camelcase
+            track_resources, // eslint-disable-line camelcase
+            hourly_rate, // eslint-disable-line camelcase
+            daily_workable_hours, // eslint-disable-line camelcase,
+            do_not_track_workable_hours // eslint-disable-line camelcase
         } = this.state;
 
         const fields = [
@@ -108,6 +111,24 @@ class UsersEdit extends Component {
                 className: 'form__input'
             },
             {
+                type: Text,
+                name: 'hourly_rate',
+                label: 'Hourly Rate',
+                required: true,
+                value: hourly_rate,
+                parentClass: 'form__column col-12',
+                className: 'form__input'
+            },
+            {
+                type: Text,
+                name: 'daily_workable_hours',
+                label: 'Daily Workable Hours',
+                required: true,
+                value: daily_workable_hours,
+                parentClass: 'form__column col-12',
+                className: 'form__input'
+            },
+            {
                 type: Select,
                 name: 'country',
                 label: 'Country',
@@ -133,6 +154,16 @@ class UsersEdit extends Component {
                 label: 'Track Resources',
                 required: true,
                 value: track_resources,
+                list: trackResources,
+                parentClass: 'form__column col-12',
+                className: 'form__input'
+            },
+            {
+                type: Radio,
+                name: 'do_not_track_workable_hours',
+                label: 'Do not track workable hours',
+                required: true,
+                value: do_not_track_workable_hours,
                 list: trackResources,
                 parentClass: 'form__column col-12',
                 className: 'form__input'

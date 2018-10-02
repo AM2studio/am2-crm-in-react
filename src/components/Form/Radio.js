@@ -21,10 +21,10 @@ export default props => {
                             name={name}
                             onChange={inputChangeEvent}
                             value={item.id}
-                            id={item.id}
+                            id={name + item.id}
                             checked={value && value.indexOf(item.id) !== -1}
                         />
-                        <label htmlFor={item.id}>{item.title}</label>
+                        <label htmlFor={name + item.id}>{item.title}</label>
                     </div>
                 ))}
         </div>
