@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 
 class NavLink extends Component {
     render() {
-        const { to, href, parentClass, linkClass, children } = this.props;
-        return (
+        const { active, to, href, parentClass, linkClass, children } = this.props;
+        return active ? (
             <li className={parentClass}>
                 {to ? (
                     <Link to={to} className={linkClass}>
@@ -16,6 +16,8 @@ class NavLink extends Component {
                     </a>
                 )}
             </li>
+        ) : (
+            ''
         );
     }
 }
