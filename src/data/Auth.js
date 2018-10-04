@@ -20,6 +20,7 @@ class WP_AUTH {
         sessionStorage.clear();
     };
 
+    /* Used for private routes */
     isAuthenticated = () => {
         if (this.getSessionToken() === null) {
             return false;
@@ -39,6 +40,7 @@ class WP_AUTH {
             });
     };
 
+    /* Login */
     authenticate(username, password) {
         return axios
             .post(this.url, {
