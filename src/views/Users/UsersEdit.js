@@ -255,14 +255,14 @@ UsersEdit.defaultProps = {
         { id: 'other', title: 'Other' }
     ],
     permissionsList: [
-        { id: 'timeline', title: 'Timeline' },
-        { id: 'users', title: 'Users' },
         { id: 'projects', title: 'Projects' },
         { id: 'companies', title: 'Companies' },
-        { id: 'timeEntries', title: 'Time Entries' },
+        { id: 'users', title: 'Users' },
+        { id: 'user-note', title: 'User Notes' },
         { id: 'vacations', title: 'Vacations' },
-        { id: 'reports', title: 'Reports' },
-        { id: 'userNotes', title: 'User Notes' }
+        { id: 'timeline', title: 'Timeline' },
+        { id: 'timeEntries', title: 'Time Entries' },
+        { id: 'reports', title: 'Reports' }
     ],
     trackResources: [{ id: 1, title: 'Yes' }, { id: 0, title: 'No' }]
 };

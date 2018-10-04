@@ -53,7 +53,7 @@ const Navigation = props => {
             parentClass: activeClass(location.pathname, '/notes')
                 ? 'menu__item menu__item--active'
                 : 'menu__item',
-            active: !!permissions.includes('userNotes'),
+            active: !!permissions.includes('user-note'),
             title: 'Notes'
         },
         {
