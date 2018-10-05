@@ -14,16 +14,7 @@ class VacationsContainer extends Component {
     componentWillMount() {
         const api = new WP_API();
         api.getAllPosts('vacations').then(result => {
-            const posts = result.map(post => ({
-                id: post.id,
-                author: post.author,
-                start_date: post.start_date,
-                end_date: post.end_date,
-                note: post.note,
-                status: post.status,
-                days: post.days
-            }));
-            this.setState({ vacations: posts });
+            this.setState({ vacations: result });
         });
     }
 

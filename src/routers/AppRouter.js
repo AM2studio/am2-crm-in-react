@@ -8,12 +8,14 @@ import CompaniesContainer from '../views/Companies/CompaniesContainer';
 import UsersContainer from '../views/Users/UsersContainer';
 import NotesContainer from '../views/Notes/NotesContainer';
 import VacationsContainer from '../views/Vacations/VacationsContainer';
+import TimeEntriesContainer from '../views/TimeEntries/TimeEntriesContainer';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 
 const Routes = () => (
     <Switch>
         <PrivateRoute path="/" component={Dashboard} exact />
+        <PrivateRoute path="/timeentries" component={TimeEntriesContainer} />
         <PrivateRoute path="/projects" component={ProjectsContainer} />
         <PrivateRoute path="/companies" component={CompaniesContainer} />
         <PrivateRoute path="/users" component={UsersContainer} />

@@ -25,6 +25,14 @@ const Navigation = props => {
             title: 'Dashboard'
         },
         {
+            to: '/timeentries',
+            parentClass: activeClass(location.pathname, '/timeentries')
+                ? 'menu__item menu__item--active'
+                : 'menu__item',
+            active: true,
+            title: 'Time Entries'
+        },
+        {
             to: '/users',
             parentClass: activeClass(location.pathname, '/users')
                 ? 'menu__item menu__item--active'
