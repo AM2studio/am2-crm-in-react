@@ -7,18 +7,11 @@ class AM2Table extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentPage: 1,
             sortedBy: '',
             sortMode: 'ASC',
             filter: undefined
         };
     }
-
-    onPageChanged = page => {
-        const { onPageChanged } = this.props;
-        this.setState(() => ({ currentPage: page }));
-        onPageChanged(page);
-    };
 
     deep = (obj, path) => {
         try {
@@ -54,9 +47,9 @@ class AM2Table extends Component {
     };
 
     render() {
-        const { columns, itemsPerPage } = this.props;
+        const { columns, itemsPerPage, onPageChanged, totalRecords } = this.props;
         let { rows } = this.props;
-        const { sortedBy, sortMode, filter, currentPage } = this.state;
+        const { sortedBy, sortMode, filter } = this.state;
         // Sorting?
         if (sortedBy) {
             rows = AM2TableSort(rows, sortedBy, sortMode);
@@ -113,9 +106,8 @@ class AM2Table extends Component {
                     </tbody>
                 </table>
                 <AM2TablePagination
-                    numOfPages={Math.ceil(rows.length / itemsPerPage)}
-                    currentPage={currentPage}
-                    onPageChanged={this.onPageChanged}
+                    numOfPages={Math.ceil(totalRecords / itemsPerPage)}
+                    onPageChanged={onPageChanged}
                 />
             </React.Fragment>
         );
@@ -127,5 +119,5 @@ export default AM2Table;
 AM2Table.defaultProps = {
     rows: [],
     columns: [],
-    itemsPerPage: 10
+    itemsPerPage: 20
 };
