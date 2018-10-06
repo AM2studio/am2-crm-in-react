@@ -108,3 +108,10 @@ select {
     font-size: 0.8rem;
     color: #9e9e9e;
 }
+.paginate_button:focus {
+    background-color: inherit;
+}
+.paginate_button.active {
+    background-color: #39b34a;
+    color: #fff;
+}

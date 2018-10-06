@@ -65,7 +65,7 @@ class AM2Table extends Component {
             rows = AM2TableFilter(rows, filter);
         }
 
-        rows = rows.slice(0, itemsPerPage);
+        const showingRows = rows.slice(0, itemsPerPage);
 
         return (
             <React.Fragment>
@@ -99,8 +99,8 @@ class AM2Table extends Component {
                         </tr>
                     </thead>
                     <tbody className="table__body">
-                        {rows &&
-                            rows.map(rowData => (
+                        {showingRows &&
+                            showingRows.map(rowData => (
                                 <tr key={rowData.id} className="table__row">
                                     {columns &&
                                         columns.map(element => (

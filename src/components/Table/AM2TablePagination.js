@@ -83,11 +83,9 @@ class AM2TablePagination extends Component {
                             <button
                                 key={page}
                                 type="button"
-                                className={
-                                    currentPage === page
-                                        ? 'paginate_button active'
-                                        : 'paginate_button'
-                                }
+                                className={`paginate_button${
+                                    currentPage === page ? ' active' : ''
+                                }`}
                                 tabIndex={page}
                                 onClick={() => this.gotoPage(page)}
                             >
@@ -100,13 +98,11 @@ class AM2TablePagination extends Component {
                             <button
                                 key={page}
                                 type="button"
-                                className={
-                                    currentPage === page
-                                        ? 'paginate_button active'
-                                        : 'paginate_button'
-                                }
+                                className={`paginate_button${
+                                    currentPage === page ? ' active' : ''
+                                }`}
                                 tabIndex={page}
-                                onClick={() => this.gotoPage(page)}
+                                onClick={() => this.gotoPage(currentPage + 5)}
                             >
                                 <span aria-hidden="true">&raquo;</span>
                             </button>
@@ -114,9 +110,7 @@ class AM2TablePagination extends Component {
                     return (
                         <button
                             type="button"
-                            className={`page-paginate_button${
-                                currentPage === page ? ' active' : ''
-                            }`}
+                            className={`paginate_button${currentPage === page ? ' active' : ''}`}
                             tabIndex={page}
                             onClick={() => this.gotoPage(page)}
                         >
