@@ -1,18 +1,24 @@
 import React, { Component } from 'react';
 import AM2TableSort from './AM2TableSort';
 import AM2TableFilter from './AM2TableFilter';
+import AM2TablePagination from './AM2TablePagination';
 
 class AM2Table extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            page: 1, // eslint-disable-line
-            numPages: 1, // eslint-disable-line
+            currentPage: 1,
             sortedBy: '',
             sortMode: 'ASC',
             filter: undefined
         };
     }
+
+    onPageChanged = page => {
+        const { onPageChanged } = this.props;
+        this.setState(() => ({ currentPage: page }));
+        onPageChanged(page);
+    };
 
     deep = (obj, path) => {
         try {
@@ -48,9 +54,9 @@ class AM2Table extends Component {
     };
 
     render() {
-        const { columns } = this.props;
+        const { columns, itemsPerPage } = this.props;
         let { rows } = this.props;
-        const { sortedBy, sortMode, filter } = this.state;
+        const { sortedBy, sortMode, filter, currentPage } = this.state;
         // Sorting?
         if (sortedBy) {
             rows = AM2TableSort(rows, sortedBy, sortMode);
@@ -59,50 +65,59 @@ class AM2Table extends Component {
             rows = AM2TableFilter(rows, filter);
         }
 
+        rows = rows.slice(0, itemsPerPage);
+
         return (
-            <table className="table__table">
-                <thead className="table__header">
-                    <tr className="table__row">
-                        {columns &&
-                            columns.map(column => (
-                                <th
-                                    className="table__heading text-left"
-                                    key={column.key}
-                                    onClick={this.sortColumn.bind(this, column.key)}
-                                >
-                                    {column.title}
-                                </th>
+            <React.Fragment>
+                <table className="table__table">
+                    <thead className="table__header">
+                        <tr className="table__row">
+                            {columns &&
+                                columns.map(column => (
+                                    <th
+                                        className="table__heading text-left"
+                                        key={column.key}
+                                        onClick={this.sortColumn.bind(this, column.key)}
+                                    >
+                                        {column.title}
+                                    </th>
+                                ))}
+                        </tr>
+                        <tr className="table__row">
+                            {columns &&
+                                columns.map(column => (
+                                    <th key={column.key}>
+                                        <input
+                                            autoComplete="off"
+                                            type="text"
+                                            className="input__standard"
+                                            name={column.key}
+                                            onChange={e => this.filterColumn(e, column.key)}
+                                        />
+                                    </th>
+                                ))}
+                        </tr>
+                    </thead>
+                    <tbody className="table__body">
+                        {rows &&
+                            rows.map(rowData => (
+                                <tr key={rowData.id} className="table__row">
+                                    {columns &&
+                                        columns.map(element => (
+                                            <td key={element.key} className="table__cell text-left">
+                                                {this.deep(rowData, element.key)}
+                                            </td>
+                                        ))}
+                                </tr>
                             ))}
-                    </tr>
-                    <tr className="table__row">
-                        {columns &&
-                            columns.map(column => (
-                                <th key={column.key}>
-                                    <input
-                                        autoComplete="off"
-                                        type="text"
-                                        className="input__standard"
-                                        name={column.key}
-                                        onChange={e => this.filterColumn(e, column.key)}
-                                    />
-                                </th>
-                            ))}
-                    </tr>
-                </thead>
-                <tbody className="table__body">
-                    {rows &&
-                        rows.map(rowData => (
-                            <tr key={rowData.id} className="table__row">
-                                {columns &&
-                                    columns.map(element => (
-                                        <td key={element.key} className="table__cell text-left">
-                                            {this.deep(rowData, element.key)}
-                                        </td>
-                                    ))}
-                            </tr>
-                        ))}
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+                <AM2TablePagination
+                    numOfPages={Math.ceil(rows.length / itemsPerPage)}
+                    currentPage={currentPage}
+                    onPageChanged={this.onPageChanged}
+                />
+            </React.Fragment>
         );
     }
 }
