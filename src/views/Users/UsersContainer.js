@@ -20,7 +20,7 @@ class UsersContainer extends Component {
             this.setState({ users: JSON.parse(cachedUsers) });
         } else {
             const api = new WP_API();
-            api.getAllPosts('users').then(result => {
+            api.getPosts('users').then(result => {
                 const posts = result.map(post => ({
                     id: post.id,
                     first_name: post.first_name,

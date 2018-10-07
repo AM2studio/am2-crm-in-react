@@ -13,7 +13,7 @@ class TimeEntriesContainer extends Component {
 
     componentWillMount() {
         const api = new WP_API();
-        api.getAllPosts('time-entry').then(result => {
+        api.getPosts('time-entry').then(result => {
             console.log(result);
             const posts = result.map(post => ({
                 id: post.id,

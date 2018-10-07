@@ -13,7 +13,7 @@ class VacationsContainer extends Component {
 
     componentWillMount() {
         const api = new WP_API();
-        api.getAllPosts('vacations').then(result => {
+        api.getPosts('vacations').then(result => {
             this.setState({ vacations: result });
         });
     }

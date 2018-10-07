@@ -27,7 +27,7 @@ class Dashboard extends Component {
             this.setState({ companies: JSON.parse(cachedCompanies) });
         } else {
             const api = new WP_API();
-            api.getAllPosts('companies').then(result => {
+            api.getPosts('companies').then(result => {
                 const posts = result.map(post => ({
                     id: post.id,
                     title: post.title,
@@ -42,7 +42,7 @@ class Dashboard extends Component {
             this.setState({ users: JSON.parse(cachedUsers) });
         } else {
             const api = new WP_API();
-            api.getAllPosts('users').then(result => {
+            api.getPosts('users').then(result => {
                 const posts = result.map(post => ({
                     id: post.id,
                     first_name: post.first_name,
@@ -61,7 +61,7 @@ class Dashboard extends Component {
             this.setState({ projects: JSON.parse(cachedProjects) });
         } else {
             const api = new WP_API();
-            api.getAllPosts('projects').then(result => {
+            api.getPosts('projects').then(result => {
                 const posts = result.map(post => ({
                     id: post.id,
                     title: post.title,

@@ -13,7 +13,7 @@ class NotesContainer extends Component {
 
     componentWillMount() {
         const api = new WP_API();
-        api.getAllPosts('user-note').then(result => {
+        api.getPosts('user-note').then(result => {
             const posts = result.map(post => ({
                 id: post.id,
                 note_from: post.author,

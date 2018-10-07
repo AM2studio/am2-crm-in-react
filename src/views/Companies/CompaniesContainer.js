@@ -20,7 +20,7 @@ class CompaniesContainer extends Component {
             this.setState({ companies: JSON.parse(cachedCompanies) });
         } else {
             const companies = new WP_API();
-            companies.getAllPosts('companies').then(result => {
+            companies.getPosts('companies').then(result => {
                 const posts = result.map(post => ({
                     id: post.id,
                     title: post.title,
