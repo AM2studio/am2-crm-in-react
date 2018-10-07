@@ -10,8 +10,18 @@ class AM2TablePagination extends Component {
         };
     }
 
+    componentDidMount() {
+        const { numOfPages } = this.props;
+        this.setState(() => ({
+            numOfPages
+        }));
+    }
+
     componentWillReceiveProps(nextProps) {
-        this.setState({ numOfPages: nextProps.numOfPages });
+        const { numOfPages } = this.state;
+        if (nextProps.numOfPages !== numOfPages) {
+            this.setState(() => ({ numOfPages: nextProps.numOfPages }));
+        }
     }
 
     range = (from, to, step = 1) => {

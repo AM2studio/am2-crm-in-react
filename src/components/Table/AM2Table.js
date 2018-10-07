@@ -58,7 +58,7 @@ class AM2Table extends Component {
             rows = AM2TableFilter(rows, filter);
         }
 
-        const showingRows = rows.slice(0, itemsPerPage);
+        const showingRows = rows.slice(0, itemsPerPage); // not really needed but hey
 
         return (
             <React.Fragment>
