@@ -3,11 +3,15 @@ import React, { Component } from 'react';
 class AM2TablePagination extends Component {
     constructor(props) {
         super(props);
-        const { numOfPages } = props;
-        this.state = { currentPage: 1 };
-
-        this.numOfPages = numOfPages;
         this.pageNeighbours = 1;
+        this.state = {
+            currentPage: 1,
+            numOfPages: 0
+        };
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({ numOfPages: nextProps.numOfPages });
     }
 
     range = (from, to, step = 1) => {
@@ -29,8 +33,8 @@ class AM2TablePagination extends Component {
     };
 
     fetchPageNumbers = () => {
-        const { numOfPages, pageNeighbours } = this;
-        const { currentPage } = this.state;
+        const { pageNeighbours } = this;
+        const { numOfPages, currentPage } = this.state;
 
         const totalNumbers = this.pageNeighbours * 2 + 3;
         const totalBlocks = totalNumbers + 2;
@@ -87,7 +91,7 @@ class AM2TablePagination extends Component {
                                     currentPage === page ? ' active' : ''
                                 }`}
                                 tabIndex={page}
-                                onClick={() => this.gotoPage(page)}
+                                onClick={() => this.gotoPage(currentPage - 5)}
                             >
                                 <span aria-hidden="true">&laquo;</span>
                             </button>
@@ -110,6 +114,7 @@ class AM2TablePagination extends Component {
                     return (
                         <button
                             type="button"
+                            key={page}
                             className={`paginate_button${currentPage === page ? ' active' : ''}`}
                             tabIndex={page}
                             onClick={() => this.gotoPage(page)}
