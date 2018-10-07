@@ -8,15 +8,20 @@ class WP_API {
         this.auth = new WP_AUTH();
     }
 
-    getAllPosts(type) {
+    getPosts(type, data = undefined) {
+        console.log(data);
         return axios({
             method: 'get',
             url: `${this.url}${type}/`,
             headers: {
                 Authorization: `Bearer ${this.auth.getSessionToken()}`
-            }
+            },
+            params: data
         })
-            .then(response => response.data)
+            .then(response => {
+                console.log(response);
+                return response.data;
+            })
             .catch(error => {
                 // handle error
                 console.log(error);
