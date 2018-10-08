@@ -1,21 +1,39 @@
 import React, { Component } from 'react';
 import TimeEntries from './TimeEntries';
 import WP_API from '../../data/Api';
-import LoadingWidget from '../Dashboard/Widgets/LoadingWidget';
 
 class TimeEntriesContainer extends Component {
     constructor() {
         super();
         this.state = {
-            timeEntries: []
+            timeEntries: [],
+            offset: 0,
+            totalRecords: 0,
+            loading: true
         };
     }
 
     componentWillMount() {
+        this.getEntries();
+    }
+
+    onPageChanged = page => {
+        const { itemsPerPage } = this.props;
+        console.log(itemsPerPage);
+        const offset = (page - 1) * itemsPerPage;
+        this.setState({ offset, loading: true }, () => {
+            this.getEntries();
+        });
+    };
+
+    getEntries = () => {
+        const { offset } = this.state;
+        const { itemsPerPage } = this.props;
         const api = new WP_API();
-        api.getPosts('time-entry').then(result => {
+        console.log(itemsPerPage);
+        api.getPosts('time-entry', { itemsPerPage, offset }).then(result => {
             console.log(result);
-            const posts = result.map(post => ({
+            const posts = result.data.map(post => ({
                 id: post.id,
                 is_billable: post.is_billable,
                 billable_hours: post.billable_hours,
@@ -29,9 +47,13 @@ class TimeEntriesContainer extends Component {
                 comment: post.comment,
                 asana_url: post.asana_url
             }));
-            this.setState({ timeEntries: posts });
+            this.setState({
+                timeEntries: posts,
+                totalRecords: result.count,
+                loading: false
+            });
         });
-    }
+    };
 
     actionBtns = id => (
         <React.Fragment>
@@ -61,8 +83,8 @@ class TimeEntriesContainer extends Component {
     };
 
     render() {
-        const { timeEntries } = this.state;
-
+        const { timeEntries, totalRecords, loading } = this.state;
+        const { itemsPerPage } = this.props;
         const filteredData = timeEntries.map(entry => ({
             ...entry,
             buttons: this.actionBtns(entry.id)
@@ -83,14 +105,21 @@ class TimeEntriesContainer extends Component {
         ];
         return (
             <React.Fragment>
-                {timeEntries.length > 0 ? (
-                    <TimeEntries columns={columns} data={filteredData} />
-                ) : (
-                    <LoadingWidget className="section" title="User Vacations" />
-                )}
+                <TimeEntries
+                    columns={columns}
+                    data={filteredData}
+                    onPageChanged={this.onPageChanged}
+                    totalRecords={totalRecords}
+                    loading={loading}
+                    itemsPerPage={itemsPerPage}
+                />
             </React.Fragment>
         );
     }
 }
+
+TimeEntriesContainer.defaultProps = {
+    itemsPerPage: 20
+};
 
 export default TimeEntriesContainer;
