@@ -7,7 +7,10 @@ class VacationsContainer extends Component {
     constructor() {
         super();
         this.state = {
-            vacations: []
+            vacations: [],
+            offset: 0,
+            totalRecords: 0,
+            loading: true
         };
     }
 
