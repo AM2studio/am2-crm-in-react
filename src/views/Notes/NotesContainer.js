@@ -32,7 +32,6 @@ class NotesContainer extends Component {
             }));
             this.setState({ notes: posts, totalRecords: result.count.publish, loading: false });
         });
-        console.log(this.state);
     };
 
     onPageChanged = page => {
@@ -97,6 +96,6 @@ class NotesContainer extends Component {
 
 export default NotesContainer;
 
-NotesContainer.defaulProps = {
+NotesContainer.defaultProps = {
     itemsPerPage: 20
 };
