@@ -11,29 +11,44 @@ class ProjectsContainer extends Component {
             projects: [],
             companies: JSON.parse(localStorage.getItem('companies')),
             modal: false,
-            singleProjectData: {}
+            singleProjectData: {},
+            offset: 0,
+            totalRecords: 0,
+            loading: true
         };
     }
 
+    // componentWillMount pravi problem?
     componentWillMount() {
-        // Skip catching until redux
         this.getProjects();
     }
 
     getProjects = () => {
         const cachedProjects = localStorage.getItem('projects');
+        const { itemsPerPage } = this.props;
+        const { offset } = this.state;
+
         if (cachedProjects) {
-            this.setState({ projects: JSON.parse(cachedProjects) });
+            const projects = JSON.parse(cachedProjects);
+            this.setState(() => ({
+                projects: projects.slice(offset, offset + itemsPerPage),
+                totalRecords: projects.length,
+                loading: false
+            }));
         } else {
             const api = new WP_API();
-            api.getAllPosts('projects').then(result => {
-                const projectsList = result.map(post => ({
+            api.getPosts('projects', { itemsPerPage: 9999, offset }).then(result => {
+                const projectsList = result.data.map(post => ({
                     id: post.id,
                     title: post.title,
                     company: post.company_name
                 }));
                 localStorage.setItem('projects', JSON.stringify(projectsList));
-                this.setState(() => ({ projects: projectsList }));
+                this.setState(() => ({
+                    projects: projectsList,
+                    totalRecords: result.count.publish,
+                    loading: false
+                }));
             });
         }
     };
@@ -55,6 +70,14 @@ class ProjectsContainer extends Component {
                 modal: true,
                 singleProjectData: result
             }));
+        });
+    };
+
+    onPageChanged = page => {
+        const { itemsPerPage } = this.props;
+        const offset = (page - 1) * itemsPerPage;
+        this.setState({ offset, loading: true }, () => {
+            this.getProjects();
         });
     };
 
@@ -93,7 +116,7 @@ class ProjectsContainer extends Component {
     );
 
     render() {
-        const { projects, modal, singleProjectData, companies } = this.state;
+        const { projects, modal, singleProjectData, companies, totalRecords, loading } = this.state;
         const newComp =
             projects &&
             projects.map(value => {
@@ -109,7 +132,14 @@ class ProjectsContainer extends Component {
         ];
         return (
             <React.Fragment>
-                <Projects columns={columns} data={newComp} addProject={this.addProject} />
+                <Projects
+                    columns={columns}
+                    data={newComp}
+                    addProject={this.addProject}
+                    onPageChanged={this.onPageChanged}
+                    totalRecords={totalRecords}
+                    loading={loading}
+                />
                 <AM2Modal open={modal} handleModalClose={this.handleModalClose}>
                     <ProjectsEdit
                         singleProjectData={singleProjectData}
@@ -144,7 +174,8 @@ ProjectsContainer.defaultProps = {
         'staging_link',
         'slack_channel',
         'project_features'
-    ]
+    ],
+    itemsPerPage: 20
 };
 
 export default ProjectsContainer;
