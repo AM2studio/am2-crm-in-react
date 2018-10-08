@@ -28,7 +28,7 @@ class Dashboard extends Component {
         } else {
             const api = new WP_API();
             api.getPosts('companies').then(result => {
-                const posts = result.map(post => ({
+                const posts = result.data.map(post => ({
                     id: post.id,
                     title: post.title,
                     city: post.city
@@ -62,7 +62,7 @@ class Dashboard extends Component {
         } else {
             const api = new WP_API();
             api.getPosts('projects').then(result => {
-                const posts = result.map(post => ({
+                const posts = result.data.map(post => ({
                     id: post.id,
                     title: post.title,
                     company: post.company_name

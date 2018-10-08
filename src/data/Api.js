@@ -9,7 +9,6 @@ class WP_API {
     }
 
     getPosts(type, data = undefined) {
-        console.log(data);
         return axios({
             method: 'get',
             url: `${this.url}${type}/`,
@@ -50,10 +49,9 @@ class WP_API {
             .then(response => {
                 console.log(response);
                 const fetchedData = this.dataToFetch.reduce((obj, value) => {
-                    obj[value] = response.data[0][value]; // eslint-disable-line no-param-reassign
+                    obj[value] = response.data.data[0][value]; // eslint-disable-line no-param-reassign
                     return obj;
                 }, {});
-                console.log(fetchedData);
                 return fetchedData;
             })
             .catch(error => {
