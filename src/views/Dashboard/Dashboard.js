@@ -43,7 +43,7 @@ class Dashboard extends Component {
         } else {
             const api = new WP_API();
             api.getPosts('users').then(result => {
-                const posts = result.map(post => ({
+                const posts = result.data.map(post => ({
                     id: post.id,
                     first_name: post.first_name,
                     last_name: post.last_name,
