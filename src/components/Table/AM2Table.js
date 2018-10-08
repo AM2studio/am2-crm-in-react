@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import AM2TableSort from './AM2TableSort';
 import AM2TableFilter from './AM2TableFilter';
 import AM2TablePagination from './AM2TablePagination';
+import loader from './assets/loading.gif';
+import './assets/style.css';
 
 class AM2Table extends Component {
     constructor(props) {
@@ -9,6 +11,7 @@ class AM2Table extends Component {
         this.state = {
             sortedBy: '',
             sortMode: 'ASC',
+            currentPage: 1,
             filter: undefined
         };
     }
@@ -26,6 +29,12 @@ class AM2Table extends Component {
             sortedBy: index,
             sortMode: prevState.sortMode === 'ASC' ? 'DESC' : 'ASC'
         }));
+    };
+
+    setCurrentPage = page => {
+        const { onPageChanged } = this.props;
+        onPageChanged(page);
+        this.setState({ currentPage: page });
     };
 
     filterColumn = (event, key) => {
@@ -47,9 +56,9 @@ class AM2Table extends Component {
     };
 
     render() {
-        const { columns, itemsPerPage, onPageChanged, totalRecords } = this.props;
+        const { columns, itemsPerPage, totalRecords, loading } = this.props;
         let { rows } = this.props;
-        const { sortedBy, sortMode, filter } = this.state;
+        const { sortedBy, sortMode, filter, currentPage } = this.state;
         // Sorting?
         if (sortedBy) {
             rows = AM2TableSort(rows, sortedBy, sortMode);
@@ -57,9 +66,14 @@ class AM2Table extends Component {
         if (filter !== undefined) {
             rows = AM2TableFilter(rows, filter);
         }
-
         const showingRows = rows.slice(0, itemsPerPage); // not really needed but hey
-
+        if (loading) {
+            return (
+                <div className="am2TableLoader">
+                    <img alt="loader" src={loader} width="800" height="600" />;
+                </div>
+            );
+        }
         return (
             <React.Fragment>
                 <table className="table__table">
@@ -107,7 +121,8 @@ class AM2Table extends Component {
                 </table>
                 <AM2TablePagination
                     numOfPages={Math.ceil(totalRecords / itemsPerPage)}
-                    onPageChanged={onPageChanged}
+                    setCurrentPage={this.setCurrentPage}
+                    currentPage={currentPage}
                 />
             </React.Fragment>
         );
@@ -119,5 +134,6 @@ export default AM2Table;
 AM2Table.defaultProps = {
     rows: [],
     columns: [],
-    itemsPerPage: 20
+    itemsPerPage: 20,
+    loading: false
 };
