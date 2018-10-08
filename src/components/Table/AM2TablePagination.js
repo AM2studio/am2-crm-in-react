@@ -4,24 +4,11 @@ class AM2TablePagination extends Component {
     constructor(props) {
         super(props);
         this.pageNeighbours = 1;
+        this.numOfPages = props.numOfPages;
+
         this.state = {
-            currentPage: 1,
-            numOfPages: 0
+            currentPage: 1
         };
-    }
-
-    componentDidMount() {
-        const { numOfPages } = this.props;
-        this.setState(() => ({
-            numOfPages
-        }));
-    }
-
-    componentWillReceiveProps(nextProps) {
-        const { numOfPages } = this.state;
-        if (nextProps.numOfPages !== numOfPages) {
-            this.setState(() => ({ numOfPages: nextProps.numOfPages }));
-        }
     }
 
     range = (from, to, step = 1) => {
@@ -43,8 +30,8 @@ class AM2TablePagination extends Component {
     };
 
     fetchPageNumbers = () => {
-        const { pageNeighbours } = this;
-        const { numOfPages, currentPage } = this.state;
+        const { pageNeighbours, numOfPages } = this;
+        const { currentPage } = this.state;
 
         const totalNumbers = this.pageNeighbours * 2 + 3;
         const totalBlocks = totalNumbers + 2;
