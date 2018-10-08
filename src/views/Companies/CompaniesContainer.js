@@ -10,30 +10,52 @@ class CompaniesContainer extends Component {
         this.state = {
             companies: [],
             modal: false,
-            singleCompanyData: {}
+            singleCompanyData: {},
+            offset: 0,
+            totalRecords: 0,
+            loading: true
         };
     }
 
     componentWillMount() {
+        this.getCompanies();
+    }
+
+    getCompanies() {
+        const { offset } = this.state;
+        const { itemsPerPage } = this.props;
         const cachedCompanies = localStorage.getItem('companies');
         if (cachedCompanies) {
-            this.setState({ companies: JSON.parse(cachedCompanies) });
+            const companies = JSON.parse(cachedCompanies);
+            this.setState(() => ({
+                companies: companies.slice(offset, offset + itemsPerPage),
+                totalRecords: companies.length,
+                loading: false
+            }));
         } else {
             const companies = new WP_API();
-            companies.getPosts('companies').then(result => {
-                const posts = result.map(post => ({
+            companies.getPosts('companies', { itemsPerPage: 9999, offset }).then(result => {
+                const posts = result.data.map(post => ({
                     id: post.id,
                     title: post.title,
                     city: post.city
                 }));
-                this.setData(posts);
+                localStorage.setItem('companies', JSON.stringify(posts));
+                this.setState({
+                    companies: posts,
+                    totalRecords: result.count.publish,
+                    loading: false
+                });
             });
         }
     }
 
-    setData = data => {
-        localStorage.setItem('companies', JSON.stringify(data));
-        this.setState({ companies: data });
+    onPageChanged = page => {
+        const { itemsPerPage } = this.props;
+        const offset = (page - 1) * itemsPerPage;
+        this.setState({ offset, loading: true }, () => {
+            this.getCompanies();
+        });
     };
 
     updateLocalDataAFterEdit = (type, id, title, city) => {
@@ -119,7 +141,8 @@ class CompaniesContainer extends Component {
     );
 
     render() {
-        const { companies, modal, singleCompanyData } = this.state;
+        const { companies, modal, singleCompanyData, totalRecords, loading } = this.state;
+        const { itemsPerPage } = this.props;
 
         const newComp = companies.map(value => {
             const newValue = value;
@@ -134,7 +157,15 @@ class CompaniesContainer extends Component {
         ];
         return (
             <React.Fragment>
-                <Companies columns={columns} data={newComp} addCompany={this.addCompany} />
+                <Companies
+                    columns={columns}
+                    data={newComp}
+                    addCompany={this.addCompany}
+                    onPageChanged={this.onPageChanged}
+                    totalRecords={totalRecords}
+                    loading={loading}
+                    itemsPerPage={itemsPerPage}
+                />
                 <AM2Modal open={modal} handleModalClose={this.handleModalClose}>
                     <CompaniesEdit
                         singleCompanyData={singleCompanyData}
@@ -149,3 +180,7 @@ class CompaniesContainer extends Component {
 }
 
 export default CompaniesContainer;
+
+CompaniesContainer.defaultProps = {
+    itemsPerPage: 20
+};
