@@ -7,24 +7,41 @@ class NotesContainer extends Component {
     constructor() {
         super();
         this.state = {
-            notes: []
+            notes: [],
+            offset: 0,
+            totalRecords: 0,
+            loading: true
         };
     }
 
     componentWillMount() {
+        this.getNotes();
+    }
+
+    getNotes = () => {
+        const { offset } = this.state;
+        const { itemsPerPage } = this.props;
         const api = new WP_API();
-        api.getPosts('user-note').then(result => {
-            const posts = result.map(post => ({
+        api.getPosts('user-note', { itemsPerPage, offset }).then(result => {
+            const posts = result.data.map(post => ({
                 id: post.id,
                 note_from: post.author,
                 note_for: post.note_for,
                 note_type: post.note_type,
                 content: post.content
             }));
-            this.setState({ notes: posts });
+            this.setState({ notes: posts, totalRecords: result.count.publish, loading: false });
         });
         console.log(this.state);
-    }
+    };
+
+    onPageChanged = page => {
+        const { itemsPerPage } = this.props;
+        const offset = (page - 1) * itemsPerPage;
+        this.setState({ offset, loading: true }, () => {
+            this.getNotes();
+        });
+    };
 
     deleteNote = (e, id) => {
         console.log(`Deleting note with id: ${id}`);
@@ -44,8 +61,8 @@ class NotesContainer extends Component {
     };
 
     render() {
-        const { notes } = this.state;
-
+        const { notes, totalRecords, loading } = this.state;
+        const { itemsPerPage } = this.props;
         const filteredData = notes.map(user => {
             const filteredUser = user;
             filteredUser.note_type = this.noteType(user.note_type);
@@ -61,7 +78,15 @@ class NotesContainer extends Component {
         return (
             <React.Fragment>
                 {notes.length > 0 ? (
-                    <Notes columns={columns} data={filteredData} addUser={this.addUser} />
+                    <Notes
+                        columns={columns}
+                        data={filteredData}
+                        addUser={this.addUser}
+                        onPageChanged={this.onPageChanged}
+                        totalRecords={totalRecords}
+                        loading={loading}
+                        itemsPerPage={itemsPerPage}
+                    />
                 ) : (
                     <LoadingWidget className="section" title="User Notes" />
                 )}
@@ -71,3 +96,7 @@ class NotesContainer extends Component {
 }
 
 export default NotesContainer;
+
+NotesContainer.defaulProps = {
+    itemsPerPage: 20
+};
