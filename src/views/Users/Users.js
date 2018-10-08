@@ -3,7 +3,7 @@ import ViewWrapper from '../../components/General/ViewWrapper';
 import AM2Table from '../../components/Table/AM2Table';
 
 const Users = props => {
-    const { data, columns, addUser } = props;
+    const { data, columns, addUser, itemsPerPage, totalRecords, loading, onPageChanged } = props;
     return (
         <ViewWrapper title="Users">
             <p className="negative-margin text-right">
@@ -11,7 +11,14 @@ const Users = props => {
                     Add New
                 </button>
             </p>
-            <AM2Table rows={data} columns={columns} itemsPerPage={10} />
+            <AM2Table
+                rows={data}
+                columns={columns}
+                itemsPerPage={itemsPerPage}
+                totalRecords={totalRecords}
+                loading={loading}
+                onPageChanged={onPageChanged}
+            />
         </ViewWrapper>
     );
 };

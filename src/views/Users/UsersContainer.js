@@ -10,18 +10,32 @@ class UsersContainer extends Component {
         this.state = {
             users: [],
             modal: false,
-            singleUserData: {}
+            singleUserData: {},
+            offset: 0,
+            totalRecords: 0,
+            loading: true
         };
     }
 
     componentWillMount() {
+        this.getUsers();
+    }
+
+    getUsers = () => {
+        const { offset } = this.state;
+        const { itemsPerPage } = this.props;
         const cachedUsers = localStorage.getItem('users');
         if (cachedUsers) {
-            this.setState({ users: JSON.parse(cachedUsers) });
+            const users = JSON.parse(cachedUsers);
+            this.setState(() => ({
+                users: users.slice(offset, offset + itemsPerPage),
+                totalRecords: users.length,
+                loading: false
+            }));
         } else {
-            const api = new WP_API();
-            api.getPosts('users').then(result => {
-                const posts = result.map(post => ({
+            const users = new WP_API();
+            users.getPosts('users', { itemsPerPage: 9999, offset }).then(result => {
+                const posts = result.data.map(post => ({
                     id: post.id,
                     first_name: post.first_name,
                     last_name: post.last_name,
@@ -30,14 +44,22 @@ class UsersContainer extends Component {
                     email: post.email,
                     role: post.role
                 }));
-                this.setData(posts);
+                localStorage.setItem('users', JSON.stringify(posts));
+                this.setState({
+                    users: posts,
+                    totalRecords: result.count,
+                    loading: false
+                });
             });
         }
-    }
+    };
 
-    setData = data => {
-        localStorage.setItem('users', JSON.stringify(data));
-        this.setState({ users: data });
+    onPageChanged = page => {
+        const { itemsPerPage } = this.props;
+        const offset = (page - 1) * itemsPerPage;
+        this.setState({ offset, loading: true }, () => {
+            this.getUsers();
+        });
     };
 
     addUser = () => {
@@ -133,7 +155,9 @@ class UsersContainer extends Component {
     );
 
     render() {
-        const { users, modal, singleUserData } = this.state;
+        const { users, modal, singleUserData, totalRecords, loading } = this.state;
+        const { itemsPerPage } = this.props;
+
         const filteredData = users.map(user => ({
             ...user,
             btn: this.actionBtns(user.id),
@@ -151,7 +175,15 @@ class UsersContainer extends Component {
         ];
         return (
             <React.Fragment>
-                <Users columns={columns} data={filteredData} addUser={this.addUser} />
+                <Users
+                    columns={columns}
+                    data={filteredData}
+                    addUser={this.addUser}
+                    onPageChanged={this.onPageChanged}
+                    totalRecords={totalRecords}
+                    loading={loading}
+                    itemsPerPage={itemsPerPage}
+                />
                 <AM2Modal open={modal} handleModalClose={this.handleModalClose}>
                     <UsersEdit
                         singleUserData={singleUserData}
@@ -165,3 +197,7 @@ class UsersContainer extends Component {
 }
 
 export default UsersContainer;
+
+UsersContainer.defaultProps = {
+    itemsPerPage: 20
+};
