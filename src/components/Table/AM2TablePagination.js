@@ -1,16 +1,6 @@
 import React, { Component } from 'react';
 
 class AM2TablePagination extends Component {
-    constructor(props) {
-        super(props);
-        this.pageNeighbours = 1;
-        this.numOfPages = props.numOfPages;
-
-        this.state = {
-            currentPage: 1
-        };
-    }
-
     range = (from, to, step = 1) => {
         let i = from;
         const range = [];
@@ -24,23 +14,20 @@ class AM2TablePagination extends Component {
     };
 
     gotoPage = page => {
-        const { onPageChanged = f => f } = this.props;
-        this.setState({ currentPage: page });
-        onPageChanged(page);
+        const { setCurrentPage } = this.props;
+        setCurrentPage(page);
     };
 
     fetchPageNumbers = () => {
-        const { pageNeighbours, numOfPages } = this;
-        const { currentPage } = this.state;
-
-        const totalNumbers = this.pageNeighbours * 2 + 3;
+        const { currentPage, numOfPages, paginationNeighbours } = this.props;
+        const totalNumbers = paginationNeighbours * 2 + 3;
         const totalBlocks = totalNumbers + 2;
 
         if (numOfPages > totalBlocks) {
             let pages = [];
 
-            const leftBound = currentPage - pageNeighbours;
-            const rightBound = currentPage + pageNeighbours;
+            const leftBound = currentPage - paginationNeighbours;
+            const rightBound = currentPage + paginationNeighbours;
             const beforeLastPage = numOfPages - 1;
 
             const startPage = leftBound > 2 ? leftBound : 2;
@@ -74,7 +61,7 @@ class AM2TablePagination extends Component {
     };
 
     render() {
-        const { currentPage } = this.state;
+        const { currentPage } = this.props;
         const pages = this.fetchPageNumbers();
         return (
             <div className="dataTables_paginate paging_simple_numbers">
@@ -126,3 +113,7 @@ class AM2TablePagination extends Component {
 }
 
 export default AM2TablePagination;
+
+AM2TablePagination.defaultProps = {
+    paginationNeighbours: 1
+};
