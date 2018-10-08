@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Vacations from './Vacations';
 import WP_API from '../../data/Api';
-import LoadingWidget from '../Dashboard/Widgets/LoadingWidget';
 
 class VacationsContainer extends Component {
     constructor() {
@@ -15,11 +14,29 @@ class VacationsContainer extends Component {
     }
 
     componentWillMount() {
-        const api = new WP_API();
-        api.getPosts('vacations').then(result => {
-            this.setState({ vacations: result });
-        });
+        this.getVacations();
     }
+
+    getVacations = () => {
+        const { offset } = this.state;
+        const { itemsPerPage } = this.props;
+        const api = new WP_API();
+        api.getPosts('vacations', { itemsPerPage, offset }).then(result => {
+            this.setState({
+                vacations: result.data,
+                totalRecords: result.count.publish,
+                loading: false
+            });
+        });
+    };
+
+    onPageChanged = page => {
+        const { itemsPerPage } = this.props;
+        const offset = (page - 1) * itemsPerPage;
+        this.setState({ offset, loading: true }, () => {
+            this.getVacations();
+        });
+    };
 
     approve = () => {
         console.log('radi');
@@ -46,8 +63,8 @@ class VacationsContainer extends Component {
     };
 
     render() {
-        const { vacations } = this.state;
-
+        const { vacations, totalRecords, loading } = this.state;
+        const { itemsPerPage } = this.props;
         const filteredData = vacations.map(user => {
             const filteredUser = user;
             filteredUser.status = this.status(user.status);
@@ -62,15 +79,21 @@ class VacationsContainer extends Component {
             { key: 'status', title: 'Status' }
         ];
         return (
-            <React.Fragment>
-                {vacations.length > 0 ? (
-                    <Vacations columns={columns} data={filteredData} addUser={this.addUser} />
-                ) : (
-                    <LoadingWidget className="section" title="User Vacations" />
-                )}
-            </React.Fragment>
+            <Vacations
+                columns={columns}
+                data={filteredData}
+                addUser={this.addUser}
+                onPageChanged={this.onPageChanged}
+                totalRecords={totalRecords}
+                loading={loading}
+                itemsPerPage={itemsPerPage}
+            />
         );
     }
 }
 
 export default VacationsContainer;
+
+VacationsContainer.defaultProps = {
+    itemsPerPage: 20
+};
