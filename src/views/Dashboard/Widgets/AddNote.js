@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import WP_API from '../../../data/Api';
+import SlackAPI from '../../../data/SlackAPI';
 import Select from '../../../components/Form/Select';
 import Textarea from '../../../components/Form/Textarea';
 import Notification from '../../../components/Form/Notification';
@@ -15,6 +16,7 @@ class AddNote extends Component {
             note_type: '',
             content: '',
             msgText: '',
+            selectedUser: '',
             status: false,
             loader: false
         };
@@ -26,7 +28,20 @@ class AddNote extends Component {
 
     inputChangeEvent = e => {
         const { name, value } = e.target;
-        this.setState({ [name]: value, status: false });
+
+        if (name === 'note_for') {
+            this.setState({
+                [name]: value,
+                selectedUser: e.target.options ? e.target.options[e.target.selectedIndex].text : '',
+                status: false
+            });
+        } else {
+            this.setState({
+                [name]: value,
+                status: false
+            });
+        }
+        console.log(this.state);
     };
 
     closeNotification = () => {
@@ -35,7 +50,7 @@ class AddNote extends Component {
 
     addUserNote = () => {
         // Validation
-        const { note_for: noteFor, note_type: noteType, content } = this.state; // eslint-disable-line camelcase
+        const { note_for: noteFor, note_type: noteType, content, selectedUser } = this.state; // eslint-disable-line camelcase
         if (noteFor === '' || noteType === '' || content === '') {
             this.setState(() => ({ status: 'error', msgText: 'Required fields are missing.' }));
             return;
@@ -49,6 +64,12 @@ class AddNote extends Component {
             if (result.success === true) {
                 this.setState(this.initialState);
                 this.setState(() => ({ status: 'success', msgText: 'Thanks for the Note!' }));
+                const user = sessionStorage.getItem('crmUserName');
+                const slackAPI = new SlackAPI(
+                    'https://hooks.slack.com/services/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'
+                );
+                const notificationTitle = `New note added by ${user} for ${selectedUser}: ${content}`; // eslint-disable-line camelcase
+                slackAPI.send(notificationTitle, 'management');
             } else {
                 this.setState(() => ({
                     status: 'error',
