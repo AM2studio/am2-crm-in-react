@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactTooltip from 'react-tooltip';
 import AM2TableSort from './AM2TableSort';
 import AM2TableFilter from './AM2TableFilter';
 import AM2TablePagination from './AM2TablePagination';
@@ -124,6 +125,7 @@ class AM2Table extends Component {
                     setCurrentPage={this.setCurrentPage}
                     currentPage={currentPage}
                 />
+                <ReactTooltip />
             </React.Fragment>
         );
     }

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { FaInfoCircle } from 'react-icons/fa';
 import TimeEntries from './TimeEntries';
 import WP_API from '../../data/Api';
 
@@ -78,6 +79,16 @@ class TimeEntriesContainer extends Component {
         </React.Fragment>
     );
 
+    hours = (hour, billable_hours) => <p data-tip={billable_hours}>{hour}</p>; // eslint-disable-line camelcase
+
+    date = (date, month) => <p data-tip={month}>{date}</p>;
+
+    comment = comment => (
+        <p data-tip={comment}>
+            <FaInfoCircle />
+        </p>
+    );
+
     approve = () => {
         console.log('radi');
     };
@@ -87,17 +98,20 @@ class TimeEntriesContainer extends Component {
         const { itemsPerPage } = this.props;
         const filteredData = timeEntries.map(entry => ({
             ...entry,
+            hours: this.hours(entry.hours, entry.billable_hours),
+            date: this.date(entry.date, entry.month),
+            comment: this.comment(entry.comment),
             buttons: this.actionBtns(entry.id)
         }));
         const columns = [
             { key: 'is_billable', title: 'Is billable' },
-            { key: 'billable_hours', title: 'Billable Hours' },
-            { key: 'hours', title: 'Hours' },
-            { key: 'month', title: 'Month' },
-            { key: 'date', title: 'Date' },
             { key: 'user', title: 'User' },
+            // { key: 'billable_hours', title: 'Billable Hours' },
+            { key: 'hours', title: 'Hours' },
+            // { key: 'month', title: 'Month' },
+            { key: 'date', title: 'Date' },
             { key: 'project', title: 'Project' },
-            //            { key: 'project_feature', title: 'Feature' },
+            // { key: 'project_feature', title: 'Feature' },
             { key: 'job_type', title: 'Job Type' },
             { key: 'comment', title: 'Comment' },
             { key: 'asana_url', title: 'Asana URL' },

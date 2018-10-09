@@ -115,3 +115,9 @@ select {
     background-color: #39b34a;
     color: #fff;
 }
+.table__table {
+    table-layout: fixed;
+}
+.table__cell {
+    word-wrap: break-word;
+}
