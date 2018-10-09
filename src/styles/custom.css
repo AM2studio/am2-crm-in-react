@@ -124,3 +124,30 @@ select {
 .user-menu__link svg {
     vertical-align: middle;
 }
+.button--table {
+    box-shadow: none;
+    padding: 4px 16px;
+    border-radius: 0;
+    display: inline-flex;
+}
+.button--table:hover {
+    box-shadow: none;
+}
+.button--table:focus {
+    background: #ecedf0;
+    color: inherit;
+}
+.button--table svg {
+    vertical-align: middle;
+}
+.button--table--delete {
+    background-color: #efefef;
+    color: #f02b2c;
+}
+.button--table--edit {
+    background-color: #efefef;
+    color: #31b444;
+}
+.table__row td:last-child {
+    text-align: center;
+}

@@ -18,7 +18,7 @@ class AddTime extends Component {
             date: moment().format('DD/MM/YYYY'),
             time: '01:00',
             billable_hours: '01:00',
-            project_id: '',
+            project: '',
             job_type: 'Dev',
             asana_url: '',
             comment: '',
@@ -45,7 +45,7 @@ class AddTime extends Component {
     };
 
     addUserEntry = () => {
-        const { project_id: projectId, comment } = this.state;
+        const { project: projectId, comment } = this.state;
         // Validation
         if (projectId === '' || comment === '') {
             this.setState(() => ({ status: 'error', msgText: 'Required fields are missing.' }));
@@ -76,7 +76,7 @@ class AddTime extends Component {
             date,
             time,
             billable_hours, // eslint-disable-line camelcase
-            project_id, // eslint-disable-line camelcase
+            project, // eslint-disable-line camelcase
             job_type, // eslint-disable-line camelcase
             asana_url, // eslint-disable-line camelcase
             comment,
@@ -105,12 +105,12 @@ class AddTime extends Component {
         const inputs = [
             {
                 type: Select,
-                name: 'project_id',
+                name: 'project',
                 label: 'Project',
                 placeholder: 'Select Project',
                 list: projects,
                 required: true,
-                value: project_id,
+                value: project,
                 parentClass: 'form__column col-1 form__row'
             },
             {

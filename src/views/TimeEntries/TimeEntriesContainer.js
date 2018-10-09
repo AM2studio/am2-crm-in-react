@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import { FaInfoCircle } from 'react-icons/fa';
+import { FaInfoCircle, FaPencilAlt, FaTrashAlt } from 'react-icons/fa';
+import TimeEntriesEdit from './TimeEntriesEdit';
 import TimeEntries from './TimeEntries';
 import WP_API from '../../data/Api';
+import AM2Modal from '../../components/General/AM2Modal';
 
 class TimeEntriesContainer extends Component {
     constructor() {
@@ -10,6 +12,7 @@ class TimeEntriesContainer extends Component {
             timeEntries: [],
             offset: 0,
             totalRecords: 0,
+            modal: false,
             loading: true
         };
     }
@@ -30,9 +33,7 @@ class TimeEntriesContainer extends Component {
         const { offset } = this.state;
         const { itemsPerPage } = this.props;
         const api = new WP_API();
-        console.log(itemsPerPage);
         api.getPosts('time-entry', { itemsPerPage, offset }).then(result => {
-            console.log(result);
             const posts = result.data.map(post => ({
                 id: post.id,
                 is_billable: post.is_billable,
@@ -55,28 +56,48 @@ class TimeEntriesContainer extends Component {
         });
     };
 
+    editTimeEntry = (e, id) => {
+        console.log(`Editing time entry with id: ${id}`);
+        const { dataToFetch } = this.props;
+        const data = new WP_API();
+        data.get('time-entry', id, dataToFetch).then(result => {
+            console.log(result);
+            this.setState(() => ({
+                modal: true,
+                singleTimeEntryData: result
+            }));
+        });
+    };
+
     actionBtns = id => (
         <React.Fragment>
             <button
                 type="button"
-                className="button button--primary button--small button--bold"
+                className="button--table button--table--edit"
                 onClick={e => {
-                    this.editUser(e, id);
+                    this.editTimeEntry(e, id);
                 }}
             >
-                Edit
+                <FaPencilAlt />
             </button>
             <button
                 type="button"
-                className="button button--danger button--small button--bold"
+                className="button--table button--table--delete"
                 onClick={e => {
                     this.deleteUser(e, id);
                 }}
             >
-                Delete
+                <FaTrashAlt />
             </button>
         </React.Fragment>
     );
+
+    handleModalClose = update => {
+        this.setState({ modal: false });
+        if (update === true) {
+            this.getEntries();
+        }
+    };
 
     hours = (hour, billable_hours) => <p data-tip={`billable: ${billable_hours}`}>{hour}</p>; // eslint-disable-line camelcase
 
@@ -88,12 +109,8 @@ class TimeEntriesContainer extends Component {
         </p>
     );
 
-    approve = () => {
-        console.log('radi');
-    };
-
     render() {
-        const { timeEntries, totalRecords, loading } = this.state;
+        const { timeEntries, totalRecords, loading, singleTimeEntryData, modal } = this.state;
         const { itemsPerPage } = this.props;
         const filteredData = timeEntries.map(entry => ({
             ...entry,
@@ -126,13 +143,32 @@ class TimeEntriesContainer extends Component {
                     loading={loading}
                     itemsPerPage={itemsPerPage}
                 />
+                <AM2Modal open={modal} handleModalClose={this.handleModalClose}>
+                    <TimeEntriesEdit
+                        singleTimeEntryData={singleTimeEntryData}
+                        handleModalClose={this.handleModalClose}
+                        inputChangeEvent={this.inputChangeEvent}
+                    />
+                </AM2Modal>
             </React.Fragment>
         );
     }
 }
 
 TimeEntriesContainer.defaultProps = {
-    itemsPerPage: 20
+    itemsPerPage: 20,
+    dataToFetch: [
+        'billable_hours',
+        'comment',
+        'company',
+        'date',
+        'hours',
+        'id',
+        'is_billable',
+        'job_type',
+        'project',
+        'project_feature',
+        'asana_url'
+    ]
 };
-
 export default TimeEntriesContainer;
