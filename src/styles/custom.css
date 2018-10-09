@@ -121,3 +121,6 @@ select {
 .table__cell {
     word-wrap: break-word;
 }
+.user-menu__link svg {
+    vertical-align: middle;
+}

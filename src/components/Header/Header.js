@@ -1,4 +1,5 @@
 import React from 'react';
+import { FaUser, FaWrench } from 'react-icons/fa';
 
 const Header = props => {
     const companies = 111; // Fix this with redux and array length.
@@ -32,12 +33,14 @@ const Header = props => {
                 <ul className="user-menu right">
                     <li className="user-menu__item">
                         <a href="/" className="user-menu__link effect effect--waves">
-                            Settings
+                            <FaWrench />
+                            &nbsp; Settings
                         </a>
                     </li>
                     <li className="user-menu__item">
                         <button type="button" onClick={logout} className="user-menu__link">
-                            Logout
+                            <FaUser />
+                            &nbsp; Logout
                         </button>
                     </li>
                 </ul>
