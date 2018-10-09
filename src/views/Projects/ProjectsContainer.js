@@ -84,6 +84,7 @@ class ProjectsContainer extends Component {
     handleModalClose = updated => {
         this.setState({ modal: false });
         if (updated === true) {
+            localStorage.removeItem('projects');
             this.getProjects();
         }
     };

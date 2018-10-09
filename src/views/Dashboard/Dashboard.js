@@ -9,13 +9,9 @@ class Dashboard extends Component {
     constructor() {
         super();
         this.state = {
-            companies: [],
             projects: [],
             users: []
         };
-
-        const { companies, projects } = this.state;
-        console.log(companies, projects);
     }
 
     componentDidMount() {
@@ -23,9 +19,7 @@ class Dashboard extends Component {
         const cachedProjects = localStorage.getItem('projects');
         const cachedUsers = localStorage.getItem('users');
         // Get Companies
-        if (cachedCompanies) {
-            this.setState({ companies: JSON.parse(cachedCompanies) });
-        } else {
+        if (!cachedCompanies) {
             const api = new WP_API();
             api.getPosts('companies').then(result => {
                 const posts = result.data.map(post => ({
@@ -34,7 +28,6 @@ class Dashboard extends Component {
                     city: post.city
                 }));
                 localStorage.setItem('companies', JSON.stringify(posts));
-                this.setState(() => ({ companies: posts }));
             });
         }
         // Get Users
@@ -53,7 +46,7 @@ class Dashboard extends Component {
                     role: post.role
                 }));
                 localStorage.setItem('users', JSON.stringify(posts));
-                this.setState(() => ({ users: posts }));
+                this.setState({ users: posts });
             });
         }
         // Get Projects
@@ -68,7 +61,7 @@ class Dashboard extends Component {
                     company: post.company_name
                 }));
                 localStorage.setItem('projects', JSON.stringify(posts));
-                this.setState(() => ({ projects: posts }));
+                this.setState({ projects: posts });
             });
         }
     }

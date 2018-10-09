@@ -15,14 +15,13 @@ export default class extends Component {
     }
 
     updateCompanyData = () => {
-        const { id, title, city } = this.state;
-        const { handleModalClose, updateLocalDataAFterEdit } = this.props;
+        const { id } = this.state;
+        const { handleModalClose } = this.props;
         const api = new WP_API();
         api.setPost('companies', id, this.state);
         api.set().then(result => {
             if (result.success === true) {
-                updateLocalDataAFterEdit(result.data.type, result.data.id, title, city);
-                handleModalClose();
+                handleModalClose(true);
             } else {
                 console.log(result.data.error);
             }

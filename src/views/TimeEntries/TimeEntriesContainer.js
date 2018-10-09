@@ -20,7 +20,6 @@ class TimeEntriesContainer extends Component {
 
     onPageChanged = page => {
         const { itemsPerPage } = this.props;
-        console.log(itemsPerPage);
         const offset = (page - 1) * itemsPerPage;
         this.setState({ offset, loading: true }, () => {
             this.getEntries();
@@ -79,7 +78,7 @@ class TimeEntriesContainer extends Component {
         </React.Fragment>
     );
 
-    hours = (hour, billable_hours) => <p data-tip={billable_hours}>{hour}</p>; // eslint-disable-line camelcase
+    hours = (hour, billable_hours) => <p data-tip={`billable: ${billable_hours}`}>{hour}</p>; // eslint-disable-line camelcase
 
     date = (date, month) => <p data-tip={month}>{date}</p>;
 

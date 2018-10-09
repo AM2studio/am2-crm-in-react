@@ -58,26 +58,6 @@ class CompaniesContainer extends Component {
         });
     };
 
-    updateLocalDataAFterEdit = (type, id, title, city) => {
-        const { companies } = this.state;
-        let updatedCompanies = companies;
-        if (type === 'edit') {
-            updatedCompanies = companies.map(
-                company => (company.id === id ? { ...company, title, city } : company)
-            );
-        } else {
-            updatedCompanies = [
-                {
-                    id,
-                    title,
-                    city
-                }
-            ].concat(companies);
-        }
-
-        this.setState({ companies: updatedCompanies });
-    };
-
     addCompany = () => {
         this.setState(() => ({
             modal: true,
@@ -109,8 +89,12 @@ class CompaniesContainer extends Component {
         });
     };
 
-    handleModalClose = () => {
+    handleModalClose = updated => {
         this.setState({ modal: false });
+        if (updated === true) {
+            localStorage.removeItem('companies');
+            this.getCompanies();
+        }
     };
 
     deleteCompany = (e, id) => {
@@ -171,7 +155,6 @@ class CompaniesContainer extends Component {
                         singleCompanyData={singleCompanyData}
                         handleModalClose={this.handleModalClose}
                         inputChangeEvent={this.inputChangeEvent}
-                        updateLocalDataAFterEdit={this.updateLocalDataAFterEdit}
                     />
                 </AM2Modal>
             </React.Fragment>
