@@ -86,8 +86,7 @@ class UsersContainer extends Component {
             'am2Permissions'
         ];
         const data = new WP_API();
-        data.getPost('users', id, dataToFetch);
-        data.get().then(result => {
+        data.get('users', id, dataToFetch).then(result => {
             this.setState(() => ({
                 modal: true,
                 singleUserData: result

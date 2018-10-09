@@ -80,8 +80,7 @@ class CompaniesContainer extends Component {
             'website'
         ];
         const data = new WP_API();
-        data.getPost('companies', id, dataToFetch);
-        data.get().then(result => {
+        data.get('companies', id, dataToFetch).then(result => {
             this.setState(() => ({
                 modal: true,
                 singleCompanyData: result

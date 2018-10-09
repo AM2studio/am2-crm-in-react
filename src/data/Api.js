@@ -4,7 +4,6 @@ import WP_AUTH from './Auth';
 class WP_API {
     constructor() {
         this.url = 'http://crm.am2studio.com/wp-json/crm/v2/';
-        this.dataToFetch = undefined;
         this.auth = new WP_AUTH();
     }
 
@@ -28,17 +27,13 @@ class WP_API {
     }
 
     /*
-    params: type = post_type, id = post_id
+    params: type = post_type, id = post_id, dataToFetch = array(meta)
     */
-    getPost(type, id = undefined, dataToFetch = undefined) {
+    get(type, id = undefined, dataToFetch = undefined) {
         this.url = `${this.url}${type}/`;
         if (id) {
             this.url = `${this.url}${id}/`;
         }
-        this.dataToFetch = dataToFetch;
-    }
-
-    get() {
         return axios({
             method: 'get',
             url: this.url,
@@ -48,7 +43,7 @@ class WP_API {
         })
             .then(response => {
                 console.log(response);
-                const fetchedData = this.dataToFetch.reduce((obj, value) => {
+                const fetchedData = dataToFetch.reduce((obj, value) => {
                     obj[value] = response.data.data[0][value]; // eslint-disable-line no-param-reassign
                     return obj;
                 }, {});
