@@ -25,6 +25,7 @@ class NotesContainer extends Component {
         api.getPosts('user-note', { itemsPerPage, offset }).then(result => {
             const posts = result.data.map(post => ({
                 id: post.id,
+                date: post.date,
                 note_from: post.author,
                 note_for: post.note_for,
                 note_type: post.note_type,
@@ -68,6 +69,7 @@ class NotesContainer extends Component {
             return filteredUser;
         });
         const columns = [
+            { key: 'date', title: 'Date' },
             { key: 'note_from', title: 'From' },
             { key: 'note_for', title: 'For' },
             { key: 'note_type', title: 'Type' },
