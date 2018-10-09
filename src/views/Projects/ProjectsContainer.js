@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { FaPencilAlt, FaTrashAlt } from 'react-icons/fa';
 import Projects from './Projects';
 import AM2Modal from '../../components/General/AM2Modal';
 import ProjectsEdit from './ProjectsEdit';
@@ -96,21 +97,21 @@ class ProjectsContainer extends Component {
         <React.Fragment>
             <button
                 type="button"
-                className="button button--primary button--small button--bold"
+                className="button--table button--table--edit"
                 onClick={e => {
                     this.editProject(e, id);
                 }}
             >
-                Edit
+                <FaPencilAlt />
             </button>
             <button
                 type="button"
-                className="button button--danger button--small button--bold"
+                className="button--table button--table--delete"
                 onClick={e => {
                     this.deleteProject(e, id);
                 }}
             >
-                Delete
+                <FaTrashAlt />
             </button>
         </React.Fragment>
     );

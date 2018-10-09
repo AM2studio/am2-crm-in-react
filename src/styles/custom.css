@@ -148,6 +148,3 @@ select {
     background-color: #efefef;
     color: #31b444;
 }
-.table__row td:last-child {
-    text-align: center;
-}

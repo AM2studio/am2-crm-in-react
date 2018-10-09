@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { FaPencilAlt, FaTrashAlt } from 'react-icons/fa';
 import Companies from './Companies';
 import AM2Modal from '../../components/General/AM2Modal';
 import CompaniesEdit from './CompaniesEdit';
@@ -104,21 +105,21 @@ class CompaniesContainer extends Component {
         <React.Fragment>
             <button
                 type="button"
-                className="button button--primary button--small button--bold"
+                className="button--table button--table--edit"
                 onClick={e => {
                     this.editCompany(e, id);
                 }}
             >
-                Edit
+                <FaPencilAlt />
             </button>
             <button
                 type="button"
-                className="button button--danger button--small button--bold"
+                className="button--table button--table--delete"
                 onClick={e => {
                     this.deleteCompany(e, id);
                 }}
             >
-                Delete
+                <FaTrashAlt />
             </button>
         </React.Fragment>
     );

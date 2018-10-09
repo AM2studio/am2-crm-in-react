@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { FaPencilAlt, FaTrashAlt } from 'react-icons/fa';
 import Users from './Users';
 import AM2Modal from '../../components/General/AM2Modal';
 import UsersEdit from './UsersEdit';
@@ -134,21 +135,21 @@ class UsersContainer extends Component {
         <React.Fragment>
             <button
                 type="button"
-                className="button button--primary button--small button--bold"
+                className="button--table button--table--edit"
                 onClick={e => {
                     this.editUser(e, id);
                 }}
             >
-                Edit
+                <FaPencilAlt />
             </button>
             <button
                 type="button"
-                className="button button--danger button--small button--bold"
+                className="button--table button--table--delete"
                 onClick={e => {
                     this.deleteUser(e, id);
                 }}
             >
-                Delete
+                <FaTrashAlt />
             </button>
         </React.Fragment>
     );

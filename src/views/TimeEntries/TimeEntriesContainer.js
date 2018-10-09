@@ -84,7 +84,7 @@ class TimeEntriesContainer extends Component {
                 type="button"
                 className="button--table button--table--delete"
                 onClick={e => {
-                    this.deleteUser(e, id);
+                    this.deleteTimeEntry(e, id);
                 }}
             >
                 <FaTrashAlt />
