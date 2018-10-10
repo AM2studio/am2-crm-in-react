@@ -148,3 +148,7 @@ select {
     background-color: #efefef;
     color: #31b444;
 }
+.react-calendar-timeline .rct-header .rct-label-group,
+.react-calendar-timeline .rct-sidebar-header {
+    background-color: #31b444;
+}

@@ -69,8 +69,16 @@ const Navigation = props => {
             parentClass: activeClass(location.pathname, '/vacations')
                 ? 'menu__item menu__item--active'
                 : 'menu__item',
-            active: !!permissions.includes('vacations'),
+            active: true,
             title: 'Vacations'
+        },
+        {
+            to: '/vacationrequests',
+            parentClass: activeClass(location.pathname, '/vacationrequests')
+                ? 'menu__item menu__item--active'
+                : 'menu__item',
+            active: !!permissions.includes('vacations'),
+            title: 'Vacation Requests'
         }
     ];
     return (

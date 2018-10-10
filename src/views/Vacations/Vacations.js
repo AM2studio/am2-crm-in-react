@@ -1,21 +1,37 @@
-import React from 'react';
+import React, { Component } from 'react';
+import moment from 'moment';
+import Timeline from 'react-calendar-timeline';
 import ViewWrapper from '../../components/General/ViewWrapper';
-import AM2Table from '../../components/Table/AM2Table';
+import 'react-calendar-timeline/lib/Timeline.css';
 
-const Notes = props => {
-    const { data, columns, itemsPerPage, totalRecords, loading, onPageChanged } = props;
-    return (
-        <ViewWrapper title="AM2 Vacations">
-            <AM2Table
-                rows={data}
-                columns={columns}
-                itemsPerPage={itemsPerPage}
-                totalRecords={totalRecords}
-                loading={loading}
-                onPageChanged={onPageChanged}
-            />
-        </ViewWrapper>
-    );
-};
+class Vacations extends Component {
+    constructor(props) {
+        super(props);
+        const users = JSON.parse(localStorage.getItem('users')).map(user => ({
+            id: user.id,
+            title: `${user.first_name} ${user.last_name}`
+        }));
+        this.state = {
+            users
+        };
+    }
 
-export default Notes;
+    render() {
+        const { data } = this.props;
+        const { users } = this.state;
+        return (
+            <ViewWrapper title="AM2 Vacations">
+                <Timeline
+                    groups={users}
+                    items={data}
+                    lineHeight="30"
+                    canMove="false"
+                    defaultTimeStart={moment().startOf('month')}
+                    defaultTimeEnd={moment().endOf('month')}
+                />
+            </ViewWrapper>
+        );
+    }
+}
+
+export default Vacations;
