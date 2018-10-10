@@ -158,3 +158,8 @@ input {
 .table__cell input[type='checkbox'] {
     display: block;
 }
+.am2Loader {
+    text-align: center;
+    width: 100%;
+    background-color: #fff;
+}

@@ -7,7 +7,8 @@ class VacationsContainer extends Component {
     constructor() {
         super();
         this.state = {
-            vacations: []
+            vacations: [],
+            loading: true
         };
     }
 
@@ -21,13 +22,14 @@ class VacationsContainer extends Component {
         const api = new WP_API();
         api.getPosts('vacations', { itemsPerPage, offset }).then(result => {
             this.setState({
-                vacations: result.data
+                vacations: result.data,
+                loading: false
             });
         });
     };
 
     render() {
-        const { vacations } = this.state;
+        const { vacations, loading } = this.state;
         const filteredData = vacations.reduce((filtered, current) => {
             if (current.status === 'approved') {
                 filtered.push({
@@ -40,7 +42,7 @@ class VacationsContainer extends Component {
             }
             return filtered;
         }, []);
-        return <Vacations data={filteredData} />;
+        return <Vacations data={filteredData} loading={loading} />;
     }
 }
 

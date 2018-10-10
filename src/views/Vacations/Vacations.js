@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import Timeline from 'react-calendar-timeline';
 import ViewWrapper from '../../components/General/ViewWrapper';
+import Loading from '../../components/General/Loading';
 import 'react-calendar-timeline/lib/Timeline.css';
 
 class Vacations extends Component {
@@ -17,18 +18,23 @@ class Vacations extends Component {
     }
 
     render() {
-        const { data } = this.props;
+        const { data, loading } = this.props;
         const { users } = this.state;
+
         return (
             <ViewWrapper title="AM2 Vacations">
-                <Timeline
-                    groups={users}
-                    items={data}
-                    lineHeight="30"
-                    canMove="false"
-                    defaultTimeStart={moment().startOf('month')}
-                    defaultTimeEnd={moment().endOf('month')}
-                />
+                {loading ? (
+                    <Loading />
+                ) : (
+                    <Timeline
+                        groups={users}
+                        items={data}
+                        lineHeight="30"
+                        canMove="false"
+                        defaultTimeStart={moment().startOf('month')}
+                        defaultTimeEnd={moment().endOf('month')}
+                    />
+                )}
             </ViewWrapper>
         );
     }
