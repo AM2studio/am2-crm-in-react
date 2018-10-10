@@ -78,6 +78,30 @@ class TimeEntriesContainer extends Component {
         });
     };
 
+    handleIsBillable = (e, id) => {
+        const { checked } = e.target;
+        const value = checked === true ? '1' : '0';
+        const data = new WP_API();
+        this.setState({ checkboxUpdating: id });
+        data.setPost('time-entry', id, { just_billable: value });
+        data.set().then(result => {
+            if (result.success === true) {
+                this.setState(prevState => {
+                    const { isBillable } = prevState;
+                    return {
+                        isBillable: {
+                            ...isBillable,
+                            [id]: value
+                        },
+                        checkboxUpdating: false
+                    };
+                });
+            } else {
+                console.log('Something went wrong!');
+            }
+        });
+    };
+
     actionBtns = id => (
         <React.Fragment>
             <button
@@ -106,30 +130,6 @@ class TimeEntriesContainer extends Component {
         if (update === true) {
             this.getEntries();
         }
-    };
-
-    handleIsBillable = (e, id) => {
-        const { checked } = e.target;
-        const value = checked === true ? '1' : '0';
-        const data = new WP_API();
-        this.setState({ checkboxUpdating: id });
-        data.setPost('time-entry', id, { just_billable: value });
-        data.set().then(result => {
-            if (result.success === true) {
-                this.setState(prevState => {
-                    const { isBillable } = prevState;
-                    return {
-                        isBillable: {
-                            ...isBillable,
-                            [id]: value
-                        },
-                        checkboxUpdating: false
-                    };
-                });
-            } else {
-                console.log('Something went wrong!');
-            }
-        });
     };
 
     hours = (hour, billable_hours) => <p data-tip={`billable: ${billable_hours}`}>{hour}</p>; // eslint-disable-line camelcase
