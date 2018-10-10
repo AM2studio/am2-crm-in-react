@@ -41,7 +41,6 @@ class AddNote extends Component {
                 status: false
             });
         }
-        console.log(this.state);
     };
 
     closeNotification = () => {

@@ -29,7 +29,6 @@ class TimeEntriesEdit extends Component {
         const { id } = this.state; // eslint-disable-line camelcase
         const { handleModalClose } = this.props;
         const data = new WP_API();
-        console.log(this.state);
 
         data.setPost('time-entry', id, this.state);
         data.set().then(result => {
@@ -57,7 +56,7 @@ class TimeEntriesEdit extends Component {
             is_billable, // eslint-disable-line camelcase
             comment
         } = this.state;
-        console.log(this.state);
+
         const { projects, handleModalClose, isBillable } = this.props;
 
         const jobType = [

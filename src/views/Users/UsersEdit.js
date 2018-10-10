@@ -15,7 +15,6 @@ class UsersEdit extends Component {
             return obj;
         }, {});
         this.state = result;
-        console.log(this.state);
     }
 
     updateUserData = () => {
@@ -52,7 +51,6 @@ class UsersEdit extends Component {
                 return { [name]: newVal };
             });
         } else {
-            console.log(this.state);
             this.setState({ [name]: value });
         }
     };
