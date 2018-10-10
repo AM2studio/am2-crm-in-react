@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import animation from '../../styles/images/animation.gif';
+import animation from '../../styles/images/loading2.gif';
 
 import './login.css';
 

@@ -71,7 +71,7 @@ class AM2Table extends Component {
         if (loading) {
             return (
                 <div className="am2TableLoader">
-                    <img alt="loader" src={loader} width="800" height="600" />;
+                    <img alt="loader" src={loader} width="600" height="450" />;
                 </div>
             );
         }

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Notes from './Notes';
 import WP_API from '../../data/Api';
-import LoadingWidget from '../Dashboard/Widgets/LoadingWidget';
 
 class NotesContainer extends Component {
     constructor() {
@@ -78,19 +77,15 @@ class NotesContainer extends Component {
         ];
         return (
             <React.Fragment>
-                {notes.length > 0 ? (
-                    <Notes
-                        columns={columns}
-                        data={filteredData}
-                        addUser={this.addUser}
-                        onPageChanged={this.onPageChanged}
-                        totalRecords={totalRecords}
-                        loading={loading}
-                        itemsPerPage={itemsPerPage}
-                    />
-                ) : (
-                    <LoadingWidget className="section" title="User Notes" />
-                )}
+                <Notes
+                    columns={columns}
+                    data={filteredData}
+                    addUser={this.addUser}
+                    onPageChanged={this.onPageChanged}
+                    totalRecords={totalRecords}
+                    loading={loading}
+                    itemsPerPage={itemsPerPage}
+                />
             </React.Fragment>
         );
     }
