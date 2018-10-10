@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { FaInfoCircle, FaPencilAlt, FaTrashAlt } from 'react-icons/fa';
+import { FaPencilAlt, FaTrashAlt, FaSafari } from 'react-icons/fa';
 import TimeEntriesEdit from './TimeEntriesEdit';
 import TimeEntries from './TimeEntries';
 import WP_API from '../../data/Api';
@@ -13,7 +13,9 @@ class TimeEntriesContainer extends Component {
             offset: 0,
             totalRecords: 0,
             modal: false,
-            loading: true
+            isAdmin: false,
+            loading: true,
+            checkboxUpdating: false
         };
     }
 
@@ -48,10 +50,18 @@ class TimeEntriesContainer extends Component {
                 comment: post.comment,
                 asana_url: post.asana_url
             }));
+            const obj = {};
+            // Need to save as state to manipulate with checkbox
+            const isBillable = posts.reduce((prev, curr) => {
+                obj[curr.id] = curr.is_billable;
+                return obj;
+            });
             this.setState({
+                isBillable,
                 timeEntries: posts,
                 totalRecords: result.count,
-                loading: false
+                loading: false,
+                isAdmin: !!result.data[0].is_billable
             });
         });
     };
@@ -61,7 +71,6 @@ class TimeEntriesContainer extends Component {
         const { dataToFetch } = this.props;
         const data = new WP_API();
         data.get('time-entry', id, dataToFetch).then(result => {
-            console.log(result);
             this.setState(() => ({
                 modal: true,
                 singleTimeEntryData: result
@@ -99,29 +108,83 @@ class TimeEntriesContainer extends Component {
         }
     };
 
+    handleIsBillable = (e, id) => {
+        const { checked } = e.target;
+        const value = checked === true ? '1' : '0';
+        const data = new WP_API();
+        this.setState({ checkboxUpdating: id });
+        data.setPost('time-entry', id, { just_billable: value });
+        data.set().then(result => {
+            if (result.success === true) {
+                this.setState(prevState => {
+                    const { isBillable } = prevState;
+                    return {
+                        isBillable: {
+                            ...isBillable,
+                            [id]: value
+                        },
+                        checkboxUpdating: false
+                    };
+                });
+            } else {
+                console.log('Something went wrong!');
+            }
+        });
+    };
+
     hours = (hour, billable_hours) => <p data-tip={`billable: ${billable_hours}`}>{hour}</p>; // eslint-disable-line camelcase
 
     date = (date, month) => <p data-tip={month}>{date}</p>;
 
     comment = comment => (
         <p data-tip={comment}>
-            <FaInfoCircle />
+            {comment.substring(0, 21)}
+            {comment.length > 21 ? '...' : ''}
         </p>
     );
 
+    isBillable = id => {
+        const { isBillable, checkboxUpdating } = this.state;
+        if (checkboxUpdating === id) {
+            return 'saving...';
+        }
+        return (
+            <input
+                type="checkbox"
+                checked={isBillable[id] && isBillable[id] !== '0'}
+                onChange={e => {
+                    this.handleIsBillable(e, id);
+                }}
+            />
+        );
+    };
+
+    asana = asana => (
+        <a href={asana} rel="noopener noreferrer" target="_blank" data-tip={asana}>
+            <FaSafari />
+        </a>
+    );
+
     render() {
-        const { timeEntries, totalRecords, loading, singleTimeEntryData, modal } = this.state;
+        const {
+            timeEntries,
+            totalRecords,
+            loading,
+            singleTimeEntryData,
+            modal,
+            isAdmin
+        } = this.state;
         const { itemsPerPage } = this.props;
         const filteredData = timeEntries.map(entry => ({
             ...entry,
             hours: this.hours(entry.hours, entry.billable_hours),
             date: this.date(entry.date, entry.month),
             comment: this.comment(entry.comment),
-            buttons: this.actionBtns(entry.id)
+            asana_url: entry.asana_url && this.asana(entry.asana_url),
+            buttons: this.actionBtns(entry.id),
+            is_billable: this.isBillable(entry.id)
         }));
         const columns = [
-            { key: 'is_billable', title: 'Is billable' },
-            { key: 'user', title: 'User' },
             // { key: 'billable_hours', title: 'Billable Hours' },
             { key: 'hours', title: 'Hours' },
             // { key: 'month', title: 'Month' },
@@ -133,6 +196,12 @@ class TimeEntriesContainer extends Component {
             { key: 'asana_url', title: 'Asana URL' },
             { key: 'buttons', title: 'Action' }
         ];
+        if (isAdmin) {
+            columns.unshift(
+                { key: 'is_billable', title: 'Is billable' },
+                { key: 'user', title: 'User' }
+            );
+        }
         return (
             <React.Fragment>
                 <TimeEntries

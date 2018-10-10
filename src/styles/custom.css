@@ -152,3 +152,9 @@ select {
 .react-calendar-timeline .rct-sidebar-header {
     background-color: #31b444;
 }
+input {
+    max-width: 100%;
+}
+.table__cell input[type='checkbox'] {
+    display: block;
+}
