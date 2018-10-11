@@ -85,17 +85,12 @@ class AddHighFive extends Component {
         const { users } = this.props;
         const { hf_user_to_id, content, status, loader, msgText } = this.state; // eslint-disable-line camelcase
 
-        const userList = users.map(user => ({
-            id: user.id,
-            title: `${user.first_name} ${user.last_name}`
-        }));
-
         const inputs = [
             {
                 type: Select,
                 name: 'hf_user_to_id',
                 label: 'To user',
-                list: userList,
+                list: users,
                 required: true,
                 className: 'form__input',
                 value: hf_user_to_id,

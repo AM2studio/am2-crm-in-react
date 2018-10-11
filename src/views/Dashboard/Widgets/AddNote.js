@@ -84,22 +84,17 @@ class AddNote extends Component {
         const { users } = this.props;
         const { note_for, content, note_type, status, loader, msgText } = this.state; // eslint-disable-line  camelcase
 
-        const userList = users.map(user => ({
-            id: user.id,
-            title: `${user.first_name} ${user.last_name}`
-        }));
-
         const noteType = [
-            { id: '0', title: 'Positive' },
-            { id: '1', title: 'Negative' },
-            { id: '2', title: 'Neutral' }
+            { value: '0', label: 'Positive' },
+            { value: '1', label: 'Negative' },
+            { value: '2', label: 'Neutral' }
         ];
         const inputs = [
             {
                 type: Select,
                 name: 'note_for',
                 label: 'For user',
-                list: userList,
+                list: users,
                 placeholder: 'Select User',
                 required: true,
                 value: note_for,

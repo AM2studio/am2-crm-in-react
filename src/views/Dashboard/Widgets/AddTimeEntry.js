@@ -86,20 +86,20 @@ class AddTime extends Component {
         } = this.state;
 
         const jobType = [
-            { id: '2', title: 'Dev' },
-            { id: '0', title: 'PM' },
-            { id: '1', title: 'Web Design' },
-            { id: '13', title: 'Graphic Design' },
-            { id: '3', title: 'Personal development' },
-            { id: '4', title: 'Administration' },
-            { id: '5', title: 'Meeting (client)' },
-            { id: '6', title: 'Meeting (internal)' },
-            { id: '7', title: 'Team Management' },
-            { id: '8', title: 'QA' },
-            { id: '9', title: 'Support' },
-            { id: '10', title: 'Preparing quote' },
-            { id: '11', title: 'Content Transfer' },
-            { id: '12', title: 'Junior Training' }
+            { value: '2', label: 'Dev' },
+            { value: '0', label: 'PM' },
+            { value: '1', label: 'Web Design' },
+            { value: '13', label: 'Graphic Design' },
+            { value: '3', label: 'Personal development' },
+            { value: '4', label: 'Administration' },
+            { value: '5', label: 'Meeting (client)' },
+            { value: '6', label: 'Meeting (internal)' },
+            { value: '7', label: 'Team Management' },
+            { value: '8', label: 'QA' },
+            { value: '9', label: 'Support' },
+            { value: '10', label: 'Preparing quote' },
+            { value: '11', label: 'Content Transfer' },
+            { value: '12', label: 'Junior Training' }
         ];
 
         const inputs = [
