@@ -18,7 +18,8 @@ class RequestVacation extends Component {
             days: '',
             note: '',
             msgText: '',
-            status: false,
+            status: 'pending',
+            sent: false,
             loader: false
         };
     }
@@ -29,18 +30,18 @@ class RequestVacation extends Component {
 
     inputChangeEvent = e => {
         const { name, value } = e.target;
-        this.setState({ [name]: value, status: false });
+        this.setState({ [name]: value, sent: false });
     };
 
     closeNotification = () => {
-        this.setState(() => ({ status: false }));
+        this.setState(() => ({ sent: false }));
     };
 
     requestVacation = () => {
         const { start_date: startDate, end_date: endDate, days, note } = this.state; // eslint-disable-line camelcase
         // Validation
         if (startDate === '' || endDate === '' || days === '') {
-            this.setState(() => ({ status: 'error', msgText: 'Required fields are missing.' }));
+            this.setState(() => ({ sent: 'error', msgText: 'Required fields are missing.' }));
             return;
         }
         // Proceed
@@ -52,7 +53,7 @@ class RequestVacation extends Component {
                 // Pop a success message
                 this.setState(this.initialState);
                 this.setState(() => ({
-                    status: 'success',
+                    sent: 'success',
                     msgText: 'Request sent! We will get back to you soon.'
                 }));
                 // Notify everyone on slack
@@ -64,7 +65,7 @@ class RequestVacation extends Component {
                 slackAPI.send(notificationTitle, 'management');
             } else {
                 this.setState(() => ({
-                    status: 'error',
+                    sent: 'error',
                     msgText: 'Ups..something went wrong. Check with Goran!',
                     loader: false
                 }));
@@ -73,7 +74,7 @@ class RequestVacation extends Component {
     };
 
     render() {
-        const { start_date, end_date, days, note, status, loader, msgText } = this.state; // eslint-disable-line camelcase
+        const { start_date, end_date, days, note, sent, loader, msgText } = this.state; // eslint-disable-line camelcase
 
         const inputs = [
             {
@@ -136,10 +137,10 @@ class RequestVacation extends Component {
                 <div className="section__content">
                     <div className="widget">
                         <form className="form">
-                            {status ? (
+                            {sent ? (
                                 <Notification
                                     text={msgText}
-                                    type={status}
+                                    type={sent}
                                     close={this.closeNotification}
                                 />
                             ) : (
