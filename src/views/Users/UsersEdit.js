@@ -3,18 +3,28 @@ import Text from '../../components/Form/Text';
 import Select from '../../components/Form/Select';
 import Checkbox from '../../components/Form/Checkbox';
 import Radio from '../../components/Form/Radio';
+import Loading from '../../components/General/Loading';
 import WP_API from '../../data/Api';
 
 class UsersEdit extends Component {
     constructor(props) {
         super(props);
-        const obj = {};
-        // Loop through props object and set as states
-        const result = Object.keys(props.singleUserData).reduce((prev, curr) => {
-            obj[curr] = props.singleUserData[curr]; // eslint-disable-line no-param-reassign
-            return obj;
-        }, {});
-        this.state = result;
+        this.state = {
+            loading: true
+        };
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.loading === true) {
+            const { singleUserData } = this.props;
+            const obj = {};
+            // Loop through props object and set as states
+            const result = Object.keys(singleUserData).reduce((prev, curr) => {
+                obj[curr] = singleUserData[curr];
+                return obj;
+            }, {});
+            this.setState({ ...result, loading: false }); // eslint-disable-line
+        }
     }
 
     updateUserData = () => {
@@ -66,6 +76,7 @@ class UsersEdit extends Component {
         } = this.props;
 
         const {
+            loading,
             first_name, // eslint-disable-line camelcase
             last_name, // eslint-disable-line camelcase
             email,
@@ -192,39 +203,43 @@ class UsersEdit extends Component {
                 <header className="section__header">
                     <h2 className="section__title">Edit User</h2>
                 </header>
-                <div className="section__content">
-                    <form className="form">
-                        <div className="form__row">
-                            {fields.map(field => {
-                                const { type, name, ...rest } = field;
-                                return (
-                                    <field.type
-                                        key={name}
-                                        name={name}
-                                        inputChangeEvent={this.inputChangeEvent}
-                                        {...rest}
-                                    />
-                                );
-                            })}
-                        </div>
-                        <div className="form__row">
-                            <button
-                                type="button"
-                                className="button button--primary"
-                                onClick={this.updateUserData}
-                            >
-                                Submit
-                            </button>
-                            <button
-                                type="button"
-                                className="button right"
-                                onClick={handleModalClose}
-                            >
-                                Cancel
-                            </button>
-                        </div>
-                    </form>
-                </div>
+                {loading ? (
+                    <Loading />
+                ) : (
+                    <div className="section__content">
+                        <form className="form">
+                            <div className="form__row">
+                                {fields.map(field => {
+                                    const { type, name, ...rest } = field; // spread operator
+                                    return (
+                                        <field.type
+                                            key={name}
+                                            name={name}
+                                            inputChangeEvent={this.inputChangeEvent}
+                                            {...rest}
+                                        />
+                                    );
+                                })}
+                            </div>
+                            <div className="form__row">
+                                <button
+                                    type="button"
+                                    className="button button--primary"
+                                    onClick={this.updateUserData}
+                                >
+                                    Submit
+                                </button>
+                                <button
+                                    type="button"
+                                    className="button right"
+                                    onClick={handleModalClose}
+                                >
+                                    Cancel
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                )}
             </div>
         );
     }

@@ -71,7 +71,7 @@ class UsersContainer extends Component {
     };
 
     editUser = (e, id) => {
-        console.log(`Editing user with id: ${id}`);
+        this.setState({ modal: true });
         const dataToFetch = [
             'id',
             'first_name',
@@ -88,15 +88,16 @@ class UsersContainer extends Component {
         ];
         const data = new WP_API();
         data.get('users', id, dataToFetch).then(result => {
-            this.setState(() => ({
-                modal: true,
-                singleUserData: result
-            }));
+            this.setState({ singleUserData: result });
         });
     };
 
-    handleModalClose = () => {
+    handleModalClose = updated => {
         this.setState({ modal: false });
+        if (updated === true) {
+            localStorage.removeItem('users');
+            this.getUsers();
+        }
     };
 
     deleteUser = (e, id) => {
