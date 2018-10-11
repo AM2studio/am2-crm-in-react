@@ -7,9 +7,25 @@ class HeaderContainer extends Component {
     constructor() {
         super();
         this.state = {
-            redirectTo: false
+            redirectTo: false,
+            mobileNav: false
         };
     }
+
+    componentDidUpdate() {
+        const { mobileNav } = this.state;
+        document.body.className = '';
+        if (mobileNav) {
+            document.body.className = 'sidebar-left-open';
+        }
+    }
+
+    handleMobileMenu = () => {
+        this.setState(prevState => ({
+            mobileNav: !prevState.mobileNav
+        }));
+        console.log(this.state);
+    };
 
     logout = () => {
         const auth = new WP_AUTH();
@@ -23,7 +39,7 @@ class HeaderContainer extends Component {
             this.setState({ redirectTo: false }); // da zadrzim header, hack, al radim vec 12h i ovo mi prvo palo na pamet :)
             return <Redirect to="/" />;
         }
-        return <Header logout={this.logout} />;
+        return <Header logout={this.logout} handleMobileMenu={this.handleMobileMenu} />;
     }
 }
 

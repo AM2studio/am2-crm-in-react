@@ -4,7 +4,7 @@ import { FaUser, FaWrench } from 'react-icons/fa';
 const Header = props => {
     const companies = 111; // Fix this with redux and array length.
     const projects = 435; // JSON.parse(localStorage.getItem('projects'));
-    const { logout } = props;
+    const { logout, handleMobileMenu } = props;
     return (
         <header id="header" className="header">
             <div className="mobile-header">
@@ -18,6 +18,7 @@ const Header = props => {
                     <button
                         type="button"
                         className="js-sidebar-left-toggle c-hamburger c-hamburger--htx"
+                        onClick={handleMobileMenu}
                     >
                         <span>toggle menu</span>
                     </button>
