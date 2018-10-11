@@ -3,17 +3,27 @@ import Text from '../../components/Form/Text';
 import Select from '../../components/Form/Select';
 import WP_API from '../../data/Api';
 import DatePicker from '../../components/Form/DatePicker';
+import Loading from '../../components/General/Loading';
 
 class ProjectsEdit extends Component {
     constructor(props) {
         super(props);
-        const obj = {};
-        // Loop through props object and set as states
-        const result = Object.keys(props.singleProjectData).reduce((prev, curr) => {
-            obj[curr] = props.singleProjectData[curr]; // eslint-disable-line no-param-reassign
-            return obj;
-        }, {});
-        this.state = result;
+        this.state = {
+            loading: true
+        };
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.loading === true) {
+            const { singleProjectData } = this.props;
+            const obj = {};
+            // Loop through props object and set as states
+            const result = Object.keys(singleProjectData).reduce((prev, curr) => {
+                obj[curr] = singleProjectData[curr];
+                return obj;
+            }, {});
+            this.setState({ ...result, loading: false }); // eslint-disable-line
+        }
     }
 
     updateProjectData = () => {
@@ -47,6 +57,7 @@ class ProjectsEdit extends Component {
         } = this.props;
 
         const {
+            loading,
             title,
             total_price, // eslint-disable-line camelcase
             quoted_hours, // eslint-disable-line camelcase
@@ -202,42 +213,46 @@ class ProjectsEdit extends Component {
                 <header className="section__header">
                     <h2 className="section__title">Edit Project</h2>
                 </header>
-                <div className="section__content">
-                    <form className="form">
-                        <div className="form__row">
-                            {fields.map(field => (
-                                <field.type
-                                    label={field.label}
-                                    name={field.name}
-                                    parentClass={field.parentClass}
-                                    email={field.email}
-                                    propType={field.propType}
-                                    required={field.required}
-                                    value={field.value}
-                                    list={field.list}
-                                    className="form__input"
-                                    inputChangeEvent={this.inputChangeEvent}
-                                />
-                            ))}
-                        </div>
-                        <div className="form__row">
-                            <button
-                                type="button"
-                                className="button button--primary"
-                                onClick={this.updateProjectData}
-                            >
-                                Submit
-                            </button>
-                            <button
-                                type="button"
-                                className="button right"
-                                onClick={handleModalClose}
-                            >
-                                Cancel
-                            </button>
-                        </div>
-                    </form>
-                </div>
+                {loading ? (
+                    <Loading />
+                ) : (
+                    <div className="section__content">
+                        <form className="form">
+                            <div className="form__row">
+                                {fields.map(field => (
+                                    <field.type
+                                        label={field.label}
+                                        name={field.name}
+                                        parentClass={field.parentClass}
+                                        email={field.email}
+                                        propType={field.propType}
+                                        required={field.required}
+                                        value={field.value}
+                                        list={field.list}
+                                        className="form__input"
+                                        inputChangeEvent={this.inputChangeEvent}
+                                    />
+                                ))}
+                            </div>
+                            <div className="form__row">
+                                <button
+                                    type="button"
+                                    className="button button--primary"
+                                    onClick={this.updateProjectData}
+                                >
+                                    Submit
+                                </button>
+                                <button
+                                    type="button"
+                                    className="button right"
+                                    onClick={handleModalClose}
+                                >
+                                    Cancel
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                )}
             </div>
         );
     }

@@ -62,14 +62,11 @@ class ProjectsContainer extends Component {
     };
 
     editProject = (e, id) => {
-        console.log(`Editing project with id: ${id}`);
+        this.setState({ modal: true });
         const { dataToFetch } = this.props;
         const data = new WP_API();
         data.get('projects', id, dataToFetch).then(result => {
-            this.setState(() => ({
-                modal: true,
-                singleProjectData: result
-            }));
+            this.setState({ singleProjectData: result });
         });
     };
 
