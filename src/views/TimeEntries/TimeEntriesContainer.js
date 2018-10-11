@@ -61,7 +61,7 @@ class TimeEntriesContainer extends Component {
                 timeEntries: posts,
                 totalRecords: result.count,
                 loading: false,
-                isAdmin: !!result.data[0].is_billable
+                isAdmin: !!result.data[0].user
             });
         });
     };
@@ -182,6 +182,7 @@ class TimeEntriesContainer extends Component {
             is_billable: this.isBillable(entry.id)
         }));
         const columns = [
+            { key: 'is_billable', title: 'Is Billable' },
             // { key: 'billable_hours', title: 'Billable Hours' },
             { key: 'hours', title: 'Hours' },
             // { key: 'month', title: 'Month' },
@@ -194,10 +195,7 @@ class TimeEntriesContainer extends Component {
             { key: 'buttons', title: 'Action' }
         ];
         if (isAdmin) {
-            columns.unshift(
-                { key: 'is_billable', title: 'Is billable' },
-                { key: 'user', title: 'User' }
-            );
+            columns.unshift({ key: 'user', title: 'User' });
         }
         return (
             <React.Fragment>
