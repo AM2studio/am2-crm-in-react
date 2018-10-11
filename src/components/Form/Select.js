@@ -2,12 +2,19 @@ import React, { Component } from 'react';
 import Select from 'react-select';
 
 class AM2Select extends Component {
-    constructor(props) {
-        super(props);
+    componentWillMount() {
+        const { value, list } = this.props;
 
-        this.state = {
-            selectedOption: null
-        };
+        // So, this package requires selected value to be an object
+        // Our select list is using id property ( this was prior to installing this package), so we first need to filter object via id = value
+        // Then need to convert it to expected object
+        const result = list.filter(obj => obj.id.toString() === value);
+        let filteredResults;
+        if (result !== undefined) {
+            filteredResults = result.map(o => ({ value: o.id, label: o.title }));
+        }
+
+        this.setState({ selectedOption: filteredResults[0] });
     }
 
     handleChange = selectedOption => {
@@ -25,7 +32,8 @@ class AM2Select extends Component {
 
     render() {
         const { label, name, parentClass, list } = this.props;
-
+        let { required } = this.props;
+        const { selectedOption } = this.state;
         let formatedList = list;
         // Are we getting title and id from WordPress, if so, format it to label/value:
         if (list.length > 0 && !Object.prototype.hasOwnProperty.call(list[0], 'label')) {
@@ -36,8 +44,6 @@ class AM2Select extends Component {
             }));
         }
 
-        let { required } = this.props;
-        const { selectedOption } = this.state;
         if (required) {
             required = <span className="form__required">* (required)</span>;
         }
