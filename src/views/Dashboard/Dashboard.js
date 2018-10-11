@@ -23,8 +23,8 @@ class Dashboard extends Component {
             const api = new WP_API();
             api.getPosts('companies').then(result => {
                 const posts = result.data.map(post => ({
-                    value: post.id,
-                    label: post.title,
+                    id: post.id,
+                    title: post.title,
                     city: post.city
                 }));
                 localStorage.setItem('companies', JSON.stringify(posts));
@@ -37,10 +37,10 @@ class Dashboard extends Component {
             const api = new WP_API();
             api.getPosts('users').then(result => {
                 const posts = result.data.map(post => ({
-                    value: post.id,
+                    id: post.id,
                     first_name: post.first_name,
                     last_name: post.last_name,
-                    label: `${post.first_name} ${post.last_name}`,
+                    title: `${post.first_name} ${post.last_name}`,
                     company_role: post.company_role,
                     department: post.department,
                     email: post.email,
@@ -57,8 +57,8 @@ class Dashboard extends Component {
             const api = new WP_API();
             api.getPosts('projects').then(result => {
                 const posts = result.data.map(post => ({
-                    value: post.id,
-                    label: post.title,
+                    id: post.id,
+                    title: post.title,
                     company: post.company_name
                 }));
                 localStorage.setItem('projects', JSON.stringify(posts));

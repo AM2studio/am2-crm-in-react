@@ -13,7 +13,7 @@ class AM2Select extends Component {
     handleChange = selectedOption => {
         const { name, inputChangeEvent } = this.props;
         this.setState({ selectedOption });
-        // Lets fake input event.target object to pass same data like the rest of inputs
+        // Lets fake input event.target object to pass same data like other inputs are passing
         const el = {
             target: {
                 name,
@@ -25,6 +25,17 @@ class AM2Select extends Component {
 
     render() {
         const { label, name, parentClass, list } = this.props;
+
+        let formatedList = list;
+        // Are we getting title and id from WordPress, if so, format it to label/value:
+        if (list.length > 0 && !Object.prototype.hasOwnProperty.call(list[0], 'label')) {
+            formatedList = list.map(listItem => ({
+                ...listItem,
+                label: listItem.title,
+                value: listItem.id
+            }));
+        }
+
         let { required } = this.props;
         const { selectedOption } = this.state;
         if (required) {
@@ -37,7 +48,11 @@ class AM2Select extends Component {
                     {label}
                     {required}
                 </label>
-                <Select value={selectedOption} onChange={this.handleChange} options={list} />
+                <Select
+                    value={selectedOption}
+                    onChange={this.handleChange}
+                    options={formatedList}
+                />
             </div>
         );
     }
