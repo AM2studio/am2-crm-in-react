@@ -67,14 +67,11 @@ class TimeEntriesContainer extends Component {
     };
 
     editTimeEntry = (e, id) => {
-        console.log(`Editing time entry with id: ${id}`);
+        this.setState({ modal: true });
         const { dataToFetch } = this.props;
         const data = new WP_API();
         data.get('time-entry', id, dataToFetch).then(result => {
-            this.setState(() => ({
-                modal: true,
-                singleTimeEntryData: result
-            }));
+            this.setState({ singleTimeEntryData: result });
         });
     };
 

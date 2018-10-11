@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import WP_API from '../../data/Api';
+import Loading from '../../components/General/Loading';
 import Time from '../../components/Form/TimePicker';
 import Text from '../../components/Form/Text';
 import Radio from '../../components/Form/Radio';
@@ -11,18 +12,26 @@ import DatePicker from '../../components/Form/DatePicker';
 class TimeEntriesEdit extends Component {
     constructor(props) {
         super(props);
-        const obj = {};
-        // Loop through props object and set as states
-        const result = Object.keys(props.singleTimeEntryData).reduce((prev, curr) => {
-            if (curr === 'date') {
-                obj[curr] = moment(props.singleTimeEntryData[curr]).format('DD/MM/YYYY'); // eslint-disable-line no-param-reassign
-            } else {
-                obj[curr] = props.singleTimeEntryData[curr]; // eslint-disable-line no-param-reassign
-            }
+        this.state = {
+            loading: true
+        };
+    }
 
-            return obj;
-        }, {});
-        this.state = result;
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.loading === true) {
+            const { singleTimeEntryData } = this.props;
+            const obj = {};
+            // Loop through props object and set as states
+            const result = Object.keys(singleTimeEntryData).reduce((prev, curr) => {
+                if (curr === 'date') {
+                    obj[curr] = moment(singleTimeEntryData[curr]).format('DD/MM/YYYY'); // eslint-disable-line no-param-reassign
+                } else {
+                    obj[curr] = singleTimeEntryData[curr]; // eslint-disable-line no-param-reassign
+                }
+                return obj;
+            }, {});
+            this.setState({ ...result, loading: false }); // eslint-disable-line
+        }
     }
 
     updateEntryData = () => {
@@ -54,7 +63,8 @@ class TimeEntriesEdit extends Component {
             job_type, // eslint-disable-line camelcase
             asana_url, // eslint-disable-line camelcase
             is_billable, // eslint-disable-line camelcase
-            comment
+            comment,
+            loading
         } = this.state;
 
         const { projects, handleModalClose, isBillable } = this.props;
@@ -153,42 +163,46 @@ class TimeEntriesEdit extends Component {
                 <header className="section__header">
                     <h2 className="section__title">Edit Project</h2>
                 </header>
-                <div className="section__content">
-                    <form className="form">
-                        <div className="form__row">
-                            {fields.map(field => (
-                                <field.type
-                                    label={field.label}
-                                    name={field.name}
-                                    parentClass={field.parentClass}
-                                    email={field.email}
-                                    propType={field.propType}
-                                    required={field.required}
-                                    value={field.value}
-                                    list={field.list}
-                                    className="form__input"
-                                    inputChangeEvent={this.inputChangeEvent}
-                                />
-                            ))}
-                        </div>
-                        <div className="form__row">
-                            <button
-                                type="button"
-                                className="button button--primary"
-                                onClick={this.updateEntryData}
-                            >
-                                Submit
-                            </button>
-                            <button
-                                type="button"
-                                className="button right"
-                                onClick={handleModalClose}
-                            >
-                                Cancel
-                            </button>
-                        </div>
-                    </form>
-                </div>
+                {loading ? (
+                    <Loading />
+                ) : (
+                    <div className="section__content">
+                        <form className="form">
+                            <div className="form__row">
+                                {fields.map(field => (
+                                    <field.type
+                                        label={field.label}
+                                        name={field.name}
+                                        parentClass={field.parentClass}
+                                        email={field.email}
+                                        propType={field.propType}
+                                        required={field.required}
+                                        value={field.value}
+                                        list={field.list}
+                                        className="form__input"
+                                        inputChangeEvent={this.inputChangeEvent}
+                                    />
+                                ))}
+                            </div>
+                            <div className="form__row">
+                                <button
+                                    type="button"
+                                    className="button button--primary"
+                                    onClick={this.updateEntryData}
+                                >
+                                    Submit
+                                </button>
+                                <button
+                                    type="button"
+                                    className="button right"
+                                    onClick={handleModalClose}
+                                >
+                                    Cancel
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                )}
             </div>
         );
     }
