@@ -67,7 +67,6 @@ class CompaniesContainer extends Component {
     };
 
     editCompany = (e, id) => {
-        console.log(`Editing company with id: ${id}`);
         const dataToFetch = [
             'id',
             'title',
@@ -80,12 +79,10 @@ class CompaniesContainer extends Component {
             'zip',
             'website'
         ];
+        this.setState({ modal: true });
         const data = new WP_API();
         data.get('companies', id, dataToFetch).then(result => {
-            this.setState(() => ({
-                modal: true,
-                singleCompanyData: result
-            }));
+            this.setState({ singleCompanyData: result });
         });
     };
 
