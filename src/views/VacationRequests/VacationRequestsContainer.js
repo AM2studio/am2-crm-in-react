@@ -38,45 +38,74 @@ class VacationsContainer extends Component {
         });
     };
 
-    approve = () => {
-        console.log('radi');
+    vacationRequest = (id, type, index) => {
+        this.setState(prevState => {
+            const { vacations } = prevState;
+            vacations[index].status = type;
+            return {
+                vacations
+            };
+        });
+        const api = new WP_API();
+        api.setPost('vacations', id, { status: type });
+        api.set().then(result => {
+            console.log(result);
+        });
     };
+
+    actionBtns = (id, index) => (
+        <React.Fragment>
+            <button
+                type="button"
+                className="button--table button--table--edit"
+                onClick={() => {
+                    this.vacationRequest(id, 'approved', index);
+                }}
+            >
+                Approve
+            </button>
+            <button
+                type="button"
+                className="button--table button--table--delete"
+                onClick={() => {
+                    this.vacationRequest(id, 'rejected', index);
+                }}
+            >
+                Reject
+            </button>
+        </React.Fragment>
+    );
 
     status = status => {
         switch (status) {
             case 'approved':
                 return <span className="note-type-positive">Approved</span>;
-            case 'declined' || 'rejected':
+            case 'rejected':
                 return <span className="note-type-negative">Rejected</span>;
-            case 'pending':
-                return (
-                    <div>
-                        <span className="note-type-neutral">Pending</span>
-                        <button type="button" onClick={this.approve}>
-                            ✓
-                        </button>
-                    </div>
-                );
+            case 'declined':
+                return <span className="note-type-negative">Rejected</span>;
             default:
                 return <span className="note-type-neutral">Pending</span>;
         }
     };
 
     render() {
+        console.log(this.state);
         const { vacations, totalRecords, loading } = this.state;
         const { itemsPerPage } = this.props;
-        const filteredData = vacations.map(user => {
-            const filteredUser = user;
-            filteredUser.status = this.status(user.status);
-            return filteredUser;
-        });
+        const filteredData = vacations.map((user, index) => ({
+            ...user,
+            btn: user.status === 'pending' ? this.actionBtns(user.id, index) : '',
+            status: this.status(user.status)
+        }));
         const columns = [
             { key: 'author', title: 'Requested by' },
             { key: 'days', title: 'Days' },
             { key: 'start_date', title: 'Start Date' },
             { key: 'end_date', title: 'End Date' },
             { key: 'note', title: 'Note' },
-            { key: 'status', title: 'Status' }
+            { key: 'status', title: 'Status' },
+            { key: 'btn', title: 'Action' }
         ];
         return (
             <Vacations
