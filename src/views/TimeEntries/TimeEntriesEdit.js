@@ -107,7 +107,7 @@ class TimeEntriesEdit extends Component {
             },
             {
                 type: Time,
-                name: 'time',
+                name: 'hours',
                 label: 'Hours of Work',
                 required: true,
                 value: hours,

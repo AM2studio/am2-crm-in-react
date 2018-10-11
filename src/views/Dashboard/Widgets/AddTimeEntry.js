@@ -16,7 +16,7 @@ class AddTime extends Component {
 
         this.state = {
             date: moment().format('DD/MM/YYYY'),
-            time: '01:00',
+            hours: '01:00',
             billable_hours: '01:00',
             project: '',
             job_type: 'Dev',
@@ -35,7 +35,7 @@ class AddTime extends Component {
     inputChangeEvent = e => {
         const { name, value } = e.target;
         this.setState({ [name]: value, status: false });
-        if (name === 'time') {
+        if (name === 'hours') {
             this.setState({ billable_hours: value });
         }
     };
@@ -74,7 +74,7 @@ class AddTime extends Component {
         const { projects } = this.props;
         const {
             date,
-            time,
+            hours,
             billable_hours, // eslint-disable-line camelcase
             project, // eslint-disable-line camelcase
             job_type, // eslint-disable-line camelcase
@@ -123,10 +123,10 @@ class AddTime extends Component {
             },
             {
                 type: Time,
-                name: 'time',
+                name: 'hours',
                 label: 'Hours of Work',
                 required: true,
-                value: time,
+                value: hours,
                 parentClass: 'form__column col-1 form__row'
             },
             {
