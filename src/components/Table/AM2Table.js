@@ -57,7 +57,14 @@ class AM2Table extends Component {
     };
 
     render() {
-        const { columns, itemsPerPage, totalRecords, loading } = this.props;
+        const {
+            columns,
+            itemsPerPage,
+            totalRecords,
+            loading,
+            clientFiltering,
+            clientSorting
+        } = this.props;
         let { rows } = this.props;
         const { sortedBy, sortMode, filter, currentPage } = this.state;
         // Sorting?
@@ -85,26 +92,32 @@ class AM2Table extends Component {
                                     <th
                                         className="table__heading text-left"
                                         key={column.key}
-                                        onClick={this.sortColumn.bind(this, column.key)}
+                                        onClick={
+                                            clientSorting
+                                                ? this.sortColumn.bind(this, column.key)
+                                                : undefined
+                                        }
                                     >
                                         {column.title}
                                     </th>
                                 ))}
                         </tr>
-                        <tr className="table__row">
-                            {columns &&
-                                columns.map(column => (
-                                    <th key={column.key}>
-                                        <input
-                                            autoComplete="off"
-                                            type="text"
-                                            className="input__standard"
-                                            name={column.key}
-                                            onChange={e => this.filterColumn(e, column.key)}
-                                        />
-                                    </th>
-                                ))}
-                        </tr>
+                        {clientFiltering && (
+                            <tr className="table__row">
+                                {columns &&
+                                    columns.map(column => (
+                                        <th key={column.key}>
+                                            <input
+                                                autoComplete="off"
+                                                type="text"
+                                                className="input__standard"
+                                                name={column.key}
+                                                onChange={e => this.filterColumn(e, column.key)}
+                                            />
+                                        </th>
+                                    ))}
+                            </tr>
+                        )}
                     </thead>
                     <tbody className="table__body">
                         {showingRows &&
@@ -112,7 +125,11 @@ class AM2Table extends Component {
                                 <tr key={rowData.id} className="table__row">
                                     {columns &&
                                         columns.map(element => (
-                                            <td key={element.key} className="table__cell text-left">
+                                            <td
+                                                data-label={`${element.title} : `}
+                                                key={element.key}
+                                                className="table__cell text-left"
+                                            >
                                                 {this.deep(rowData, element.key)}
                                             </td>
                                         ))}
