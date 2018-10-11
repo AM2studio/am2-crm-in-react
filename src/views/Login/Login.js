@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import animation from '../../styles/images/loading2.gif';
-
+import logo from '../../styles/images/logo.jpg';
 import './login.css';
 
 const divStyle = {
@@ -27,11 +27,7 @@ const Login = props => {
                 >
                     <form className="login100-form validate-form">
                         <div className="w-full text-center logo">
-                            <img
-                                style={logoStyle}
-                                alt="Logo"
-                                src="http://crm.am2studio.com/am2.jpg"
-                            />
+                            <img style={logoStyle} alt="Logo" src={logo} />
                         </div>
                         {loader ? (
                             <div className="loaderWidget login-animation">

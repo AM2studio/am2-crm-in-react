@@ -3,7 +3,7 @@ import WP_AUTH from './Auth';
 
 class WP_API {
     constructor() {
-        this.url = 'http://crm.am2studio.com/wp-json/crm/v2/';
+        this.url = 'http://oldcrm.am2studio.com/wp-json/crm/v2/';
         this.auth = new WP_AUTH();
     }
 

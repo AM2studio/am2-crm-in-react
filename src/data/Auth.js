@@ -2,9 +2,9 @@ import axios from 'axios';
 
 class WP_AUTH {
     constructor() {
-        this.url = 'http://crm.am2studio.com/wp-json/jwt-auth/v1/token';
-        this.validateUrl = 'http://crm.am2studio.com/wp-json/jwt-auth/v1/token/validate';
-        this.permissionsUrl = 'http://crm.am2studio.com/wp-json/crm/v2/permissions';
+        this.url = 'http://oldcrm.am2studio.com/wp-json/jwt-auth/v1/token';
+        this.validateUrl = 'http://oldcrm.am2studio.com/wp-json/jwt-auth/v1/token/validate';
+        this.permissionsUrl = 'http://oldcrm.am2studio.com/wp-json/crm/v2/permissions';
         this.tokenKey = 'crmTokenKey';
         this.userName = 'crmUserName';
         this.permissions = 'permissions';
