@@ -85,9 +85,9 @@ class AddNote extends Component {
         const { note_for, content, note_type, status, loader, msgText } = this.state; // eslint-disable-line  camelcase
 
         const noteType = [
-            { value: '0', label: 'Positive' },
-            { value: '1', label: 'Negative' },
-            { value: '2', label: 'Neutral' }
+            { id: '0', title: 'Positive' },
+            { id: '1', title: 'Negative' },
+            { id: '2', title: 'Neutral' }
         ];
         const inputs = [
             {
