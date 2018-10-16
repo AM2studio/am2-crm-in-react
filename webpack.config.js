@@ -33,9 +33,5 @@ module.exports = {
             }
         ]
     },
-    plugins: [htmlPlugin],
-    devtool: 'cheap-module-eval-source-map',
-    devServer: {
-        historyApiFallback: true
-    }
+    plugins: [htmlPlugin]
 };

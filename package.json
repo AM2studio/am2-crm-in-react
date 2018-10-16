@@ -4,7 +4,7 @@
     "description": "Simple React Boilerplate",
     "main": "index.js",
     "scripts": {
-        "start": "webpack-dev-server --mode development --open --hot",
+        "start": "webpack-dev-server --mode development --open --hot --config ./webpack.dev.config.js",
         "build": "webpack --mode production"
     },
     "author": "Goran Jakovljevic",
@@ -50,6 +50,7 @@
         "style-loader": "^0.23.0",
         "webpack": "^4.16.5",
         "webpack-cli": "^3.1.0",
-        "webpack-dev-server": "^3.1.5"
+        "webpack-dev-server": "^3.1.5",
+        "webpack-merge": "^4.1.4"
     }
 }
