@@ -24,7 +24,8 @@ class AM2Select extends Component {
         const el = {
             target: {
                 name,
-                value: selectedOption.value
+                value: selectedOption.value,
+                label: selectedOption.label
             }
         };
         inputChangeEvent(el);

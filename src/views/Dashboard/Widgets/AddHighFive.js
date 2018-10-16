@@ -26,12 +26,12 @@ class AddHighFive extends Component {
     }
 
     inputChangeEvent = e => {
-        const { name, value } = e.target;
+        const { name, value, label } = e.target;
         // Goran: check how to clean this up.
         if (name === 'hf_user_to_id') {
             this.setState({
                 [name]: value,
-                selectedUser: e.target.options ? e.target.options[e.target.selectedIndex].text : '',
+                selectedUser: label,
                 status: false
             });
         } else {

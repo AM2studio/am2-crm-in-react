@@ -27,12 +27,13 @@ class AddNote extends Component {
     }
 
     inputChangeEvent = e => {
-        const { name, value } = e.target;
+        console.log(e);
+        const { name, value, label } = e.target;
 
         if (name === 'note_for') {
             this.setState({
                 [name]: value,
-                selectedUser: e.target.options ? e.target.options[e.target.selectedIndex].text : '',
+                selectedUser: label,
                 status: false
             });
         } else {
