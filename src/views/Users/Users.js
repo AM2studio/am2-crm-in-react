@@ -18,6 +18,8 @@ const Users = props => {
                 totalRecords={totalRecords}
                 loading={loading}
                 onPageChanged={onPageChanged}
+                clientFiltering
+                clientSorting
             />
         </ViewWrapper>
     );

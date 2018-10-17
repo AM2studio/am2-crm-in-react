@@ -24,12 +24,11 @@ class UsersContainer extends Component {
 
     getUsers = () => {
         const { offset } = this.state;
-        const { itemsPerPage } = this.props;
         const cachedUsers = localStorage.getItem('users');
         if (cachedUsers) {
             const users = JSON.parse(cachedUsers);
             this.setState(() => ({
-                users: users.slice(offset, offset + itemsPerPage),
+                users,
                 totalRecords: users.length,
                 loading: false
             }));

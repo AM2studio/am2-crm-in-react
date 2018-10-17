@@ -24,12 +24,11 @@ class CompaniesContainer extends Component {
 
     getCompanies() {
         const { offset } = this.state;
-        const { itemsPerPage } = this.props;
         const cachedCompanies = localStorage.getItem('companies');
         if (cachedCompanies) {
             const companies = JSON.parse(cachedCompanies);
             this.setState(() => ({
-                companies: companies.slice(offset, offset + itemsPerPage),
+                companies,
                 totalRecords: companies.length,
                 loading: false
             }));

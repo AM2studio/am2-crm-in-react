@@ -57,24 +57,22 @@ class AM2Table extends Component {
     };
 
     render() {
-        const {
-            columns,
-            itemsPerPage,
-            totalRecords,
-            loading,
-            clientFiltering,
-            clientSorting
-        } = this.props;
-        let { rows } = this.props;
+        const { columns, itemsPerPage, loading, clientFiltering, clientSorting } = this.props;
+        let { rows, totalRecords } = this.props;
+
         const { sortedBy, sortMode, filter, currentPage } = this.state;
-        // Sorting?
+        // If sorting
         if (sortedBy) {
             rows = AM2TableSort(rows, sortedBy, sortMode);
         }
+        // Total records needs updating
         if (filter !== undefined) {
             rows = AM2TableFilter(rows, filter);
+            totalRecords = rows.length;
         }
-        const showingRows = rows.slice(0, itemsPerPage); // not really needed but hey
+        const showingRows = clientFiltering
+            ? rows.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+            : rows;
         if (loading) {
             return (
                 <div className="am2TableLoader">

@@ -18,6 +18,8 @@ const Projects = props => {
                 itemsPerPage={itemsPerPage}
                 totalRecords={totalRecords}
                 loading={loading}
+                clientFiltering
+                clientSorting
             />
         </ViewWrapper>
     );

@@ -26,13 +26,12 @@ class ProjectsContainer extends Component {
 
     getProjects = () => {
         const cachedProjects = localStorage.getItem('projects');
-        const { itemsPerPage } = this.props;
         const { offset } = this.state;
 
         if (cachedProjects) {
             const projects = JSON.parse(cachedProjects);
             this.setState(() => ({
-                projects: projects.slice(offset, offset + itemsPerPage),
+                projects,
                 totalRecords: projects.length,
                 loading: false
             }));
