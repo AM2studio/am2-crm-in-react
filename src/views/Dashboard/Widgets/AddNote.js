@@ -27,7 +27,6 @@ class AddNote extends Component {
     }
 
     inputChangeEvent = e => {
-        console.log(e);
         const { name, value, label } = e.target;
 
         if (name === 'note_for') {
@@ -69,7 +68,7 @@ class AddNote extends Component {
                     'https://hooks.slack.com/services/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'
                 );
                 const notificationTitle = `New note added by ${user} for ${selectedUser}: ${content}`; // eslint-disable-line camelcase
-                slackAPI.send(notificationTitle, 'management');
+                slackAPI.send(notificationTitle, 'management-am2');
             } else {
                 this.setState(() => ({
                     status: 'error',

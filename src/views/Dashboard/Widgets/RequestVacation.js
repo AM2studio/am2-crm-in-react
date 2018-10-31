@@ -62,7 +62,7 @@ class RequestVacation extends Component {
                     'https://hooks.slack.com/services/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'
                 );
                 const notificationTitle = `New vacation request by ${user} From ${startDate} until ${endDate} Working days: ${days}. ${note}`; // eslint-disable-line camelcase
-                slackAPI.send(notificationTitle, 'management');
+                slackAPI.send(notificationTitle, 'management-am2');
             } else {
                 this.setState(() => ({
                     sent: 'error',

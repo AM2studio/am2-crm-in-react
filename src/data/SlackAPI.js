@@ -9,7 +9,7 @@ class SlackAPI {
         this.message = undefined;
     }
 
-    send(notificationTitle, channel = 'general', title, message) {
+    send(notificationTitle, channel = 'general-am2', title, message) {
         const content = JSON.stringify({
             title,
             channel,
