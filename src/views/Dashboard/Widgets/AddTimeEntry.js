@@ -19,7 +19,9 @@ class AddTime extends Component {
             hours: '01:00',
             billable_hours: '01:00',
             project: '',
-            job_type: 'Dev',
+            milestone: '',
+            milestones: [],
+            job_type: '2',
             asana_url: '',
             comment: '',
             msgText: '',
@@ -37,6 +39,12 @@ class AddTime extends Component {
         this.setState({ [name]: value, status: false });
         if (name === 'hours') {
             this.setState({ billable_hours: value });
+        }
+        if (name === 'project') {
+            const api = new WP_API();
+            api.getPosts('milestones', { id: value }).then(response => {
+                this.setState({ milestones: response });
+            });
         }
     };
 
@@ -82,7 +90,9 @@ class AddTime extends Component {
             comment,
             status,
             loader,
-            msgText
+            msgText,
+            milestone,
+            milestones
         } = this.state;
 
         const jobType = [
@@ -112,6 +122,16 @@ class AddTime extends Component {
                 required: true,
                 value: project,
                 parentClass: 'form__column col-1 form__row'
+            },
+            {
+                type: Select,
+                name: 'milestone',
+                label: 'Milestone',
+                placeholder: 'Select Milestone',
+                list: milestones,
+                required: true,
+                value: milestone,
+                parentClass: 'column twelve'
             },
             {
                 type: DatePicker,
