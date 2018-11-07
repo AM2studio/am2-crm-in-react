@@ -194,3 +194,10 @@ input {
         float: left;
     }
 }
+
+.am2-filters {
+    margin-bottom: 25px;
+}
+.am2-filters .col-14 {
+    float: none;
+}

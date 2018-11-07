@@ -15,6 +15,8 @@ class TimeEntriesContainer extends Component {
             modal: false,
             isAdmin: false,
             loading: true,
+            filterProject: '',
+            filterUser: '',
             checkboxUpdating: false
         };
     }
@@ -31,39 +33,48 @@ class TimeEntriesContainer extends Component {
         });
     };
 
+    filterChangeEvent = e => {
+        const { name, value } = e.target;
+        this.setState({ [name]: value, loading: true }, () => {
+            this.getEntries();
+        });
+    };
+
     getEntries = () => {
-        const { offset } = this.state;
+        const { offset, filterUser, filterProject } = this.state;
         const { itemsPerPage } = this.props;
         const api = new WP_API();
-        api.getPosts('time-entry', { itemsPerPage, offset }).then(result => {
-            const posts = result.data.map(post => ({
-                id: post.id,
-                is_billable: post.is_billable,
-                billable_hours: post.billable_hours,
-                month: post.month,
-                user: post.user,
-                project: post.project,
-                project_feature: post.project_feature,
-                date: post.date,
-                hours: post.hours,
-                job_type: post.job_type,
-                comment: post.comment,
-                asana_url: post.asana_url
-            }));
-            const obj = {};
-            // Need to save as state to manipulate with checkbox
-            const isBillable = posts.reduce((prev, curr) => {
-                obj[curr.id] = curr.is_billable;
-                return obj;
-            });
-            this.setState({
-                isBillable,
-                timeEntries: posts,
-                totalRecords: result.count,
-                loading: false,
-                isAdmin: !!result.data[0].user
-            });
-        });
+        api.getPosts('time-entry', { itemsPerPage, offset, filterUser, filterProject }).then(
+            result => {
+                const posts = result.data.map(post => ({
+                    id: post.id,
+                    is_billable: post.is_billable,
+                    billable_hours: post.billable_hours,
+                    month: post.month,
+                    user: post.user,
+                    project: post.project,
+                    project_feature: post.project_feature,
+                    date: post.date,
+                    hours: post.hours,
+                    job_type: post.job_type,
+                    comment: post.comment,
+                    asana_url: post.asana_url
+                }));
+                const obj = {};
+                // Need to save as state to manipulate with checkbox
+                const isBillable = posts.reduce((prev, curr) => {
+                    obj[curr.id] = curr.is_billable;
+                    return obj;
+                });
+                this.setState({
+                    isBillable,
+                    timeEntries: posts,
+                    totalRecords: result.count,
+                    loading: false,
+                    isAdmin: !!result.data[0].user
+                });
+            }
+        );
     };
 
     editTimeEntry = (e, id) => {
@@ -169,9 +180,11 @@ class TimeEntriesContainer extends Component {
             loading,
             singleTimeEntryData,
             modal,
-            isAdmin
+            isAdmin,
+            filterProject,
+            filterUser
         } = this.state;
-        const { itemsPerPage } = this.props;
+        const { itemsPerPage, projectsList, usersList } = this.props;
         const filteredData = timeEntries.map(entry => ({
             ...entry,
             hours: this.hours(entry.hours, entry.billable_hours),
@@ -206,6 +219,11 @@ class TimeEntriesContainer extends Component {
                     totalRecords={totalRecords}
                     loading={loading}
                     itemsPerPage={itemsPerPage}
+                    projectsList={projectsList}
+                    usersList={usersList}
+                    filterChangeEvent={this.filterChangeEvent}
+                    filterProject={filterProject}
+                    filterUser={filterUser}
                 />
                 <AM2Modal open={modal} handleModalClose={this.handleModalClose}>
                     <TimeEntriesEdit
@@ -233,6 +251,8 @@ TimeEntriesContainer.defaultProps = {
         'project',
         'project_feature',
         'asana_url'
-    ]
+    ],
+    projectsList: JSON.parse(localStorage.getItem('projects')),
+    usersList: JSON.parse(localStorage.getItem('users'))
 };
 export default TimeEntriesContainer;
