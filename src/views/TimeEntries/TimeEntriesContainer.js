@@ -4,6 +4,7 @@ import TimeEntriesEdit from './TimeEntriesEdit';
 import TimeEntries from './TimeEntries';
 import WP_API from '../../data/Api';
 import AM2Modal from '../../components/General/AM2Modal';
+import Select from '../../components/Form/Select';
 
 class TimeEntriesContainer extends Component {
     constructor() {
@@ -40,6 +41,21 @@ class TimeEntriesContainer extends Component {
         });
     };
 
+    milestoneChange = e => {
+        const api = new WP_API();
+        api.setPost('time-entry', e.target.name, {
+            singleUpdate: true,
+            just_milestone: e.target.value
+        });
+        api.set().then(result => {
+            if (result.success === true) {
+                console.log('radi');
+            } else {
+                console.log('Something went wrong!');
+            }
+        });
+    };
+
     getEntries = () => {
         const { offset, filterUser, filterProject } = this.state;
         const { itemsPerPage } = this.props;
@@ -53,6 +69,8 @@ class TimeEntriesContainer extends Component {
                     month: post.month,
                     user: post.user,
                     project: post.project,
+                    milestones: post.milestones,
+                    milestone: post.milestone,
                     project_feature: post.project_feature,
                     date: post.date,
                     hours: post.hours,
@@ -133,6 +151,15 @@ class TimeEntriesContainer extends Component {
         </React.Fragment>
     );
 
+    milestonesSelect = (id, milestones, milestone) => (
+        <Select
+            name={id}
+            value={milestone}
+            list={milestones}
+            inputChangeEvent={this.milestoneChange}
+        />
+    );
+
     handleModalClose = update => {
         this.setState({ modal: false });
         if (update === true) {
@@ -192,6 +219,7 @@ class TimeEntriesContainer extends Component {
             comment: this.comment(entry.comment),
             asana_url: entry.asana_url && this.asana(entry.asana_url),
             buttons: this.actionBtns(entry.id),
+            milestone: this.milestonesSelect(entry.id, entry.milestones, entry.milestone),
             is_billable: this.isBillable(entry.id)
         }));
         const columns = [
@@ -201,6 +229,7 @@ class TimeEntriesContainer extends Component {
             // { key: 'month', title: 'Month' },
             { key: 'date', title: 'Date' },
             { key: 'project', title: 'Project' },
+            { key: 'milestone', title: 'Milestone' },
             // { key: 'project_feature', title: 'Feature' },
             { key: 'job_type', title: 'Job Type' },
             { key: 'comment', title: 'Comment' },
