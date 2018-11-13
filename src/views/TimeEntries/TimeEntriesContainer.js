@@ -18,6 +18,7 @@ class TimeEntriesContainer extends Component {
             loading: true,
             filterProject: '',
             filterUser: '',
+            empty: false,
             checkboxUpdating: false
         };
     }
@@ -48,9 +49,7 @@ class TimeEntriesContainer extends Component {
             just_milestone: e.target.value
         });
         api.set().then(result => {
-            if (result.success === true) {
-                console.log('radi');
-            } else {
+            if (!result.success === true) {
                 console.log('Something went wrong!');
             }
         });
@@ -62,6 +61,10 @@ class TimeEntriesContainer extends Component {
         const api = new WP_API();
         api.getPosts('time-entry', { itemsPerPage, offset, filterUser, filterProject }).then(
             result => {
+                if (result.count === '0') {
+                    this.setState({ empty: true });
+                    return;
+                }
                 const posts = result.data.map(post => ({
                     id: post.id,
                     is_billable: post.is_billable,
@@ -89,7 +92,8 @@ class TimeEntriesContainer extends Component {
                     timeEntries: posts,
                     totalRecords: result.count,
                     loading: false,
-                    isAdmin: !!result.data[0].user
+                    isAdmin: !!result.data[0].user,
+                    empty: false
                 });
             }
         );
@@ -205,6 +209,7 @@ class TimeEntriesContainer extends Component {
             timeEntries,
             totalRecords,
             loading,
+            empty,
             singleTimeEntryData,
             modal,
             isAdmin,
@@ -247,6 +252,7 @@ class TimeEntriesContainer extends Component {
                     onPageChanged={this.onPageChanged}
                     totalRecords={totalRecords}
                     loading={loading}
+                    empty={empty}
                     itemsPerPage={itemsPerPage}
                     projectsList={projectsList}
                     usersList={usersList}

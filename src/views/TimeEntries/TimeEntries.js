@@ -2,6 +2,7 @@ import React from 'react';
 import ViewWrapper from '../../components/General/ViewWrapper';
 import AM2Table from '../../components/Table/AM2Table';
 import Select from '../../components/Form/Select';
+import NoResults from '../../components/General/NoResults';
 
 const TimeEntries = props => {
     const {
@@ -10,6 +11,7 @@ const TimeEntries = props => {
         itemsPerPage,
         totalRecords,
         loading,
+        empty,
         onPageChanged,
         projectsList,
         filterProject,
@@ -37,14 +39,18 @@ const TimeEntries = props => {
                     inputChangeEvent={filterChangeEvent}
                 />
             </div>
-            <AM2Table
-                rows={data}
-                columns={columns}
-                itemsPerPage={itemsPerPage}
-                totalRecords={totalRecords}
-                loading={loading}
-                onPageChanged={onPageChanged}
-            />
+            {!empty ? (
+                <AM2Table
+                    rows={data}
+                    columns={columns}
+                    itemsPerPage={itemsPerPage}
+                    totalRecords={totalRecords}
+                    loading={loading}
+                    onPageChanged={onPageChanged}
+                />
+            ) : (
+                <NoResults />
+            )}
         </ViewWrapper>
     );
 };
