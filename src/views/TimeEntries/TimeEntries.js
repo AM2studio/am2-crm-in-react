@@ -3,6 +3,7 @@ import ViewWrapper from '../../components/General/ViewWrapper';
 import AM2Table from '../../components/Table/AM2Table';
 import Select from '../../components/Form/Select';
 import NoResults from '../../components/General/NoResults';
+import DateFilter from '../../components/General/DateFilter';
 
 const TimeEntries = props => {
     const {
@@ -38,6 +39,10 @@ const TimeEntries = props => {
                     parentClass="form__column col-14"
                     inputChangeEvent={filterChangeEvent}
                 />
+                <div className="form__column col-14">
+                    <label htmlFor="filterDate">Filter by Date:</label>
+                    <DateFilter inputChangeEvent={filterChangeEvent} />
+                </div>
             </div>
             {!empty ? (
                 <AM2Table

@@ -18,6 +18,7 @@ class TimeEntriesContainer extends Component {
             loading: true,
             filterProject: '',
             filterUser: '',
+            filterDate: '',
             empty: false,
             checkboxUpdating: false
         };
@@ -56,47 +57,51 @@ class TimeEntriesContainer extends Component {
     };
 
     getEntries = () => {
-        const { offset, filterUser, filterProject } = this.state;
+        const { offset, filterUser, filterProject, filterDate } = this.state;
         const { itemsPerPage } = this.props;
         const api = new WP_API();
-        api.getPosts('time-entry', { itemsPerPage, offset, filterUser, filterProject }).then(
-            result => {
-                if (result.count === '0') {
-                    this.setState({ empty: true });
-                    return;
-                }
-                const posts = result.data.map(post => ({
-                    id: post.id,
-                    is_billable: post.is_billable,
-                    billable_hours: post.billable_hours,
-                    month: post.month,
-                    user: post.user,
-                    project: post.project,
-                    milestones: post.milestones,
-                    milestone: post.milestone,
-                    project_feature: post.project_feature,
-                    date: post.date,
-                    hours: post.hours,
-                    job_type: post.job_type,
-                    comment: post.comment,
-                    asana_url: post.asana_url
-                }));
-                const obj = {};
-                // Need to save as state to manipulate with checkbox
-                const isBillable = posts.reduce((prev, curr) => {
-                    obj[curr.id] = curr.is_billable;
-                    return obj;
-                });
-                this.setState({
-                    isBillable,
-                    timeEntries: posts,
-                    totalRecords: result.count,
-                    loading: false,
-                    isAdmin: !!result.data[0].user,
-                    empty: false
-                });
+        api.getPosts('time-entry', {
+            itemsPerPage,
+            offset,
+            filterUser,
+            filterProject,
+            filterDate
+        }).then(result => {
+            if (result.count === '0') {
+                this.setState({ empty: true });
+                return;
             }
-        );
+            const posts = result.data.map(post => ({
+                id: post.id,
+                is_billable: post.is_billable,
+                billable_hours: post.billable_hours,
+                month: post.month,
+                user: post.user,
+                project: post.project,
+                milestones: post.milestones,
+                milestone: post.milestone,
+                project_feature: post.project_feature,
+                date: post.date,
+                hours: post.hours,
+                job_type: post.job_type,
+                comment: post.comment,
+                asana_url: post.asana_url
+            }));
+            const obj = {};
+            // Need to save as state to manipulate with checkbox
+            const isBillable = posts.reduce((prev, curr) => {
+                obj[curr.id] = curr.is_billable;
+                return obj;
+            });
+            this.setState({
+                isBillable,
+                timeEntries: posts,
+                totalRecords: result.count,
+                loading: false,
+                isAdmin: !!result.data[0].user,
+                empty: false
+            });
+        });
     };
 
     editTimeEntry = (e, id) => {
