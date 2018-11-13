@@ -58,8 +58,7 @@ class AddNote extends Component {
         this.setState(() => ({ loader: true }));
         // Fetch API
         const api = new WP_API();
-        api.setPost('user-note', '', this.state);
-        api.set().then(result => {
+        api.set('user-note', '', this.state).then(result => {
             if (result.success === true) {
                 this.setState(this.initialState);
                 this.setState(() => ({ status: 'success', msgText: 'Thanks for the Note!' }));

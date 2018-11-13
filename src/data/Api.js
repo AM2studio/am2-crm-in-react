@@ -55,22 +55,41 @@ class WP_API {
             });
     }
 
-    setPost(type, id = undefined, dataToUpdate = undefined) {
+    set(type, id = undefined, dataToUpdate = undefined) {
         this.url = `${this.url}${type}/`;
         if (id) {
             this.url = `${this.url}${id}/`;
         }
-        this.dataToUpdate = dataToUpdate;
-    }
-
-    set() {
         return axios({
             method: 'post',
             url: this.url,
             headers: {
                 Authorization: `Bearer ${this.auth.getSessionToken()}`
             },
-            data: this.dataToUpdate
+            data: dataToUpdate
+        })
+            .then(response => {
+                console.log(response.data);
+                return response.data;
+            })
+            .catch(error => {
+                // handle error
+                console.log(error);
+            });
+    }
+
+    delete(type, id = undefined) {
+        this.url = `${this.url}${type}/`;
+        if (id) {
+            this.url = `${this.url}${id}/`;
+        }
+        return axios({
+            method: 'post',
+            url: this.url,
+            headers: {
+                Authorization: `Bearer ${this.auth.getSessionToken()}`
+            },
+            data: { delete: true }
         })
             .then(response => {
                 console.log(response.data);

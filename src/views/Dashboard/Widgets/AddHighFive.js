@@ -56,8 +56,7 @@ class AddHighFive extends Component {
 
         this.setState(() => ({ loader: true }));
         const api = new WP_API();
-        api.setPost('high-five', '', this.state);
-        api.set().then(result => {
+        api.set('high-five', '', this.state).then(result => {
             if (result.success === true) {
                 // Pop a success message
                 this.setState(this.initialState);

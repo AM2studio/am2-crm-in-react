@@ -47,8 +47,7 @@ class VacationsContainer extends Component {
             };
         });
         const api = new WP_API();
-        api.setPost('vacations', id, { status: type });
-        api.set().then(result => {
+        api.set('vacations', id, { status: type }).then(result => {
             console.log(result);
         });
     };

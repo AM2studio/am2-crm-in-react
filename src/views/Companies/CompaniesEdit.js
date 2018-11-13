@@ -28,8 +28,7 @@ export default class extends Component {
         const { id } = this.state;
         const { handleModalClose } = this.props;
         const api = new WP_API();
-        api.setPost('companies', id, this.state);
-        api.set().then(result => {
+        api.set('companies', id, this.state).then(result => {
             if (result.success === true) {
                 handleModalClose(true);
             } else {

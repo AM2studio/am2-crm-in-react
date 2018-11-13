@@ -30,9 +30,7 @@ class ProjectsEdit extends Component {
         const { id } = this.state; // eslint-disable-line camelcase
         const { handleModalClose } = this.props;
         const data = new WP_API();
-
-        data.setPost('projects', id, this.state);
-        data.set().then(result => {
+        data.set('projects', id, this.state).then(result => {
             if (result.success === true) {
                 handleModalClose(true);
             } else {
