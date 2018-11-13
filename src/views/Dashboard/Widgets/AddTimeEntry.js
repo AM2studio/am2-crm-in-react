@@ -22,6 +22,7 @@ class AddTime extends Component {
             milestone: '',
             milestones: [],
             job_type: '2',
+            is_billable: 1,
             asana_url: '',
             comment: '',
             msgText: '',
@@ -43,7 +44,7 @@ class AddTime extends Component {
         if (name === 'project') {
             const api = new WP_API();
             api.getPosts('milestones', { id: value }).then(response => {
-                this.setState({ milestones: response });
+                this.setState({ milestones: response, milestone: response[0].id });
             });
         }
     };
@@ -62,8 +63,7 @@ class AddTime extends Component {
         // Proceed
         this.setState(() => ({ loader: true }));
         const api = new WP_API();
-        api.setPost('time-entry', '', this.state);
-        api.set().then(result => {
+        api.set('time-entry', '', this.state).then(result => {
             if (result.success === true) {
                 this.setState(this.initialState);
                 this.setState(() => ({ status: 'success', msgText: 'Entry Added!' }));
