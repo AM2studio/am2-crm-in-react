@@ -45,11 +45,10 @@ class TimeEntriesContainer extends Component {
 
     milestoneChange = e => {
         const api = new WP_API();
-        api.setPost('time-entry', e.target.name, {
+        api.set('time-entry', e.target.name, {
             singleUpdate: true,
             just_milestone: e.target.value
-        });
-        api.set().then(result => {
+        }).then(result => {
             if (!result.success === true) {
                 console.log('Something went wrong!');
             }
@@ -113,13 +112,20 @@ class TimeEntriesContainer extends Component {
         });
     };
 
+    deleteTimeEntry = (e, id) => {
+        const data = new WP_API();
+        data.delete('time-entry', id).then(result => {
+            // Instead of another API call, remove from array?
+            this.getEntries();
+        });
+    };
+
     handleIsBillable = (e, id) => {
         const { checked } = e.target;
         const value = checked === true ? '1' : '0';
         const data = new WP_API();
         this.setState({ checkboxUpdating: id });
-        data.setPost('time-entry', id, { just_billable: value });
-        data.set().then(result => {
+        data.set('time-entry', id, { just_billable: value }).then(result => {
             if (result.success === true) {
                 this.setState(prevState => {
                     const { isBillable } = prevState;
