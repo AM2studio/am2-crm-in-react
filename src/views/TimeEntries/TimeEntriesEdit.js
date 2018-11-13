@@ -52,6 +52,12 @@ class TimeEntriesEdit extends Component {
     inputChangeEvent = e => {
         const { name, value } = e.target;
         this.setState({ [name]: value });
+        if (name === 'project') {
+            const api = new WP_API();
+            api.getPosts('milestones', { id: value }).then(response => {
+                this.setState({ milestones: response, milestone: response[0].id });
+            });
+        }
     };
 
     render() {
@@ -60,14 +66,17 @@ class TimeEntriesEdit extends Component {
             hours,
             billable_hours, // eslint-disable-line camelcase
             project, // eslint-disable-line camelcase
+            user_id, // eslint-disable-line camelcase
             job_type, // eslint-disable-line camelcase
             asana_url, // eslint-disable-line camelcase
             is_billable, // eslint-disable-line camelcase
+            milestone,
+            milestones,
             comment,
             loading
         } = this.state;
 
-        const { projects, handleModalClose, isBillable } = this.props;
+        const { projects, handleModalClose, isBillable, users } = this.props;
 
         const jobType = [
             { id: '2', title: 'Dev' },
@@ -89,6 +98,16 @@ class TimeEntriesEdit extends Component {
         const fields = [
             {
                 type: Select,
+                name: 'user_id',
+                label: 'User',
+                placeholder: 'Select User',
+                required: true,
+                value: user_id,
+                list: users,
+                parentClass: 'form__column col-1 form__row'
+            },
+            {
+                type: Select,
                 name: 'project',
                 label: 'Project',
                 placeholder: 'Select Project',
@@ -96,6 +115,16 @@ class TimeEntriesEdit extends Component {
                 required: true,
                 value: project,
                 parentClass: 'form__column col-1 form__row'
+            },
+            {
+                type: Select,
+                name: 'milestone',
+                label: 'Milestone',
+                placeholder: 'Select Milestone',
+                list: milestones,
+                required: true,
+                value: milestone,
+                parentClass: 'column twelve'
             },
             {
                 type: DatePicker,
@@ -161,7 +190,7 @@ class TimeEntriesEdit extends Component {
         return (
             <div className="section">
                 <header className="section__header">
-                    <h2 className="section__title">Edit Project</h2>
+                    <h2 className="section__title">Edit Time Entry</h2>
                 </header>
                 {loading ? (
                     <Loading />
@@ -212,5 +241,6 @@ export default TimeEntriesEdit;
 
 TimeEntriesEdit.defaultProps = {
     isBillable: [{ id: 1, title: 'Yes' }, { id: 0, title: 'No' }],
-    projects: JSON.parse(localStorage.getItem('projects'))
+    projects: JSON.parse(localStorage.getItem('projects')),
+    users: JSON.parse(localStorage.getItem('users'))
 };

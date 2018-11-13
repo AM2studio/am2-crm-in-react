@@ -270,6 +270,9 @@ TimeEntriesContainer.defaultProps = {
     itemsPerPage: 20,
     dataToFetch: [
         'billable_hours',
+        'user_id',
+        'milestones',
+        'milestone',
         'comment',
         'company',
         'date',
