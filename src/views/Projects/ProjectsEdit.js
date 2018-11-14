@@ -3,6 +3,7 @@ import Text from '../../components/Form/Text';
 import Select from '../../components/Form/Select';
 import WP_API from '../../data/Api';
 import DatePicker from '../../components/Form/DatePicker';
+import Radio from '../../components/Form/Radio';
 import Loading from '../../components/General/Loading';
 
 class ProjectsEdit extends Component {
@@ -45,7 +46,13 @@ class ProjectsEdit extends Component {
     };
 
     render() {
-        const { handleModalClose, companies, departments, projectMngrs } = this.props;
+        const {
+            handleModalClose,
+            companies,
+            departments,
+            projectMngrs,
+            activeProjects
+        } = this.props;
 
         const {
             loading,
@@ -57,8 +64,8 @@ class ProjectsEdit extends Component {
             staging_link, // eslint-disable-line camelcase
             slack_channel, // eslint-disable-line camelcase
             company_id, // eslint-disable-line camelcase
-            project_mngr // eslint-disable-line camelcase
-            // active_project,
+            project_mngr, // eslint-disable-line camelcase
+            active_project // eslint-disable-line camelcase
             // project_features // eslint-disable-line camelcase
         } = this.state;
 
@@ -128,6 +135,14 @@ class ProjectsEdit extends Component {
                 list: projectMngrs,
                 required: true,
                 value: project_mngr
+            },
+            {
+                type: Radio,
+                name: 'active_project',
+                label: 'Active Project',
+                list: activeProjects,
+                required: true,
+                value: active_project
             }
         ];
         return (
@@ -194,6 +209,7 @@ ProjectsEdit.defaultProps = {
         { id: 3, title: 'Design' },
         { id: 4, title: 'Enterprise' }
     ],
+    activeProjects: [{ id: 1, title: 'Yes' }, { id: 0, title: 'No' }],
     projectMngrs: [
         { id: 51, title: 'Brankica Basta' },
         { id: 59, title: 'Lynette Sawyer' },
