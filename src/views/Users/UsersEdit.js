@@ -273,7 +273,8 @@ UsersEdit.defaultProps = {
         { id: 'vacations', title: 'Vacations' },
         { id: 'timeline', title: 'Timeline' },
         { id: 'timeEntries', title: 'Time Entries' },
-        { id: 'reports', title: 'Reports' }
+        { id: 'reports', title: 'Reports' },
+        { id: 'projectearnings', title: 'Project Earnings' }
     ],
     trackResources: [{ id: 1, title: 'Yes' }, { id: 0, title: 'No' }]
 };
