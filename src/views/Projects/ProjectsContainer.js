@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { FaPencilAlt, FaTrashAlt } from 'react-icons/fa';
+import { FaPencilAlt, FaTrashAlt, FaFlag } from 'react-icons/fa';
 import Projects from './Projects';
 import AM2Modal from '../../components/General/AM2Modal';
 import ProjectsEdit from './ProjectsEdit';
+import Milestones from './ProjectsMilestones';
 import WP_API from '../../data/Api';
 
 class ProjectsContainer extends Component {
@@ -12,9 +13,11 @@ class ProjectsContainer extends Component {
             projects: [],
             companies: JSON.parse(localStorage.getItem('companies')),
             modal: false,
+            modalType: '',
             singleProjectData: {},
             offset: 0,
             totalRecords: 0,
+            currentProject: '',
             loading: true
         };
     }
@@ -56,16 +59,26 @@ class ProjectsContainer extends Component {
     addProject = () => {
         this.setState(() => ({
             modal: true,
+            modalType: 'project',
             singleProjectData: false
         }));
     };
 
     editProject = (e, id) => {
-        this.setState({ modal: true });
+        this.setState({ modal: true, modalType: 'project' });
         const { dataToFetch } = this.props;
         const data = new WP_API();
         data.get('projects', id, dataToFetch).then(result => {
             this.setState({ singleProjectData: result });
+        });
+    };
+
+    editMilestones = (e, id) => {
+        this.setState({ modal: true, modalType: 'milestones' });
+        const data = new WP_API();
+        data.get('milestones', id).then(result => {
+            const milestones = result;
+            this.setState({ projectMilestones: milestones, currentProject: id });
         });
     };
 
@@ -109,11 +122,30 @@ class ProjectsContainer extends Component {
             >
                 <FaTrashAlt />
             </button>
+            <button
+                type="button"
+                className="button--table button--table--milestones"
+                onClick={e => {
+                    this.editMilestones(e, id);
+                }}
+            >
+                <FaFlag />
+            </button>
         </React.Fragment>
     );
 
     render() {
-        const { projects, modal, singleProjectData, companies, totalRecords, loading } = this.state;
+        const {
+            projects,
+            modal,
+            modalType,
+            singleProjectData,
+            companies,
+            totalRecords,
+            loading,
+            projectMilestones,
+            currentProject
+        } = this.state;
         const newComp =
             projects &&
             projects.map(value => {
@@ -138,12 +170,19 @@ class ProjectsContainer extends Component {
                     loading={loading}
                 />
                 <AM2Modal open={modal} handleModalClose={this.handleModalClose}>
-                    <ProjectsEdit
-                        singleProjectData={singleProjectData}
-                        companies={companies}
-                        handleModalClose={this.handleModalClose}
-                        inputChangeEvent={this.inputChangeEvent}
-                    />
+                    {modalType === 'project' ? (
+                        <ProjectsEdit
+                            singleProjectData={singleProjectData}
+                            companies={companies}
+                            handleModalClose={this.handleModalClose}
+                        />
+                    ) : (
+                        <Milestones
+                            projectMilestones={projectMilestones}
+                            project={currentProject}
+                            handleModalClose={this.handleModalClose}
+                        />
+                    )}
                 </AM2Modal>
             </React.Fragment>
         );

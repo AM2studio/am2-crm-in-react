@@ -201,3 +201,23 @@ input {
 .am2-filters .col-14 {
     float: none;
 }
+.single-milestone {
+    margin-bottom: 50px;
+    padding: 25px;
+    border: 1px solid #ddd;
+    background-color: #fafafa;
+}
+.form__column__buttons .button {
+    margin-left: 20px;
+    box-shadow: none;
+    padding: 9px 25px;
+    border: 1px solid #c7c7c7;
+}
+
+.save.single-milestone {
+    border: 1px solid #32bb3d;
+}
+.button--snapshot {
+    margin-left: 10px;
+    color: #a29a9a;
+}

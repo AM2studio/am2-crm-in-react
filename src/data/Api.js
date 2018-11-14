@@ -43,6 +43,9 @@ class WP_API {
         })
             .then(response => {
                 console.log(response);
+                if (type === 'milestones') {
+                    return response.data;
+                }
                 const fetchedData = dataToFetch.reduce((obj, value) => {
                     obj[value] = response.data.data[0][value]; // eslint-disable-line no-param-reassign
                     return obj;
