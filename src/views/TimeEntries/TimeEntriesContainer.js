@@ -216,6 +216,8 @@ class TimeEntriesContainer extends Component {
     );
 
     render() {
+        const projectsList = JSON.parse(localStorage.getItem('projects'));
+        const usersList = JSON.parse(localStorage.getItem('users'));
         const {
             timeEntries,
             totalRecords,
@@ -227,7 +229,8 @@ class TimeEntriesContainer extends Component {
             filterProject,
             filterUser
         } = this.state;
-        const { itemsPerPage, projectsList, usersList } = this.props;
+        const { itemsPerPage } = this.props;
+
         const filteredData = timeEntries.map(entry => ({
             ...entry,
             hours: this.hours(entry.hours, entry.billable_hours),
@@ -255,6 +258,7 @@ class TimeEntriesContainer extends Component {
         if (isAdmin) {
             columns.unshift({ key: 'user', title: 'User' });
         }
+
         return (
             <React.Fragment>
                 <TimeEntries
@@ -300,8 +304,6 @@ TimeEntriesContainer.defaultProps = {
         'project',
         'project_feature',
         'asana_url'
-    ],
-    projectsList: JSON.parse(localStorage.getItem('projects')),
-    usersList: JSON.parse(localStorage.getItem('users'))
+    ]
 };
 export default TimeEntriesContainer;
