@@ -94,18 +94,14 @@ class UsersEdit extends Component {
                 name: 'first_name',
                 label: 'First Name',
                 required: true,
-                value: first_name,
-                parentClass: 'form__column col-12',
-                className: 'form__input'
+                value: first_name
             },
             {
                 type: Text,
                 name: 'last_name',
                 label: 'Last Name',
                 required: true,
-                value: last_name,
-                parentClass: 'form__column col-12',
-                className: 'form__input'
+                value: last_name
             },
             {
                 type: Text,
@@ -113,27 +109,21 @@ class UsersEdit extends Component {
                 name: 'email',
                 label: 'Email',
                 required: true,
-                value: email,
-                parentClass: 'form__column col-12',
-                className: 'form__input'
+                value: email
             },
             {
                 type: Text,
                 name: 'hourly_rate',
                 label: 'Hourly Rate',
                 required: true,
-                value: hourly_rate,
-                parentClass: 'form__column col-12',
-                className: 'form__input'
+                value: hourly_rate
             },
             {
                 type: Text,
                 name: 'daily_workable_hours',
                 label: 'Daily Workable Hours',
                 required: true,
-                value: daily_workable_hours,
-                parentClass: 'form__column col-12',
-                className: 'form__input'
+                value: daily_workable_hours
             },
             {
                 type: Select,
@@ -141,9 +131,7 @@ class UsersEdit extends Component {
                 label: 'Country',
                 required: true,
                 value: country,
-                list: countries,
-                parentClass: 'form__column col-12',
-                className: 'form__input'
+                list: countries
             },
             {
                 type: Select,
@@ -151,9 +139,7 @@ class UsersEdit extends Component {
                 label: 'Company Role',
                 required: true,
                 value: company_role,
-                list: companyRoles,
-                parentClass: 'form__column col-12',
-                className: 'form__input'
+                list: companyRoles
             },
             {
                 type: Radio,
@@ -161,9 +147,7 @@ class UsersEdit extends Component {
                 label: 'Track Resources',
                 required: true,
                 value: track_resources,
-                list: trackResources,
-                parentClass: 'form__column col-12',
-                className: 'form__input'
+                list: trackResources
             },
             {
                 type: Radio,
@@ -171,9 +155,7 @@ class UsersEdit extends Component {
                 label: 'Do not track workable hours',
                 required: true,
                 value: do_not_track_workable_hours,
-                list: trackResources,
-                parentClass: 'form__column col-12',
-                className: 'form__input'
+                list: trackResources
             },
             {
                 type: Checkbox,
@@ -181,9 +163,7 @@ class UsersEdit extends Component {
                 label: 'Department',
                 required: true,
                 value: department,
-                list: departments,
-                parentClass: 'form__column col-12',
-                className: 'form__input'
+                list: departments
             },
             {
                 type: Checkbox,
@@ -191,9 +171,7 @@ class UsersEdit extends Component {
                 label: 'Permissions',
                 required: true,
                 value: am2Permissions,
-                list: permissionsList,
-                parentClass: 'form__column col-1',
-                className: 'form__input'
+                list: permissionsList
             }
         ];
         return (
@@ -214,6 +192,8 @@ class UsersEdit extends Component {
                                             key={name}
                                             name={name}
                                             inputChangeEvent={this.inputChangeEvent}
+                                            parentClass="form__column col-12"
+                                            className="form__input"
                                             {...rest}
                                         />
                                     );
