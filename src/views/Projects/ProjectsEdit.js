@@ -9,9 +9,13 @@ import Loading from '../../components/General/Loading';
 class ProjectsEdit extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            loading: true
-        };
+
+        this.state = { loading: true };
+
+        const { singleProjectData } = props;
+        if (singleProjectData === false) {
+            this.state = { loading: false };
+        }
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -63,6 +67,7 @@ class ProjectsEdit extends Component {
             rep_link, // eslint-disable-line camelcase
             staging_link, // eslint-disable-line camelcase
             slack_channel, // eslint-disable-line camelcase
+            asanaID,
             company_id, // eslint-disable-line camelcase
             project_mngr, // eslint-disable-line camelcase
             active_project // eslint-disable-line camelcase
@@ -111,6 +116,13 @@ class ProjectsEdit extends Component {
                 label: 'Slack Channel',
                 required: true,
                 value: slack_channel
+            },
+            {
+                type: Text,
+                name: 'asanaID',
+                label: 'Asana Project ID',
+                required: true,
+                value: asanaID
             },
             {
                 type: Select,

@@ -209,6 +209,7 @@ ProjectsContainer.defaultProps = {
         'rep_link',
         'staging_link',
         'slack_channel',
+        'asanaID',
         'project_features'
     ],
     itemsPerPage: 20
