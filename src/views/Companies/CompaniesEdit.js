@@ -43,7 +43,6 @@ export default class extends Component {
     };
 
     render() {
-        console.log(this.state);
         const { handleModalClose } = this.props;
         const {
             title,
@@ -57,6 +56,73 @@ export default class extends Component {
             website,
             loading
         } = this.state;
+
+        const fields = [
+            {
+                type: Text,
+                name: 'title',
+                label: 'Company Title',
+                required: true,
+                value: title
+            },
+            {
+                type: Text,
+                name: 'address',
+                label: 'Street Address',
+                required: true,
+                value: address
+            },
+            {
+                type: Text,
+                name: 'city',
+                label: 'City',
+                required: true,
+                value: city
+            },
+            {
+                type: Text,
+                name: 'zip',
+                label: 'ZIP Code',
+                required: true,
+                value: zip
+            },
+            {
+                type: Text,
+                name: 'province',
+                label: 'State / Province',
+                required: true,
+                value: province
+            },
+            {
+                type: Text,
+                name: 'country',
+                label: 'Country',
+                required: true,
+                value: country
+            },
+            {
+                type: Text,
+                name: 'phone',
+                label: 'Phone Number',
+                required: true,
+                value: phone
+            },
+            {
+                type: Text,
+                name: 'contact_email',
+                label: 'Contact Email',
+                required: true,
+                value: contact_email
+            },
+            {
+                type: Text,
+                name: 'website',
+                label: 'WebSite',
+                required: true,
+                value: website
+            }
+        ];
+
         return (
             <div className="section">
                 <header className="section__header">
@@ -68,92 +134,19 @@ export default class extends Component {
                     <div className="section__content">
                         <form className="form">
                             <div className="form__row">
-                                <Text
-                                    name="title"
-                                    parentClass="form__column col-12"
-                                    label="Company Title"
-                                    required
-                                    value={title}
-                                    inputChangeEvent={this.inputChangeEvent}
-                                    className="form__input"
-                                />
-                                <Text
-                                    name="address"
-                                    parentClass="form__column col-12"
-                                    label="Address"
-                                    required
-                                    value={address}
-                                    inputChangeEvent={this.inputChangeEvent}
-                                    className="form__input"
-                                />
-                            </div>
-                            <div className="form__row">
-                                <Text
-                                    name="city"
-                                    parentClass="form__column col-12"
-                                    label="City"
-                                    required
-                                    value={city}
-                                    inputChangeEvent={this.inputChangeEvent}
-                                    className="form__input"
-                                />
-                                <Text
-                                    name="zip"
-                                    parentClass="form__column col-12"
-                                    label="ZIP / Postal code"
-                                    value={zip}
-                                    inputChangeEvent={this.inputChangeEvent}
-                                    className="form__input"
-                                />
-                            </div>
-                            <div className="form__row">
-                                <Text
-                                    name="province"
-                                    parentClass="form__column col-12"
-                                    label="State / Province"
-                                    value={province}
-                                    inputChangeEvent={this.inputChangeEvent}
-                                    className="form__input"
-                                />
-                                <Text
-                                    name="country"
-                                    parentClass="form__column col-12"
-                                    label="Country"
-                                    value={country}
-                                    inputChangeEvent={this.inputChangeEvent}
-                                    className="form__input"
-                                />
-                            </div>
-                            <div className="form__row">
-                                <Text
-                                    name="phone"
-                                    parentClass="form__column col-12"
-                                    label="Phone Number"
-                                    value={phone}
-                                    required
-                                    inputChangeEvent={this.inputChangeEvent}
-                                    className="form__input"
-                                />
-                                <Text
-                                    name="contact_email"
-                                    parentClass="form__column col-12"
-                                    label="Contact Email"
-                                    value={contact_email} // eslint-disable-line camelcase
-                                    inputChangeEvent={this.inputChangeEvent}
-                                    className="form__input"
-                                    required
-                                    propType="email"
-                                />
-                            </div>
-                            <div className="form__row">
-                                <Text
-                                    name="website"
-                                    parentClass="form__column col-1"
-                                    label="Website"
-                                    value={website}
-                                    inputChangeEvent={this.inputChangeEvent}
-                                    className="form__input"
-                                />
+                                {fields.map(field => {
+                                    const { name, ...rest } = field;
+                                    return (
+                                        <field.type
+                                            key={name}
+                                            name={name}
+                                            parentClass="form__column col-12"
+                                            className="form__input"
+                                            inputChangeEvent={this.inputChangeEvent}
+                                            {...rest}
+                                        />
+                                    );
+                                })}
                             </div>
                             <div className="form__row">
                                 <button
