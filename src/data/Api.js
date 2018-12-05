@@ -1,5 +1,8 @@
 import axios from 'axios';
+import lscache from 'lscache';
 import WP_AUTH from './Auth';
+
+const TTL_MINUTES = 5;
 
 class WP_API {
     constructor() {
@@ -7,23 +10,36 @@ class WP_API {
         this.auth = new WP_AUTH();
     }
 
-    getPosts(type, data = undefined) {
-        return axios({
-            method: 'get',
-            url: `${this.url}${type}/`,
-            headers: {
-                Authorization: `Bearer ${this.auth.getSessionToken()}`
-            },
-            params: data
-        })
-            .then(response => {
-                console.log(response);
-                return response.data;
+    async getPosts(type, data = undefined, byPassCache = false, byPassCacheSave = true) {
+        const fetchURL = `${this.url}${type}/`;
+        let cacheKey = fetchURL;
+        if (data && data.offset) {
+            cacheKey = `${fetchURL}${data.offset}`;
+        }
+        let cachedResponse = lscache.get(cacheKey);
+
+        if (cachedResponse === null || byPassCache === true) {
+            cachedResponse = await axios({
+                method: 'get',
+                url: fetchURL,
+                headers: {
+                    Authorization: `Bearer ${this.auth.getSessionToken()}`
+                },
+                params: data
             })
-            .catch(error => {
-                // handle error
-                console.log(error);
-            });
+                .then(response => {
+                    if (byPassCacheSave === true) {
+                        lscache.set(cacheKey, response.data, TTL_MINUTES);
+                    }
+                    return response.data;
+                })
+                .catch(error => {
+                    // handle error
+                    console.log(error);
+                });
+        }
+
+        return cachedResponse;
     }
 
     /*
