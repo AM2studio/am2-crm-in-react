@@ -75,7 +75,6 @@ class TimeEntriesEdit extends Component {
         } = this.state;
 
         const { projects, handleModalClose, isBillable, users } = this.props;
-
         const jobType = [
             { id: '2', title: 'Dev' },
             { id: '0', title: 'PM' },
@@ -238,7 +237,5 @@ class TimeEntriesEdit extends Component {
 export default TimeEntriesEdit;
 
 TimeEntriesEdit.defaultProps = {
-    isBillable: [{ id: 1, title: 'Yes' }, { id: 0, title: 'No' }],
-    projects: JSON.parse(localStorage.getItem('projects')),
-    users: JSON.parse(localStorage.getItem('users'))
+    isBillable: [{ id: 1, title: 'Yes' }, { id: 0, title: 'No' }]
 };

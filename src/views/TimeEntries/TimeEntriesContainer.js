@@ -11,6 +11,8 @@ class TimeEntriesContainer extends Component {
         super();
         this.state = {
             timeEntries: [],
+            projectsList: [],
+            usersList: [],
             offset: 0,
             totalRecords: 0,
             modal: false,
@@ -39,7 +41,7 @@ class TimeEntriesContainer extends Component {
     filterChangeEvent = e => {
         const { name, value } = e.target;
         this.setState({ [name]: value, loading: true }, () => {
-            this.getEntries();
+            this.getEntries(true);
         });
     };
 
@@ -55,50 +57,67 @@ class TimeEntriesContainer extends Component {
         });
     };
 
-    getEntries = () => {
+    getEntries = (update = false) => {
         const { offset, filterUser, filterProject, filterDate } = this.state;
+        let byPassCache = update;
+        let byPassCacheSave = true;
+
+        if (filterUser || filterProject || filterDate) {
+            byPassCache = true;
+            byPassCacheSave = false;
+        }
         const { itemsPerPage } = this.props;
         const api = new WP_API();
-        api.getPosts('time-entry', {
-            itemsPerPage,
-            offset,
-            filterUser,
-            filterProject,
-            filterDate
-        }).then(result => {
-            if (result.count === '0') {
-                this.setState({ empty: true });
-                return;
-            }
-            const posts = result.data.map(post => ({
-                id: post.id,
-                is_billable: post.is_billable,
-                billable_hours: post.billable_hours,
-                month: post.month,
-                user: post.user,
-                project: post.project,
-                milestones: post.milestones,
-                milestone: post.milestone,
-                project_feature: post.project_feature,
-                date: post.date,
-                hours: post.hours,
-                job_type: post.job_type,
-                comment: post.comment,
-                asana_url: post.asana_url
-            }));
-            const obj = {};
-            // Need to save as state to manipulate with checkbox
-            const isBillable = posts.reduce((prev, curr) => {
-                obj[curr.id] = curr.is_billable;
-                return obj;
+        const usersList = api.getPosts('users').then(result => result.data);
+        const projectsList = api.getPosts('projects').then(result => result.data);
+        const timeEntries = api
+            .getPosts(
+                'time-entry',
+                {
+                    itemsPerPage,
+                    offset,
+                    filterUser,
+                    filterProject,
+                    filterDate
+                },
+                byPassCache,
+                byPassCacheSave
+            )
+            .then(result => {
+                const posts = result.data.map(post => ({
+                    id: post.id,
+                    is_billable: post.is_billable,
+                    billable_hours: post.billable_hours,
+                    month: post.month,
+                    user: post.user,
+                    project: post.project,
+                    milestones: post.milestones,
+                    milestone: post.milestone,
+                    project_feature: post.project_feature,
+                    date: post.date,
+                    hours: post.hours,
+                    job_type: post.job_type,
+                    comment: post.comment,
+                    asana_url: post.asana_url
+                }));
+                const obj = {};
+                // Need to save as state to manipulate with checkbox
+                const isBillable = posts.reduce((prev, curr) => {
+                    obj[curr.id] = curr.is_billable;
+                    return obj;
+                });
+                return { isBillable, timeEntries: posts, totalRecords: result.count };
             });
+        Promise.all([usersList, timeEntries, projectsList]).then(result => {
             this.setState({
-                isBillable,
-                timeEntries: posts,
-                totalRecords: result.count,
+                usersList: result[0],
+                projectsList: result[2],
+                isBillable: result[1].isBillable,
+                timeEntries: result[1].timeEntries,
+                totalRecords: result[1].totalRecords,
                 loading: false,
-                isAdmin: !!result.data[0].user,
-                empty: false
+                isAdmin: !!result[1].timeEntries[0].user,
+                empty: result[1].totalRecords === 0
             });
         });
     };
@@ -116,7 +135,7 @@ class TimeEntriesContainer extends Component {
         const data = new WP_API();
         data.delete('time-entry', id).then(result => {
             // Instead of another API call, remove from array?
-            this.getEntries();
+            this.getEntries(true);
         });
     };
 
@@ -178,7 +197,7 @@ class TimeEntriesContainer extends Component {
     handleModalClose = update => {
         this.setState({ modal: false });
         if (update === true) {
-            this.getEntries();
+            this.getEntries(true);
         }
     };
 
@@ -216,8 +235,6 @@ class TimeEntriesContainer extends Component {
     );
 
     render() {
-        const projectsList = JSON.parse(localStorage.getItem('projects'));
-        const usersList = JSON.parse(localStorage.getItem('users'));
         const {
             timeEntries,
             totalRecords,
@@ -227,8 +244,11 @@ class TimeEntriesContainer extends Component {
             modal,
             isAdmin,
             filterProject,
-            filterUser
+            filterUser,
+            usersList,
+            projectsList
         } = this.state;
+
         const { itemsPerPage } = this.props;
 
         const filteredData = timeEntries.map(entry => ({
@@ -280,6 +300,8 @@ class TimeEntriesContainer extends Component {
                         singleTimeEntryData={singleTimeEntryData}
                         handleModalClose={this.handleModalClose}
                         inputChangeEvent={this.inputChangeEvent}
+                        projects={projectsList}
+                        users={usersList}
                     />
                 </AM2Modal>
             </React.Fragment>

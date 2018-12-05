@@ -8,6 +8,7 @@ class VacationsContainer extends Component {
         super();
         this.state = {
             vacations: [],
+            users: [],
             loading: true
         };
     }
@@ -20,16 +21,25 @@ class VacationsContainer extends Component {
         const { offset } = this.state;
         const { itemsPerPage } = this.props;
         const api = new WP_API();
-        api.getPosts('vacations', { itemsPerPage, offset }).then(result => {
+        const usersList = api.getPosts('users').then(result => result.data);
+        const vacations = api
+            .getPosts('vacations', { itemsPerPage, offset })
+            .then(result => result.data);
+        Promise.all([usersList, vacations]).then(value => {
+            const users = value[0].map(user => ({
+                id: user.id,
+                title: `${user.first_name} ${user.last_name}`
+            }));
             this.setState({
-                vacations: result.data,
+                vacations: value[1],
+                users,
                 loading: false
             });
         });
     };
 
     render() {
-        const { vacations, loading } = this.state;
+        const { vacations, loading, users } = this.state;
         const filteredData = vacations.reduce((filtered, current) => {
             if (current.status === 'approved') {
                 filtered.push({
@@ -42,7 +52,7 @@ class VacationsContainer extends Component {
             }
             return filtered;
         }, []);
-        return <Vacations data={filteredData} loading={loading} />;
+        return <Vacations data={filteredData} users={users} loading={loading} />;
     }
 }
 

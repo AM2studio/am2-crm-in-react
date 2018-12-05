@@ -34,7 +34,9 @@ class AM2Table extends Component {
 
     setCurrentPage = page => {
         const { onPageChanged } = this.props;
-        onPageChanged(page);
+        if (onPageChanged !== undefined) {
+            onPageChanged(page);
+        }
         this.setState({ currentPage: page });
     };
 

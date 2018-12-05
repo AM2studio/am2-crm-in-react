@@ -20,6 +20,10 @@ const TimeEntries = props => {
         usersList,
         filterUser
     } = props;
+
+    usersList.unshift({ id: '', title: 'All Users' });
+    projectsList.unshift({ id: '', title: 'All Projects' });
+
     return (
         <ViewWrapper title="Time Entries">
             <div className="am2-filters">

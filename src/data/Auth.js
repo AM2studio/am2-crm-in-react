@@ -48,7 +48,6 @@ class WP_AUTH {
                 password
             })
             .then(response => {
-                console.log(response);
                 sessionStorage.setItem(this.tokenKey, response.data.token);
                 sessionStorage.setItem(this.userName, response.data.user_display_name);
                 // Get role
@@ -62,7 +61,6 @@ class WP_AUTH {
                 });
             })
             .then(response => {
-                console.log(response);
                 sessionStorage.setItem(this.permissions, response.data);
                 return response.status;
             })

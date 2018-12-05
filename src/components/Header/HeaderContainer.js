@@ -24,7 +24,6 @@ class HeaderContainer extends Component {
         this.setState(prevState => ({
             mobileNav: !prevState.mobileNav
         }));
-        console.log(this.state);
     };
 
     logout = () => {

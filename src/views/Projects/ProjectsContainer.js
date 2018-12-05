@@ -11,11 +11,10 @@ class ProjectsContainer extends Component {
         super();
         this.state = {
             projects: [],
-            companies: JSON.parse(localStorage.getItem('companies')),
+            companies: [],
             modal: false,
             modalType: '',
             singleProjectData: {},
-            offset: 0,
             totalRecords: 0,
             currentProject: '',
             loading: true
@@ -27,33 +26,28 @@ class ProjectsContainer extends Component {
         this.getProjects();
     }
 
-    getProjects = () => {
-        const cachedProjects = localStorage.getItem('projects');
-        const { offset } = this.state;
-
-        if (cachedProjects) {
-            const projects = JSON.parse(cachedProjects);
+    getProjects = (byPassCache = false) => {
+        const api = new WP_API();
+        const projectsList = api.getPosts('projects', null, byPassCache).then(result => result);
+        const Companies = api.getPosts('companies', null, byPassCache).then(result => result);
+        Promise.all([projectsList, Companies]).then(values => {
+            const projects = values[0].data.map(post => ({
+                id: post.id,
+                title: post.title,
+                company: post.company_name
+            }));
+            const companies = values[1].data.map(post => ({
+                id: post.id,
+                title: post.title,
+                city: post.city
+            }));
             this.setState(() => ({
                 projects,
-                totalRecords: projects.length,
+                companies,
+                totalRecords: values[0].count.publish,
                 loading: false
             }));
-        } else {
-            const api = new WP_API();
-            api.getPosts('projects', { itemsPerPage: 9999, offset }).then(result => {
-                const projectsList = result.data.map(post => ({
-                    id: post.id,
-                    title: post.title,
-                    company: post.company_name
-                }));
-                localStorage.setItem('projects', JSON.stringify(projectsList));
-                this.setState(() => ({
-                    projects: projectsList,
-                    totalRecords: result.count.publish,
-                    loading: false
-                }));
-            });
-        }
+        });
     };
 
     addProject = () => {
@@ -82,19 +76,10 @@ class ProjectsContainer extends Component {
         });
     };
 
-    onPageChanged = page => {
-        const { itemsPerPage } = this.props;
-        const offset = (page - 1) * itemsPerPage;
-        this.setState({ offset, loading: true }, () => {
-            this.getProjects();
-        });
-    };
-
     handleModalClose = updated => {
         this.setState({ modal: false });
         if (updated === true) {
-            localStorage.removeItem('projects');
-            this.getProjects();
+            this.getProjects(true);
         }
     };
 
@@ -165,7 +150,6 @@ class ProjectsContainer extends Component {
                     columns={columns}
                     data={newComp}
                     addProject={this.addProject}
-                    onPageChanged={this.onPageChanged}
                     totalRecords={totalRecords}
                     loading={loading}
                 />

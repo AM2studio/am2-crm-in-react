@@ -19,6 +19,14 @@ const Notes = props => {
         usersList,
         filterUser
     } = props;
+
+    if (usersList) {
+        usersList.unshift({ id: '', title: 'All Users' });
+    }
+
+    if (projectsList) {
+        projectsList.unshift({ id: '', title: 'All Projects' });
+    }
     return (
         <ViewWrapper title="AM2 Project Earnings">
             <div className="am2-filters">

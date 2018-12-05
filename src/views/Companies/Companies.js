@@ -3,7 +3,7 @@ import ViewWrapper from '../../components/General/ViewWrapper';
 import AM2Table from '../../components/Table/AM2Table';
 
 const Companies = props => {
-    const { data, columns, addCompany, itemsPerPage, totalRecords, loading, onPageChanged } = props;
+    const { data, columns, addCompany, itemsPerPage, totalRecords, loading } = props;
     return (
         <ViewWrapper title="Companies">
             <p className="negative-margin text-right">
@@ -17,7 +17,6 @@ const Companies = props => {
                 itemsPerPage={itemsPerPage}
                 totalRecords={totalRecords}
                 loading={loading}
-                onPageChanged={onPageChanged}
                 clientFiltering
                 clientSorting
             />

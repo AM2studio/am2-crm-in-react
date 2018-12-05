@@ -12,7 +12,6 @@ class UsersContainer extends Component {
             users: [],
             modal: false,
             singleUserData: {},
-            offset: 0,
             totalRecords: 0,
             loading: true
         };
@@ -22,43 +21,23 @@ class UsersContainer extends Component {
         this.getUsers();
     }
 
-    getUsers = () => {
-        const { offset } = this.state;
-        const cachedUsers = localStorage.getItem('users');
-        if (cachedUsers) {
-            const users = JSON.parse(cachedUsers);
-            this.setState(() => ({
-                users,
-                totalRecords: users.length,
-                loading: false
+    getUsers = (byPassCache = false) => {
+        const api = new WP_API();
+        api.getPosts('users', null, byPassCache).then(result => {
+            const posts = result.data.map(post => ({
+                id: post.id,
+                first_name: post.first_name,
+                last_name: post.last_name,
+                company_role: post.company_role,
+                department: post.department,
+                email: post.email,
+                role: post.role
             }));
-        } else {
-            const users = new WP_API();
-            users.getPosts('users', { itemsPerPage: 9999, offset }).then(result => {
-                const posts = result.data.map(post => ({
-                    id: post.id,
-                    first_name: post.first_name,
-                    last_name: post.last_name,
-                    company_role: post.company_role,
-                    department: post.department,
-                    email: post.email,
-                    role: post.role
-                }));
-                localStorage.setItem('users', JSON.stringify(posts));
-                this.setState({
-                    users: posts,
-                    totalRecords: result.count,
-                    loading: false
-                });
+            this.setState({
+                users: posts,
+                totalRecords: result.count,
+                loading: false
             });
-        }
-    };
-
-    onPageChanged = page => {
-        const { itemsPerPage } = this.props;
-        const offset = (page - 1) * itemsPerPage;
-        this.setState({ offset, loading: true }, () => {
-            this.getUsers();
         });
     };
 
@@ -94,8 +73,7 @@ class UsersContainer extends Component {
     handleModalClose = updated => {
         this.setState({ modal: false });
         if (updated === true) {
-            localStorage.removeItem('users');
-            this.getUsers();
+            this.getUsers(true);
         }
     };
 
@@ -179,7 +157,6 @@ class UsersContainer extends Component {
                     columns={columns}
                     data={filteredData}
                     addUser={this.addUser}
-                    onPageChanged={this.onPageChanged}
                     totalRecords={totalRecords}
                     loading={loading}
                     itemsPerPage={itemsPerPage}

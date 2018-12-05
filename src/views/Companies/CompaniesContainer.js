@@ -12,7 +12,6 @@ class CompaniesContainer extends Component {
             companies: [],
             modal: false,
             singleCompanyData: {},
-            offset: 0,
             totalRecords: 0,
             loading: true
         };
@@ -22,41 +21,21 @@ class CompaniesContainer extends Component {
         this.getCompanies();
     }
 
-    getCompanies() {
-        const { offset } = this.state;
-        const cachedCompanies = localStorage.getItem('companies');
-        if (cachedCompanies) {
-            const companies = JSON.parse(cachedCompanies);
-            this.setState(() => ({
-                companies,
-                totalRecords: companies.length,
-                loading: false
+    getCompanies(byPassCache = false) {
+        const api = new WP_API();
+        api.getPosts('companies', null, byPassCache).then(result => {
+            const posts = result.data.map(post => ({
+                id: post.id,
+                title: post.title,
+                city: post.city
             }));
-        } else {
-            const companies = new WP_API();
-            companies.getPosts('companies', { itemsPerPage: 9999, offset }).then(result => {
-                const posts = result.data.map(post => ({
-                    id: post.id,
-                    title: post.title,
-                    city: post.city
-                }));
-                localStorage.setItem('companies', JSON.stringify(posts));
-                this.setState({
-                    companies: posts,
-                    totalRecords: result.count.publish,
-                    loading: false
-                });
+            this.setState({
+                companies: posts,
+                totalRecords: result.count.publish,
+                loading: false
             });
-        }
-    }
-
-    onPageChanged = page => {
-        const { itemsPerPage } = this.props;
-        const offset = (page - 1) * itemsPerPage;
-        this.setState({ offset, loading: true }, () => {
-            this.getCompanies();
         });
-    };
+    }
 
     addCompany = () => {
         this.setState(() => ({
@@ -88,8 +67,7 @@ class CompaniesContainer extends Component {
     handleModalClose = updated => {
         this.setState({ modal: false });
         if (updated === true) {
-            localStorage.removeItem('companies');
-            this.getCompanies();
+            this.getCompanies(true);
         }
     };
 
@@ -141,7 +119,6 @@ class CompaniesContainer extends Component {
                     columns={columns}
                     data={newComp}
                     addCompany={this.addCompany}
-                    onPageChanged={this.onPageChanged}
                     totalRecords={totalRecords}
                     loading={loading}
                     itemsPerPage={itemsPerPage}

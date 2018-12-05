@@ -3,7 +3,7 @@ import ViewWrapper from '../../components/General/ViewWrapper';
 import AM2Table from '../../components/Table/AM2Table';
 
 const Projects = props => {
-    const { data, columns, addProject, onPageChanged, itemsPerPage, totalRecords, loading } = props;
+    const { data, columns, addProject, itemsPerPage, totalRecords, loading } = props;
     return (
         <ViewWrapper title="Projects">
             <p className="negative-margin text-right">
@@ -12,7 +12,6 @@ const Projects = props => {
                 </button>
             </p>
             <AM2Table
-                onPageChanged={onPageChanged}
                 rows={data}
                 columns={columns}
                 itemsPerPage={itemsPerPage}

@@ -10,7 +10,9 @@ class ProjectEarningsContainer extends Component {
             offset: 0,
             totalRecords: 0,
             loading: true,
-            empty: false
+            empty: false,
+            projectsList: [],
+            usersList: []
         };
     }
 
@@ -18,25 +20,40 @@ class ProjectEarningsContainer extends Component {
         this.getEarnings();
     }
 
-    getEarnings = () => {
+    getEarnings = (update = false) => {
         const { offset, filterUser, filterProject } = this.state;
+        let byPassCache = update;
+        let byPassCacheSave = true;
+        if (filterUser || filterProject) {
+            byPassCache = true;
+            byPassCacheSave = false;
+        }
         const { itemsPerPage } = this.props;
         const api = new WP_API();
-        api.getPosts('project-earnings', {
-            itemsPerPage,
-            offset,
-            filterUser,
-            filterProject
-        }).then(result => {
-            if (!result.data) {
-                this.setState({ empty: true });
-                return;
-            }
+        const projectsList = api.getPosts('projects').then(result => result.data);
+        const usersList = api.getPosts('users').then(result => result.data);
+        const projectEarnings = api
+            .getPosts(
+                'project-earnings',
+                {
+                    itemsPerPage,
+                    offset,
+                    filterUser,
+                    filterProject
+                },
+                byPassCache,
+                byPassCacheSave
+            )
+            .then(result => result);
+
+        Promise.all([projectsList, usersList, projectEarnings]).then(values => {
             this.setState({
-                projectEarnings: result.data,
-                totalRecords: result.count.publish,
+                projectsList: values[0],
+                usersList: values[1],
+                projectEarnings: values[2].data ? values[2].data : [],
+                totalRecords: values[2].count.publish,
                 loading: false,
-                empty: false
+                empty: values[2].data === undefined
             });
         });
     };
@@ -44,7 +61,7 @@ class ProjectEarningsContainer extends Component {
     filterChangeEvent = e => {
         const { name, value } = e.target;
         this.setState({ [name]: value, loading: true }, () => {
-            this.getEarnings();
+            this.getEarnings(true);
         });
     };
 
@@ -70,19 +87,19 @@ class ProjectEarningsContainer extends Component {
     };
 
     render() {
-        const projectsList = JSON.parse(localStorage.getItem('projects'));
-        const usersList = JSON.parse(localStorage.getItem('users'));
         const {
             projectEarnings,
             totalRecords,
             loading,
             filterUser,
             filterProject,
-            empty
+            empty,
+            projectsList,
+            usersList
         } = this.state;
+
         const { itemsPerPage } = this.props;
         const filteredUsersList = usersList.filter(user => user.company_role === 'pm');
-
         const filteredData = projectEarnings.map((user, index) => ({
             ...user,
             status: this.status(user.status)
