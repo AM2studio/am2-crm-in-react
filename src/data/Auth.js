@@ -36,6 +36,7 @@ class WP_AUTH {
             .then(() => true)
             .catch(error => {
                 console.log(error);
+                this.removeSessionToken(); // if session has expired, remove it
                 return false;
             });
     };
