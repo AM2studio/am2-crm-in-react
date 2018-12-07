@@ -69,7 +69,7 @@ const Navigation = props => {
             parentClass: activeClass(location.pathname, '/timeline')
                 ? 'menu__item menu__item--active'
                 : 'menu__item',
-            active: true, // !!permissions.includes('timeline'),
+            active: !!permissions.includes('timeline'),
             title: 'Timeline'
         },
         {
