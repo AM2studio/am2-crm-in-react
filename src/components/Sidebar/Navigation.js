@@ -65,6 +65,14 @@ const Navigation = props => {
             title: 'Project Earnings'
         },
         {
+            to: '/timeline',
+            parentClass: activeClass(location.pathname, '/timeline')
+                ? 'menu__item menu__item--active'
+                : 'menu__item',
+            active: true, // !!permissions.includes('timeline'),
+            title: 'Timeline'
+        },
+        {
             to: '/notes',
             parentClass: activeClass(location.pathname, '/notes')
                 ? 'menu__item menu__item--active'

@@ -7,6 +7,7 @@ import ProjectsContainer from '../views/Projects/ProjectsContainer';
 import CompaniesContainer from '../views/Companies/CompaniesContainer';
 import UsersContainer from '../views/Users/UsersContainer';
 import NotesContainer from '../views/Notes/NotesContainer';
+import TimelineContainer from '../views/Timeline/TimelineContainer';
 import VacationsContainer from '../views/Vacations/VacationsContainer';
 import VacationsRequestsContainer from '../views/VacationRequests/VacationRequestsContainer';
 import TimeEntriesContainer from '../views/TimeEntries/TimeEntriesContainer';
@@ -22,6 +23,7 @@ const Routes = () => (
         <PrivateRoute path="/companies" component={CompaniesContainer} />
         <PrivateRoute path="/users" component={UsersContainer} />
         <PrivateRoute path="/notes" component={NotesContainer} />
+        <PrivateRoute path="/timeline" component={TimelineContainer} />
         <PrivateRoute path="/vacations" component={VacationsContainer} />
         <PrivateRoute path="/vacationrequests" component={VacationsRequestsContainer} />
         <PrivateRoute path="/projectearnings" component={ProjectEarningsContainer} />
