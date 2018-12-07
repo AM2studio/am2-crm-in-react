@@ -11,7 +11,7 @@ export default class Gantt extends Component {
     }
 
     componentDidMount() {
-        const { onTaskUpdated, onLinkUpdated } = this.props;
+        const { onTaskUpdated } = this.props;
         gantt.attachEvent('onAfterTaskAdd', (id, task) => {
             if (onTaskUpdated) {
                 onTaskUpdated(id, 'inserted', task);
@@ -30,24 +30,6 @@ export default class Gantt extends Component {
             }
         });
 
-        gantt.attachEvent('onAfterLinkAdd', (id, link) => {
-            if (onLinkUpdated) {
-                onLinkUpdated(id, 'inserted', link);
-            }
-        });
-
-        gantt.attachEvent('onAfterLinkUpdate', (id, link) => {
-            if (onLinkUpdated) {
-                onLinkUpdated(id, 'updated', link);
-            }
-        });
-
-        gantt.attachEvent('onAfterLinkDelete', (id, link) => {
-            if (onLinkUpdated) {
-                onLinkUpdated(id, 'deleted');
-            }
-        });
-
         gantt.config.scale_unit = 'month';
         gantt.config.step = 1;
         gantt.config.date_scale = '%F, %Y';
@@ -56,6 +38,7 @@ export default class Gantt extends Component {
         // gantt.config.fit_tasks = true;
         // ubaciti da mogu prebaciti na month, ukoliko ljudi nestaju.
         // https://docs.dhtmlx.com/gantt/samples/03_scales/05_dynamic_scales.html
+        // https://docs.dhtmlx.com/gantt/samples/04_customization/12_custom_task_type.html custom input polja
         gantt.config.scale_height = 60;
 
         gantt.config.subscales = [
@@ -65,7 +48,7 @@ export default class Gantt extends Component {
         gantt.init(
             this.container.current,
             new Date().setDate(new Date().getDate() - 15),
-            new Date().setDate(new Date().getDate() + 30)
+            new Date().setDate(new Date().getDate() + 15)
         );
     }
 
@@ -91,7 +74,7 @@ export default class Gantt extends Component {
         return (
             <div
                 ref={this.container}
-                style={{ width: '100%', minHeight: '600px', height: '100%' }}
+                style={{ width: '100%', minHeight: '750px', height: '100%' }}
             />
         );
     }

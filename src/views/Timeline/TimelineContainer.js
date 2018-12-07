@@ -1,3 +1,5 @@
+/*  global gantt */
+
 import React, { Component } from 'react';
 import Timeline from './Timeline';
 import WP_API from '../../data/Api';
@@ -25,15 +27,20 @@ export default class Gantt extends Component {
 
     componentWillMount() {
         const api = new WP_API();
-        api.getPosts('users').then(result => {
-            const filteredResult = result.data.map(user => ({
+        const users = api.getPosts('users').then(result =>
+            result.data.map(user => ({
                 id: user.id,
                 text: user.title,
                 start_date: this.getFirstDayOfWeekDate(new Date()),
                 duration: 5,
-                color: '#39B34A'
-            }));
-            this.setState({ data: filteredResult });
+                color: '#39B34A',
+                open: true,
+                readonly: true
+            }))
+        );
+        const tasks = api.getPosts('timeline', null, true).then(result => result);
+        Promise.all([users, tasks]).then(result => {
+            this.setState({ data: [...result[0], ...result[1]] });
         });
     }
 
@@ -43,8 +50,24 @@ export default class Gantt extends Component {
         return `0${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
     };
 
+    formatSaveDate = date => `0${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
+
     onTaskUpdated = (id, type, taskObject = {}) => {
-        console.log(id, type, taskObject);
+        const api = new WP_API();
+        let data = {
+            taskID: taskObject.id,
+            action: type
+        };
+        if (type !== 'deleted') {
+            data = {
+                ...data,
+                parent: taskObject.parent,
+                text: taskObject.text,
+                start_date: this.formatSaveDate(taskObject.start_date),
+                duration: taskObject.duration
+            };
+        }
+        api.set('timeline', id, data);
     };
 
     render() {
