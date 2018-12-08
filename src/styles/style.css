@@ -740,7 +740,7 @@ svg:not(:root) {
   margin-left: 250px; }
   @media (max-width: 768px) {
     #wrapper {
-      margin-left: 0; }
+      margin-left: 0!important; width:100%!important; }
       .sidebar-left-open #wrapper {
         overflow: hidden; } }
 

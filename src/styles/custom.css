@@ -173,7 +173,7 @@ input {
 }
 
 @media screen and (max-width: 768px) {
-    table thead {
+    table:not('.CalendarMonth_table') thead {
         border: none;
         clip: rect(0 0 0 0);
         height: 1px;
@@ -184,18 +184,18 @@ input {
         width: 1px;
     }
 
-    table tr {
+    table:not('.CalendarMonth_table') tr {
         border-bottom: 3px solid #ddd;
         display: block;
     }
 
-    table td {
+    table:not('.CalendarMonth_table') td {
         border-bottom: 1px solid #ddd;
         display: block;
         text-align: right;
     }
 
-    table td::before {
+    table:not('.CalendarMonth_table') td::before {
         content: attr(data-label);
         float: left;
     }
@@ -248,6 +248,16 @@ input {
 .menu__item span {
     opacity: 0;
 }
+@media (max-width: 768px) {
+    .sidebar {
+        width: 250px;
+        max-width: 250px;
+    }
+    .menu__item span {
+        opacity: 1;
+    }
+}
+
 .sidebar:hover {
     max-width: 250px;
     width: 250px;
