@@ -89,7 +89,6 @@ class VacationsContainer extends Component {
     };
 
     render() {
-        console.log(this.state);
         const { vacations, totalRecords, loading } = this.state;
         const { itemsPerPage } = this.props;
         const filteredData = vacations.map((user, index) => ({
