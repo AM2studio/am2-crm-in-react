@@ -1,16 +1,16 @@
 .widget .section__header {
     padding: 15px 20px;
-    background-color: #006683;
+    background-color: #6d60b0;
     border-left: 0;
 }
 .widget.widget--usernotes .section__header {
-    background-color: #a42d14;
+    background-color: #fe6d4b;
 }
 .widget.widget--highfive .section__header {
-    background-color: #b74513;
+    background-color: #f6b805;
 }
 .widget.widget--vacation .section__header {
-    background-color: #177448;
+    background-color: #0eb3e3;
 }
 .widget .section__header .section__title {
     font-size: 21px;
@@ -24,11 +24,16 @@
 }
 .table__heading {
     padding: 10px !important;
+    height: 32px;
+    line-height: 32px;
+    background: #f5f5f5;
+    border: none;
 }
 .button--custom {
     width: 100%;
     font-weight: bold !important;
     text-transform: uppercase;
+    box-shadow: none;
 }
 select {
     height: 44px;
@@ -89,6 +94,7 @@ select {
 }
 .table__cell {
     padding: 7px 10px;
+    height: 46px;
 }
 
 .ReactModal__Content {
@@ -143,11 +149,11 @@ select {
     vertical-align: middle;
 }
 .button--table--delete {
-    background-color: #efefef;
+    background-color: #f5f5f5;
     color: #f02b2c;
 }
 .button--table--edit {
-    background-color: #efefef;
+    background-color: #f5f5f5;
     color: #31b444;
 }
 .react-calendar-timeline .rct-header .rct-label-group,
@@ -220,4 +226,68 @@ input {
 .button--snapshot {
     margin-left: 10px;
     color: #a29a9a;
+}
+.sidebar {
+    max-width: 80px;
+    background: #fff;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 99;
+    width: 80px;
+    border-right: 1px solid #e3eaf0;
+    padding: 61px 0 20px;
+    overflow: hidden;
+    white-space: nowrap;
+    -webkit-transition: all 0.2s;
+    transition: all 0.2s;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    will-change: all;
+}
+.menu__item span {
+    opacity: 0;
+}
+.sidebar:hover {
+    max-width: 250px;
+    width: 250px;
+}
+.sidebar:hover span {
+    opacity: 1;
+}
+#wrapper {
+    margin-left: 80px;
+    width: calc(100% - 80px);
+    overflow: auto;
+}
+.menu__link {
+    font-weight: 600;
+    color: #bbb;
+    border-bottom: none;
+    padding-left: 27px;
+}
+.menu__item--active > .menu__link {
+    padding-left: 22px;
+    background-color: transparent;
+    color: #bbb;
+}
+.menu__item svg {
+    font-size: 22px;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+.menu__link:hover {
+    background-color: #39b54a;
+    color: #fff;
+}
+.button--primary,
+.button,
+button {
+    box-shadow: none !important;
+}
+.dataTables_paginate {
+    margin-top: 25px;
+}
+tbody tr:first-child td {
+    border-top: none;
 }

@@ -50,7 +50,9 @@ const Header = props => {
             <div className="header__bottom clearfix">
                 <div className="header__left">
                     <h2 className="header__title">AM2Studio CRM</h2>
-                    <p className="header__subtitle">Rewritten in React</p>
+                    <p className="header__subtitle">
+                        Change is inevitable – except from a vending machine...
+                    </p>
                 </div>
                 <div className="header__right">
                     <div className="header__info">
@@ -71,7 +73,7 @@ const Header = props => {
                     </div>
 
                     <div className="header__info">
-                        <span className="header__info-value">44</span>
+                        <span className="header__info-value">62</span>
                         <span className="header__info-text">
                             AM2Studio <br />
                             Ninjas

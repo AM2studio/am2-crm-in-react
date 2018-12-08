@@ -1,5 +1,19 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
+import {
+    FiBarChart2,
+    FiPaperclip,
+    FiClock,
+    FiUsers,
+    FiDollarSign,
+    FiFolder,
+    // FiCalendar,
+    FiHome,
+    FiFileText,
+    FiCheckCircle,
+    FiSun
+} from 'react-icons/fi';
+
 import WP_AUTH from '../../data/Auth';
 import NavLink from '../General/NavLink';
 
@@ -22,7 +36,8 @@ const Navigation = props => {
                 ? 'menu__item menu__item--active'
                 : 'menu__item',
             active: true,
-            title: 'Dashboard'
+            title: 'Dashboard',
+            icon: FiHome
         },
         {
             to: '/timeentries',
@@ -30,7 +45,8 @@ const Navigation = props => {
                 ? 'menu__item menu__item--active'
                 : 'menu__item',
             active: true,
-            title: 'Time Entries'
+            title: 'Time Entries',
+            icon: FiClock
         },
         {
             to: '/users',
@@ -38,7 +54,8 @@ const Navigation = props => {
                 ? 'menu__item menu__item--active'
                 : 'menu__item',
             active: !!permissions.includes('users'),
-            title: 'Users'
+            title: 'Users',
+            icon: FiUsers
         },
         {
             to: '/companies',
@@ -46,7 +63,8 @@ const Navigation = props => {
                 ? 'menu__item menu__item--active'
                 : 'menu__item',
             active: !!permissions.includes('companies'),
-            title: 'Companies'
+            title: 'Companies',
+            icon: FiFolder
         },
         {
             to: '/projects',
@@ -54,7 +72,8 @@ const Navigation = props => {
                 ? 'menu__item menu__item--active'
                 : 'menu__item',
             active: !!permissions.includes('projects'),
-            title: 'Projects'
+            title: 'Projects',
+            icon: FiFileText
         },
         {
             to: '/projectearnings',
@@ -62,7 +81,8 @@ const Navigation = props => {
                 ? 'menu__item menu__item--active'
                 : 'menu__item',
             active: !!permissions.includes('projectearnings'),
-            title: 'Project Earnings'
+            title: 'Project Earnings',
+            icon: FiDollarSign
         },
         {
             to: '/timeline',
@@ -70,7 +90,8 @@ const Navigation = props => {
                 ? 'menu__item menu__item--active'
                 : 'menu__item',
             active: !!permissions.includes('timeline'),
-            title: 'Timeline'
+            title: 'Timeline',
+            icon: FiBarChart2
         },
         {
             to: '/notes',
@@ -78,7 +99,8 @@ const Navigation = props => {
                 ? 'menu__item menu__item--active'
                 : 'menu__item',
             active: !!permissions.includes('user-note'),
-            title: 'Notes'
+            title: 'Notes',
+            icon: FiPaperclip
         },
         {
             to: '/vacations',
@@ -86,7 +108,8 @@ const Navigation = props => {
                 ? 'menu__item menu__item--active'
                 : 'menu__item',
             active: true,
-            title: 'Vacations'
+            title: 'Vacations',
+            icon: FiSun
         },
         {
             to: '/vacationrequests',
@@ -94,7 +117,8 @@ const Navigation = props => {
                 ? 'menu__item menu__item--active'
                 : 'menu__item',
             active: !!permissions.includes('vacations'),
-            title: 'Vacation Requests'
+            title: 'Vacation Requests',
+            icon: FiCheckCircle
         }
     ];
     return (
@@ -103,7 +127,7 @@ const Navigation = props => {
                 const { title, ...rest } = link;
                 return (
                     <NavLink key={title} linkClass="menu__link effect effect--waves" {...rest}>
-                        {title}
+                        <link.icon /> <span>{title}</span>
                     </NavLink>
                 );
             })}
