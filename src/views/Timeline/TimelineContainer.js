@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Select from '../../components/Form/Select';
+import ViewWrapper from '../../components/General/ViewWrapper';
 import Timeline from './Timeline';
 import WP_API from '../../data/Api';
 
@@ -103,9 +104,8 @@ export default class TimelineContainer extends Component {
     render() {
         const { data, filterRole, filterDepartment, loading } = this.state;
         const { companyRoles, departments } = this.props;
-        console.log(data);
         return (
-            <React.Fragment>
+            <ViewWrapper title="Timeline">
                 <div className="am2-filters">
                     <Select
                         name="filterRole"
@@ -129,7 +129,7 @@ export default class TimelineContainer extends Component {
                     onTaskUpdated={this.onTaskUpdated}
                     onLinkUpdated={this.onLinkUpdated}
                 />
-            </React.Fragment>
+            </ViewWrapper>
         );
     }
 }
