@@ -37,6 +37,12 @@ export default class TimelineContainer extends Component {
         const users = api.getPosts('users').then(result =>
             result.data
                 .filter(user => {
+                    if (filterRole !== '' && filterDepartment !== '') {
+                        return (
+                            filterRole === user.company_role &&
+                            user.department.indexOf(filterDepartment) !== -1
+                        );
+                    }
                     if (filterRole !== '') {
                         return filterRole === user.company_role;
                     }
