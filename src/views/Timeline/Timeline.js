@@ -54,6 +54,7 @@ export default class Gantt extends Component {
 
     componentDidUpdate() {
         const { users } = this.props;
+        gantt.clearAll();
         gantt.parse(users);
         gantt.render();
     }
