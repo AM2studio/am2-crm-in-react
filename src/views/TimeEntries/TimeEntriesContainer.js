@@ -205,8 +205,13 @@ class TimeEntriesContainer extends Component {
 
     date = (date, month) => <p data-tip={month}>{date}</p>;
 
+    filterJobType = jobType => {
+        const jobTypeClass = jobType.replace(/[^a-zA-Z]+/g, '');
+        return <span className={`jobtype ${jobTypeClass}`}>{jobType}</span>;
+    };
+
     comment = comment => (
-        <p data-tip={comment}>
+        <p className="entryComment" data-tip={comment}>
             {comment.substring(0, 21)}
             {comment.length > 21 ? '...' : ''}
         </p>
@@ -253,6 +258,7 @@ class TimeEntriesContainer extends Component {
 
         const filteredData = timeEntries.map(entry => ({
             ...entry,
+            job_type: this.filterJobType(entry.job_type),
             hours: this.hours(entry.hours, entry.billable_hours),
             date: this.date(entry.date, entry.month),
             comment: this.comment(entry.comment),
