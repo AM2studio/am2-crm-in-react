@@ -12,6 +12,7 @@ import VacationsContainer from '../views/Vacations/VacationsContainer';
 import VacationsRequestsContainer from '../views/VacationRequests/VacationRequestsContainer';
 import TimeEntriesContainer from '../views/TimeEntries/TimeEntriesContainer';
 import ProjectEarningsContainer from '../views/ProjectEarnings/ProjectEarningsContainer';
+import ProjectReportsContainer from '../views/ProjectReports/ProjectReportsContainer';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 
@@ -27,6 +28,7 @@ const Routes = () => (
         <PrivateRoute path="/vacations" component={VacationsContainer} />
         <PrivateRoute path="/vacationrequests" component={VacationsRequestsContainer} />
         <PrivateRoute path="/projectearnings" component={ProjectEarningsContainer} />
+        <PrivateRoute path="/projectreports" component={ProjectReportsContainer} />
         <PublicRoute path="/login" component={LoginContainer} />
         <PublicRoute component={NotFound} />
     </Switch>

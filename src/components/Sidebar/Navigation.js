@@ -7,6 +7,7 @@ import {
     FiUsers,
     FiDollarSign,
     FiFolder,
+    FiBarChart,
     // FiCalendar,
     FiHome,
     FiFileText,
@@ -74,6 +75,15 @@ const Navigation = props => {
             active: !!permissions.includes('projects'),
             title: 'Projects',
             icon: FiFileText
+        },
+        {
+            to: '/projectreports',
+            parentClass: activeClass(location.pathname, '/projectreports')
+                ? 'menu__item menu__item--active'
+                : 'menu__item',
+            active: true, // !!permissions.includes('projects'),
+            title: 'Project Reports',
+            icon: FiBarChart
         },
         {
             to: '/projectearnings',
