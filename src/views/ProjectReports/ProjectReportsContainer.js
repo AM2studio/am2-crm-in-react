@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import randomColor from 'randomcolor';
 import ProjectReports from './ProjectReports';
+import Filters from './components/Filters';
+import MiniChart from './components/MiniChart';
+import UserPerDateChart from './components/UserPerDateChart';
+import Loading from '../../components/General/Loading';
 import WP_API from '../../data/Api';
 
 class ProjectReportsContainer extends Component {
@@ -10,7 +14,7 @@ class ProjectReportsContainer extends Component {
         this.state = {
             projectReports: [],
             totalRecords: 0,
-            loading: true,
+            loading: false,
             empty: false,
             projectsList: [],
             filterDate: {
@@ -26,16 +30,25 @@ class ProjectReportsContainer extends Component {
             filterProject: '',
             filterDepartment: '',
             filterJobType: '',
+            barChartData: [],
             chartOptions: {
                 legend: {
                     position: 'right'
+                },
+                tooltips: {
+                    intersect: false
                 }
             }
         };
     }
 
     componentWillMount() {
-        this.getData();
+        const api = new WP_API();
+        api.getPosts('projects').then(result =>
+            this.setState({
+                projectsList: result.data
+            })
+        );
     }
 
     generateRandomColors = length =>
@@ -44,11 +57,11 @@ class ProjectReportsContainer extends Component {
             .map((_, i) => randomColor({ luminosity: 'bright' }));
 
     getData = () => {
+        this.setState({ loading: true });
         const { filterProject, filterDepartment, filterJobType, filterDate } = this.state;
         const byPassCache = true;
         const byPassCacheSave = true;
         const api = new WP_API();
-        const projectsList = api.getPosts('projects').then(result => result.data);
         const projectReports = api
             .getPosts(
                 'project-reports',
@@ -63,7 +76,6 @@ class ProjectReportsContainer extends Component {
                 byPassCacheSave
             )
             .then(result => {
-                // console.log(result);
                 const posts = result.data
                     ? result.data.map(post => ({
                           id: post.id,
@@ -118,22 +130,28 @@ class ProjectReportsContainer extends Component {
                                       )
                                   }
                               ]
-                          }
+                          },
+                          barChartData: Object.values(result.report.data.totals.users.dates)
                       }
                     : false;
             });
 
-        Promise.all([projectsList, projectReports]).then(values => {
+        Promise.all([projectReports]).then(values => {
             this.setState({
-                projectsList: values[0],
-                projectReports: values[1].posts ? values[1].posts : [],
-                totalRecords: values[1].totalRecords,
-                totalHours: values[1].totalHours,
-                userData: values[1].userData,
-                jobTypeData: values[1].jobTypeData,
-                milestoneData: values[1].milestoneData,
+                projectReports: values[0].posts ? values[0].posts : [],
+                totalRecords: values[0].totalRecords,
+                totalHours: values[0].totalHours,
+                userData: values[0].userData,
+                jobTypeData: values[0].jobTypeData,
+                milestoneData: values[0].milestoneData,
                 loading: false,
-                empty: values[1].totalRecords === 0
+                barChartData: values[0].barChartData
+                    ? values[0].barChartData.map(bar => ({
+                          ...bar,
+                          backgroundColor: randomColor({ luminosity: 'bright' })
+                      }))
+                    : [],
+                empty: values[0].totalRecords === 0
             });
         });
     };
@@ -159,9 +177,9 @@ class ProjectReportsContainer extends Component {
             chartOptions,
             userData,
             jobTypeData,
-            milestoneData
+            milestoneData,
+            barChartData
         } = this.state;
-
         const columns = [
             { key: 'month', title: 'Month' },
             { key: 'user', title: 'User' },
@@ -174,24 +192,53 @@ class ProjectReportsContainer extends Component {
             { key: 'comment', title: 'Comment' },
             { key: 'asana_url', title: 'Asana URL' }
         ];
+
+        if (loading) {
+            return <Loading />;
+        }
+
         return (
             <React.Fragment>
-                <ProjectReports
-                    columns={columns}
-                    data={projectReports}
-                    usersChartData={userData}
-                    jobTypeChartData={jobTypeData}
-                    milestoneChartData={milestoneData}
-                    totalHours={totalHours}
-                    totalRecords={totalRecords}
-                    options={chartOptions}
-                    loading={loading}
-                    empty={empty}
+                <Filters
                     projectsList={projectsList}
                     filterChangeEvent={this.filterChangeEvent}
                     filterProject={filterProject}
                     filterDepartment={filterDepartment}
                     filterJobType={filterJobType}
+                />
+                {userData ? (
+                    <div className="section__content section__minicharts">
+                        <div className="miniChartContainer">
+                            <MiniChart
+                                data={userData}
+                                title="Total Hours per User"
+                                totalHours={totalHours}
+                                options={chartOptions}
+                            />
+                            <MiniChart
+                                data={jobTypeData}
+                                title="Total Hours per Job Type"
+                                totalHours={totalHours}
+                                options={chartOptions}
+                            />
+                            <MiniChart
+                                data={milestoneData}
+                                title="Total Hours per Milestone"
+                                totalHours={totalHours}
+                                options={chartOptions}
+                            />
+                        </div>
+                    </div>
+                ) : (
+                    ''
+                )}
+                {barChartData.length ? <UserPerDateChart data={barChartData} /> : ''}
+                <ProjectReports
+                    columns={columns}
+                    data={projectReports}
+                    totalRecords={totalRecords}
+                    loading={loading}
+                    empty={empty}
                 />
             </React.Fragment>
         );
