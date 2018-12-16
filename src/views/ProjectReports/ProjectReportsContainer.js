@@ -194,7 +194,18 @@ class ProjectReportsContainer extends Component {
         ];
 
         if (loading) {
-            return <Loading />;
+            return (
+                <React.Fragment>
+                    <Filters
+                        projectsList={projectsList}
+                        filterChangeEvent={this.filterChangeEvent}
+                        filterProject={filterProject}
+                        filterDepartment={filterDepartment}
+                        filterJobType={filterJobType}
+                    />
+                    <Loading />
+                </React.Fragment>
+            );
         }
 
         return (
@@ -237,7 +248,6 @@ class ProjectReportsContainer extends Component {
                     columns={columns}
                     data={projectReports}
                     totalRecords={totalRecords}
-                    loading={loading}
                     empty={empty}
                 />
             </React.Fragment>

@@ -4,23 +4,15 @@ import AM2Table from '../../components/Table/AM2Table';
 import NoResults from '../../components/General/NoResults';
 
 const ProjectReports = props => {
-    const { data, columns, loading, onPageChanged, empty, projectsList } = props;
+    const { data, columns, empty } = props;
 
-    if (projectsList) {
-        projectsList.unshift({ id: '', title: 'All Projects' });
-    }
     return (
         <React.Fragment>
             {empty || data.length === 0 ? (
                 <NoResults />
             ) : (
                 <ViewWrapper title="Project Time Entries" className="withTopMargin">
-                    <AM2Table
-                        rows={data}
-                        columns={columns}
-                        loading={loading}
-                        onPageChanged={onPageChanged}
-                    />
+                    <AM2Table rows={data} columns={columns} />
                 </ViewWrapper>
             )}
         </React.Fragment>
