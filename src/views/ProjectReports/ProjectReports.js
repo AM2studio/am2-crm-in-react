@@ -5,15 +5,14 @@ import NoResults from '../../components/General/NoResults';
 import PDFCreator from './components/PDFCreator';
 
 const ProjectReports = props => {
-    const { data, columns, empty, pdfRows } = props;
-
+    const { data, columns, empty, pdfrows } = props;
     return (
         <React.Fragment>
             {empty || data.length === 0 ? (
                 <NoResults />
             ) : (
                 <ViewWrapper title="Project Time Entries" className="withTopMargin">
-                    <PDFCreator rows={pdfRows} />
+                    <PDFCreator rows={pdfrows} />
                     <AM2Table rows={data} columns={columns} />
                 </ViewWrapper>
             )}
