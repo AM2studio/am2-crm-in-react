@@ -58,6 +58,7 @@ class TimeEntriesContainer extends Component {
     };
 
     getEntries = (update = false) => {
+        this.setState({ loading: true, empty: false });
         const { offset, filterUser, filterProject, filterDate } = this.state;
         let byPassCache = update;
         let byPassCacheSave = true;
@@ -84,22 +85,27 @@ class TimeEntriesContainer extends Component {
                 byPassCacheSave
             )
             .then(result => {
-                const posts = result.data.map(post => ({
-                    id: post.id,
-                    is_billable: post.is_billable,
-                    billable_hours: post.billable_hours,
-                    month: post.month,
-                    user: post.user,
-                    project: post.project,
-                    milestones: post.milestones,
-                    milestone: post.milestone,
-                    project_feature: post.project_feature,
-                    date: post.date,
-                    hours: post.hours,
-                    job_type: post.job_type,
-                    comment: post.comment,
-                    asana_url: post.asana_url
-                }));
+                const posts =
+                    result.data &&
+                    result.data.map(post => ({
+                        id: post.id,
+                        is_billable: post.is_billable,
+                        billable_hours: post.billable_hours,
+                        month: post.month,
+                        user: post.user,
+                        project: post.project,
+                        milestones: post.milestones,
+                        milestone: post.milestone,
+                        project_feature: post.project_feature,
+                        date: post.date,
+                        hours: post.hours,
+                        job_type: post.job_type,
+                        comment: post.comment,
+                        asana_url: post.asana_url
+                    }));
+                if (!posts) {
+                    return { timeEntries: [] };
+                }
                 const obj = {};
                 // Need to save as state to manipulate with checkbox
                 const isBillable = posts.reduce((prev, curr) => {
@@ -109,16 +115,25 @@ class TimeEntriesContainer extends Component {
                 return { isBillable, timeEntries: posts, totalRecords: result.count };
             });
         Promise.all([usersList, timeEntries, projectsList]).then(result => {
-            this.setState({
-                usersList: result[0],
-                projectsList: result[2],
-                isBillable: result[1].isBillable,
-                timeEntries: result[1].timeEntries,
-                totalRecords: result[1].totalRecords,
-                loading: false,
-                isAdmin: !!result[1].timeEntries[0].user,
-                empty: result[1].totalRecords === 0
-            });
+            if (result[1].timeEntries.length) {
+                this.setState({
+                    usersList: result[0],
+                    projectsList: result[2],
+                    isBillable: result[1].isBillable,
+                    timeEntries: result[1].timeEntries,
+                    totalRecords: result[1].totalRecords,
+                    loading: false,
+                    isAdmin: !!result[1].timeEntries[0].user,
+                    empty: result[1].totalRecords === 0
+                });
+            } else {
+                this.setState({
+                    usersList: result[0],
+                    projectsList: result[2],
+                    loading: false,
+                    empty: true
+                });
+            }
         });
     };
 
