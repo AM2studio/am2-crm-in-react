@@ -258,7 +258,9 @@ class ProjectReportsContainer extends Component {
                     ''
                 )}
                 {barChartData.length ? <UserPerDateChart data={barChartData} /> : ''}
+
                 <ProjectReports
+                    pdfrows={projectReports}
                     columns={columns}
                     data={filteredData}
                     totalRecords={totalRecords}

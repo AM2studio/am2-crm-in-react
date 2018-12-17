@@ -35,6 +35,14 @@
     text-transform: uppercase;
     box-shadow: none;
 }
+.button--pdf {
+    width: auto;
+    font-weight: bold !important;
+    text-transform: uppercase;
+    box-shadow: none;
+    float: right;
+    margin-top: -62px;
+}
 select {
     height: 44px;
 }
