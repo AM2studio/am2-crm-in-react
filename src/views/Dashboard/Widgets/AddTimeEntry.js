@@ -37,15 +37,22 @@ class AddTime extends Component {
 
     inputChangeEvent = e => {
         const { name, value } = e.target;
-        this.setState({ [name]: value, status: false });
         if (name === 'hours') {
-            this.setState({ billable_hours: value });
-        }
-        if (name === 'project') {
+            this.setState({ [name]: value, status: false, billable_hours: value });
+        } else if (name === 'project') {
             const api = new WP_API();
-            api.getPosts('milestones', { id: value }).then(response => {
-                this.setState({ milestones: response, milestone: response[0].id });
+            api.getPosts('milestones', { id: value }, true, false).then(response => {
+                if (response.length) {
+                    this.setState({
+                        [name]: value,
+                        status: false,
+                        milestones: response,
+                        milestone: ''
+                    });
+                }
             });
+        } else {
+            this.setState({ [name]: value, status: false });
         }
     };
 
@@ -54,9 +61,9 @@ class AddTime extends Component {
     };
 
     addUserEntry = () => {
-        const { project: projectId, comment } = this.state;
+        const { project: projectId, comment, milestone } = this.state;
         // Validation
-        if (projectId === '' || comment === '') {
+        if (projectId === '' || comment === '' || milestone === '') {
             this.setState(() => ({ status: 'error', msgText: 'Required fields are missing.' }));
             return;
         }
