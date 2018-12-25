@@ -81,7 +81,7 @@ const Navigation = props => {
             parentClass: activeClass(location.pathname, '/projectreports')
                 ? 'menu__item menu__item--active'
                 : 'menu__item',
-            active: !!permissions.includes('projectreports'),
+            active: !!permissions.includes('project-reports'),
             title: 'Project Reports',
             icon: FiBarChart
         },
