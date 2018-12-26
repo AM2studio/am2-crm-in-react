@@ -1,4 +1,10 @@
 const HTMLWebPackPlugin = require('html-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const WebpackMd5Hash = require('webpack-md5-hash');
+const AsyncChunkNames = require('webpack-async-chunk-names-plugin');
+
+const path = require('path');
 
 const htmlPlugin = new HTMLWebPackPlugin({
     template: './src/index.html',
@@ -6,6 +12,19 @@ const htmlPlugin = new HTMLWebPackPlugin({
 });
 
 module.exports = {
+    entry: { main: './src/index.js' },
+    output: {
+        path: path.resolve(__dirname, 'dist'),
+        filename: '[name].[hash].js'
+    },
+    // optimization: {
+    //     runtimeChunk: 'single',
+    //     splitChunks: {
+    //         chunks: 'all',
+    //         maxInitialRequests: Infinity,
+    //         minSize: 0
+    //     }
+    // },
     module: {
         rules: [
             {
@@ -22,7 +41,7 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                use: ['style-loader', 'css-loader']
+                use: [MiniCssExtractPlugin.loader, 'css-loader']
             },
             {
                 test: /\.(jpg|png|svg|gif)$/,
@@ -33,5 +52,13 @@ module.exports = {
             }
         ]
     },
-    plugins: [htmlPlugin]
+    plugins: [
+        new CleanWebpackPlugin('dist', {}),
+        new MiniCssExtractPlugin({
+            filename: 'style.[hash].css'
+        }),
+        new AsyncChunkNames(),
+        htmlPlugin,
+        new WebpackMd5Hash()
+    ]
 };
