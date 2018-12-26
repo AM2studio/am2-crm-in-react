@@ -1,37 +1,47 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { Switch } from 'react-router-dom';
-import NotFound from '../views/NotFound';
-import Dashboard from '../views/Dashboard/Dashboard';
-import LoginContainer from '../views/Login/LoginContainer';
-import ProjectsContainer from '../views/Projects/ProjectsContainer';
-import CompaniesContainer from '../views/Companies/CompaniesContainer';
-import UsersContainer from '../views/Users/UsersContainer';
-import NotesContainer from '../views/Notes/NotesContainer';
-import TimelineContainer from '../views/Timeline/TimelineContainer';
-import VacationsContainer from '../views/Vacations/VacationsContainer';
-import VacationsRequestsContainer from '../views/VacationRequests/VacationRequestsContainer';
-import TimeEntriesContainer from '../views/TimeEntries/TimeEntriesContainer';
-import ProjectEarningsContainer from '../views/ProjectEarnings/ProjectEarningsContainer';
-import ProjectReportsContainer from '../views/ProjectReports/ProjectReportsContainer';
-import PrivateRoute from './PrivateRoute';
-import PublicRoute from './PublicRoute';
+import Loading from '../views/Loading';
+
+const Dashboard = lazy(() => import('../views/Dashboard/Dashboard'));
+const NotFound = lazy(() => import('../views/NotFound'));
+const LoginContainer = lazy(() => import('../views/Login/LoginContainer'));
+const ProjectsContainer = lazy(() => import('../views/Projects/ProjectsContainer'));
+const CompaniesContainer = lazy(() => import('../views/Companies/CompaniesContainer'));
+const UsersContainer = lazy(() => import('../views/Users/UsersContainer'));
+const NotesContainer = lazy(() => import('../views/Notes/NotesContainer'));
+const TimelineContainer = lazy(() => import('../views/Timeline/TimelineContainer'));
+const VacationsContainer = lazy(() => import('../views/Vacations/VacationsContainer'));
+const VacationsRequestsContainer = lazy(() =>
+    import('../views/VacationRequests/VacationRequestsContainer')
+);
+const TimeEntriesContainer = lazy(() => import('../views/TimeEntries/TimeEntriesContainer'));
+const ProjectEarningsContainer = lazy(() =>
+    import('../views/ProjectEarnings/ProjectEarningsContainer')
+);
+const ProjectReportsContainer = lazy(() =>
+    import('../views/ProjectReports/ProjectReportsContainer')
+);
+const PrivateRoute = lazy(() => import('./PrivateRoute'));
+const PublicRoute = lazy(() => import('./PublicRoute'));
 
 const Routes = () => (
-    <Switch>
-        <PrivateRoute path="/" component={Dashboard} exact />
-        <PrivateRoute path="/timeentries" component={TimeEntriesContainer} />
-        <PrivateRoute path="/projects" component={ProjectsContainer} />
-        <PrivateRoute path="/companies" component={CompaniesContainer} />
-        <PrivateRoute path="/users" component={UsersContainer} />
-        <PrivateRoute path="/notes" component={NotesContainer} />
-        <PrivateRoute path="/timeline" component={TimelineContainer} />
-        <PrivateRoute path="/vacations" component={VacationsContainer} />
-        <PrivateRoute path="/vacationrequests" component={VacationsRequestsContainer} />
-        <PrivateRoute path="/projectearnings" component={ProjectEarningsContainer} />
-        <PrivateRoute path="/projectreports" component={ProjectReportsContainer} />
-        <PublicRoute path="/login" component={LoginContainer} />
-        <PublicRoute component={NotFound} />
-    </Switch>
+    <Suspense fallback={<Loading />}>
+        <Switch>
+            <PrivateRoute path="/" component={Dashboard} exact />
+            <PrivateRoute path="/timeentries" component={TimeEntriesContainer} />
+            <PrivateRoute path="/projects" component={ProjectsContainer} />
+            <PrivateRoute path="/companies" component={CompaniesContainer} />
+            <PrivateRoute path="/users" component={UsersContainer} />
+            <PrivateRoute path="/notes" component={NotesContainer} />
+            <PrivateRoute path="/timeline" component={TimelineContainer} />
+            <PrivateRoute path="/vacations" component={VacationsContainer} />
+            <PrivateRoute path="/vacationrequests" component={VacationsRequestsContainer} />
+            <PrivateRoute path="/projectearnings" component={ProjectEarningsContainer} />
+            <PrivateRoute path="/projectreports" component={ProjectReportsContainer} />
+            <PublicRoute path="/login" component={LoginContainer} />
+            <PublicRoute component={NotFound} />
+        </Switch>
+    </Suspense>
 );
 
 export default Routes;
