@@ -178,6 +178,19 @@ class ProjectReportsContainer extends Component {
         );
     };
 
+    addLodingBar = (data, totalHours) =>
+        data.map(obj => ({
+            ...obj,
+            billable: (
+                <div className="loaderHolder">
+                    {obj.billable}
+                    <div className="loader">
+                        <div style={{ width: `${(obj.billable / totalHours) * 100}%` }} />
+                    </div>
+                </div>
+            )
+        }));
+
     hours = (hour, billable_hours) => <p data-tip={`billable: ${billable_hours}`}>{hour}</p>; // eslint-disable-line camelcase
 
     date = (date, month) => <p data-tip={month}>{date}</p>;
@@ -222,7 +235,11 @@ class ProjectReportsContainer extends Component {
             //    buttons: this.actionBtns(entry.id)
         }));
 
-        const columns = [
+        const filteredHoursPerUser = this.addLodingBar(hoursPerUser, totalHours);
+        const filteredHoursPerMilestone = this.addLodingBar(hoursPerMilestone, totalHours);
+        const filteredHoursPerJobType = this.addLodingBar(hoursPerJobType, totalHours);
+
+        const entriesColumns = [
             { key: 'user', title: 'User' },
             { key: 'billable_hours', title: 'Billable Hours' },
             { key: 'date', title: 'Date' },
@@ -291,22 +308,22 @@ class ProjectReportsContainer extends Component {
                 <TotalHoursTable
                     title="Total Hours per User"
                     columns={totalHoursColumns}
-                    data={hoursPerUser}
+                    data={filteredHoursPerUser}
                 />
                 <TotalHoursTable
                     title="Total Hours per Job Type"
                     columns={totalHoursColumns}
-                    data={hoursPerJobType}
+                    data={filteredHoursPerJobType}
                 />
                 <TotalHoursTable
                     title="Total Hours per Milestone"
                     columns={totalHoursColumns}
-                    data={hoursPerMilestone}
+                    data={filteredHoursPerMilestone}
                     className="last"
                 />
                 <ProjectReports
                     pdfrows={projectReports}
-                    columns={columns}
+                    columns={entriesColumns}
                     data={filteredData}
                     totalRecords={totalRecords}
                     empty={empty}
