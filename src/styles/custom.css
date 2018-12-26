@@ -396,3 +396,11 @@ tbody tr:first-child td {
 .withTopMargin {
     margin-top: 35px !important;
 }
+.section__third {
+    width: 32%;
+    margin-right: 2%;
+    display: inline-block;
+}
+.section__third.last {
+    margin-right: 0;
+}

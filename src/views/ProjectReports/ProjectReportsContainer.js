@@ -5,6 +5,7 @@ import ProjectReports from './ProjectReports';
 import Filters from './components/Filters';
 import MiniChart from './components/MiniChart';
 import UserPerDateChart from './components/UserPerDateChart';
+import TotalHoursTable from './components/TotalHoursTable';
 import Loading from '../../components/General/Loading';
 import WP_API from '../../data/Api';
 
@@ -12,11 +13,12 @@ class ProjectReportsContainer extends Component {
     constructor() {
         super();
         this.state = {
-            projectReports: [],
-            totalRecords: 0,
             loading: false,
             empty: false,
-            projectsList: [],
+            totalRecords: 0,
+            filterProject: '',
+            filterDepartment: '',
+            filterJobType: '',
             filterDate: {
                 start: moment(
                     new Date(new Date().getFullYear(), new Date().getMonth(), 1),
@@ -27,10 +29,13 @@ class ProjectReportsContainer extends Component {
                     'YYYY-MM-DD'
                 )
             },
-            filterProject: '',
-            filterDepartment: '',
-            filterJobType: '',
+            userData: false,
+            projectsList: [],
+            projectReports: [],
             barChartData: [],
+            hoursPerUser: [],
+            hoursPerJobType: [],
+            hoursPerMilestone: [],
             chartOptions: {
                 legend: {
                     position: 'right'
@@ -57,10 +62,9 @@ class ProjectReportsContainer extends Component {
             .map((_, i) => randomColor({ luminosity: 'bright' }));
 
     getData = () => {
-        this.setState({ loading: true });
         const { filterProject, filterDepartment, filterJobType, filterDate } = this.state;
         const byPassCache = true;
-        const byPassCacheSave = true;
+        const byPassCacheSave = false;
         const api = new WP_API();
         api.getPosts(
             'project-reports',
@@ -74,6 +78,7 @@ class ProjectReportsContainer extends Component {
             byPassCache,
             byPassCacheSave
         ).then(result => {
+            console.log(result);
             const posts =
                 result.data &&
                 result.data.map(post => ({
@@ -140,6 +145,19 @@ class ProjectReportsContainer extends Component {
                           }))
                         : [],
                     empty: result.totalRecords === 0,
+                    hoursPerUser: Object.values(result.report.data.totals.users.list).map(user => ({
+                        ...user
+                    })),
+                    hoursPerMilestone: Object.values(result.report.data.totals.milestones.list).map(
+                        milestone => ({
+                            ...milestone
+                        })
+                    ),
+                    hoursPerJobType: Object.values(result.report.data.totals.job_type.list).map(
+                        jobtype => ({
+                            ...jobtype
+                        })
+                    ),
                     loading: false
                 });
             }
@@ -148,9 +166,16 @@ class ProjectReportsContainer extends Component {
 
     filterChangeEvent = e => {
         const { name, value } = e.target;
-        this.setState({ [name]: value, loading: true }, () => {
-            this.getData();
-        });
+        this.setState(
+            {
+                ...this.initialState,
+                [name]: value,
+                loading: true
+            },
+            () => {
+                this.getData();
+            }
+        );
     };
 
     hours = (hour, billable_hours) => <p data-tip={`billable: ${billable_hours}`}>{hour}</p>; // eslint-disable-line camelcase
@@ -183,9 +208,11 @@ class ProjectReportsContainer extends Component {
             userData,
             jobTypeData,
             milestoneData,
-            barChartData
+            barChartData,
+            hoursPerUser,
+            hoursPerMilestone,
+            hoursPerJobType
         } = this.state;
-
         const filteredData = projectReports.map(entry => ({
             ...entry,
             job_type: this.filterJobType(entry.job_type),
@@ -201,12 +228,15 @@ class ProjectReportsContainer extends Component {
             { key: 'date', title: 'Date' },
             { key: 'project', title: 'Project' },
             { key: 'milestone', title: 'Milestone' },
-            // { key: 'project_feature', title: 'Feature' },
             { key: 'job_type', title: 'Job Type' },
             { key: 'comment', title: 'Comment' },
             { key: 'asana_url', title: 'Asana URL' }
         ];
 
+        const totalHoursColumns = [
+            { key: 'name', title: 'User' },
+            { key: 'billable', title: 'Hours' }
+        ];
         if (loading) {
             return (
                 <React.Fragment>
@@ -258,7 +288,22 @@ class ProjectReportsContainer extends Component {
                     ''
                 )}
                 {barChartData.length ? <UserPerDateChart data={barChartData} /> : ''}
-
+                <TotalHoursTable
+                    title="Total Hours per User"
+                    columns={totalHoursColumns}
+                    data={hoursPerUser}
+                />
+                <TotalHoursTable
+                    title="Total Hours per Job Type"
+                    columns={totalHoursColumns}
+                    data={hoursPerJobType}
+                />
+                <TotalHoursTable
+                    title="Total Hours per Milestone"
+                    columns={totalHoursColumns}
+                    data={hoursPerMilestone}
+                    className="last"
+                />
                 <ProjectReports
                     pdfrows={projectReports}
                     columns={columns}
