@@ -7,6 +7,7 @@ import MiniChart from './components/MiniChart';
 import UserPerDateChart from './components/UserPerDateChart';
 import TotalHoursTable from './components/TotalHoursTable';
 import Loading from '../../components/General/Loading';
+import TopStats from './components/TopStats';
 import WP_API from '../../data/Api';
 
 class ProjectReportsContainer extends Component {
@@ -17,7 +18,7 @@ class ProjectReportsContainer extends Component {
             empty: false,
             totalRecords: 0,
             filterProject: '',
-            filterDepartment: '',
+            filterCompany: '',
             filterJobType: '',
             filterDate: {
                 start: moment(
@@ -31,6 +32,7 @@ class ProjectReportsContainer extends Component {
             },
             userData: false,
             projectsList: [],
+            companiesList: [],
             projectReports: [],
             barChartData: [],
             hoursPerUser: [],
@@ -49,11 +51,16 @@ class ProjectReportsContainer extends Component {
 
     componentWillMount() {
         const api = new WP_API();
-        api.getPosts('projects').then(result =>
+        const projectsList = api.getPosts('projects').then(result => result.data);
+        const companiesList = api.getPosts('companies').then(result => result.data);
+
+        Promise.all([companiesList, projectsList]).then(result => {
             this.setState({
-                projectsList: result.data
-            })
-        );
+                companiesList: result[0],
+                projectsList: result[1]
+            });
+            this.initialState = { ...this.state };
+        });
     }
 
     generateRandomColors = length =>
@@ -62,7 +69,7 @@ class ProjectReportsContainer extends Component {
             .map((_, i) => randomColor({ luminosity: 'bright' }));
 
     getData = () => {
-        const { filterProject, filterDepartment, filterJobType, filterDate } = this.state;
+        const { filterProject, filterCompany, filterJobType, filterDate } = this.state;
         const byPassCache = true;
         const byPassCacheSave = false;
         const api = new WP_API();
@@ -71,7 +78,7 @@ class ProjectReportsContainer extends Component {
             {
                 itemsPerPage: 20000,
                 filterProject,
-                filterDepartment,
+                filterCompany,
                 filterJobType,
                 filterDate
             },
@@ -127,7 +134,7 @@ class ProjectReportsContainer extends Component {
                             }
                         ]
                     },
-                    milestoneData: {
+                    milestoneList: {
                         labels: result.report.data.totals.milestones.labels,
                         datasets: [
                             {
@@ -213,14 +220,15 @@ class ProjectReportsContainer extends Component {
             totalRecords,
             loading,
             filterProject,
-            filterDepartment,
+            filterCompany,
             filterJobType,
             empty,
             projectsList,
+            companiesList,
             chartOptions,
             userData,
             jobTypeData,
-            milestoneData,
+            milestoneList,
             barChartData,
             hoursPerUser,
             hoursPerMilestone,
@@ -259,25 +267,29 @@ class ProjectReportsContainer extends Component {
                 <React.Fragment>
                     <Filters
                         projectsList={projectsList}
+                        companiesList={companiesList}
                         filterChangeEvent={this.filterChangeEvent}
                         filterProject={filterProject}
-                        filterDepartment={filterDepartment}
+                        filterCompany={filterCompany}
                         filterJobType={filterJobType}
                     />
                     <Loading />
                 </React.Fragment>
             );
         }
-
         return (
             <React.Fragment>
                 <Filters
                     projectsList={projectsList}
+                    companiesList={companiesList}
                     filterChangeEvent={this.filterChangeEvent}
                     filterProject={filterProject}
-                    filterDepartment={filterDepartment}
+                    filterCompany={filterCompany}
                     filterJobType={filterJobType}
                 />
+                {hoursPerMilestone.map(milestone => (
+                    <TopStats milestoneData={milestone} />
+                ))}
                 {userData ? (
                     <div className="section__content section__minicharts">
                         <div className="miniChartContainer">
@@ -294,7 +306,7 @@ class ProjectReportsContainer extends Component {
                                 options={chartOptions}
                             />
                             <MiniChart
-                                data={milestoneData}
+                                data={milestoneList}
                                 title="Total Hours per Milestone"
                                 totalHours={totalHours}
                                 options={chartOptions}
