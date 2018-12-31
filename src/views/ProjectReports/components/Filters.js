@@ -6,12 +6,12 @@ import ViewWrapper from '../../../components/General/ViewWrapper';
 const Filters = props => {
     const {
         projectsList,
+        companiesList,
         filterProject,
         filterChangeEvent,
         jobType,
         filterJobType,
-        departments,
-        filterDepartment
+        filterCompany
     } = props;
     return (
         <ViewWrapper title="AM2 Project Reports">
@@ -33,10 +33,10 @@ const Filters = props => {
                     inputChangeEvent={filterChangeEvent}
                 />
                 <Select
-                    name="filterDepartment"
-                    label="Filter by Department:"
-                    list={departments}
-                    value={filterDepartment}
+                    name="filterCompany"
+                    label="Filter by Company:"
+                    list={companiesList}
+                    value={filterCompany}
                     parentClass="form__column col-14"
                     inputChangeEvent={filterChangeEvent}
                 />
@@ -50,13 +50,6 @@ const Filters = props => {
 };
 
 Filters.defaultProps = {
-    departments: [
-        { id: '', title: 'All Departments' },
-        { id: 'wp', title: 'WordPress' },
-        { id: 'ticketzone', title: 'TicketZone' },
-        { id: 'greenrush', title: 'GreenRush' },
-        { id: 'other', title: 'Other' }
-    ],
     jobType: [
         { id: '', title: 'All Types' },
         { id: '2', title: 'Dev' },
