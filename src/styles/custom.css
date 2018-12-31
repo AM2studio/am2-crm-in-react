@@ -105,7 +105,7 @@ select {
     height: 46px;
 }
 
-.ReactModal__Content {
+.ReactModal__Overlay .ReactModal__Content {
     max-width: 960px;
     margin: auto;
     background-color: #fff !important;
