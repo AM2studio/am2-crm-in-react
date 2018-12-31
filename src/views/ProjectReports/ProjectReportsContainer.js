@@ -59,7 +59,6 @@ class ProjectReportsContainer extends Component {
                 companiesList: result[0],
                 projectsList: result[1]
             });
-            this.initialState = { ...this.state };
         });
     }
 
@@ -175,7 +174,12 @@ class ProjectReportsContainer extends Component {
         const { name, value } = e.target;
         this.setState(
             {
-                ...this.initialState,
+                projectReports: [],
+                barChartData: [],
+                hoursPerUser: [],
+                hoursPerJobType: [],
+                hoursPerMilestone: [],
+                userData: false,
                 [name]: value,
                 loading: true
             },
