@@ -80,8 +80,11 @@ module.exports = (env, options) => ({
         htmlPlugin,
         new WebpackMd5Hash()
     ],
-    devtool: 'cheap-module-eval-source-map',
-    devServer: {
-        historyApiFallback: true
-    }
+    devtool: options.mode === 'production' ? false : 'cheap-module-eval-source-map',
+    devServer:
+        options.mode === 'production'
+            ? {}
+            : {
+                  historyApiFallback: true
+              }
 });
