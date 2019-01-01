@@ -4,37 +4,15 @@ import Companies from './Companies';
 import AM2Modal from '../../components/General/AM2Modal';
 import CompaniesEdit from './CompaniesEdit';
 import WP_API from '../../data/Api';
+import { SharedDataConsumer } from '../../data/SharedDataContext';
 
 class CompaniesContainer extends Component {
     constructor() {
         super();
         this.state = {
-            companies: [],
             modal: false,
-            singleCompanyData: {},
-            totalRecords: 0,
-            loading: true
+            singleCompanyData: {}
         };
-    }
-
-    componentWillMount() {
-        this.getCompanies();
-    }
-
-    getCompanies(byPassCache = false) {
-        const api = new WP_API();
-        api.getPosts('companies', null, byPassCache).then(result => {
-            const posts = result.data.map(post => ({
-                id: post.id,
-                title: post.title,
-                city: post.city
-            }));
-            this.setState({
-                companies: posts,
-                totalRecords: result.count.publish,
-                loading: false
-            });
-        });
     }
 
     addCompany = () => {
@@ -65,9 +43,10 @@ class CompaniesContainer extends Component {
     };
 
     handleModalClose = updated => {
+        const { getCompanies } = this.context;
         this.setState({ modal: false });
         if (updated === true) {
-            this.getCompanies(true);
+            getCompanies(true);
         }
     };
 
@@ -99,14 +78,8 @@ class CompaniesContainer extends Component {
     );
 
     render() {
-        const { companies, modal, singleCompanyData, totalRecords, loading } = this.state;
+        const { modal, singleCompanyData, loading } = this.state;
         const { itemsPerPage } = this.props;
-
-        const newComp = companies.map(value => {
-            const newValue = value;
-            newValue.btn = this.actionBtns(value.id);
-            return newValue;
-        });
         const columns = [
             { key: 'id', title: 'ID' },
             { key: 'title', title: 'Title' },
@@ -115,14 +88,20 @@ class CompaniesContainer extends Component {
         ];
         return (
             <React.Fragment>
-                <Companies
-                    columns={columns}
-                    data={newComp}
-                    addCompany={this.addCompany}
-                    totalRecords={totalRecords}
-                    loading={loading}
-                    itemsPerPage={itemsPerPage}
-                />
+                <SharedDataConsumer>
+                    {({ companies }) => (
+                        <Companies
+                            columns={columns}
+                            companies={companies}
+                            addCompany={this.addCompany}
+                            totalRecords={companies.length}
+                            loading={loading}
+                            itemsPerPage={itemsPerPage}
+                            actionBtns={this.actionBtns}
+                        />
+                    )}
+                </SharedDataConsumer>
+
                 <AM2Modal open={modal} handleModalClose={this.handleModalClose}>
                     <CompaniesEdit
                         singleCompanyData={singleCompanyData}
@@ -140,3 +119,5 @@ export default CompaniesContainer;
 CompaniesContainer.defaultProps = {
     itemsPerPage: 20
 };
+
+CompaniesContainer.contextType = SharedDataConsumer;
