@@ -320,7 +320,6 @@ class TimeEntriesContainer extends Component {
                     <TimeEntriesEdit
                         singleTimeEntryData={singleTimeEntryData}
                         handleModalClose={this.handleModalClose}
-                        inputChangeEvent={this.inputChangeEvent}
                         projects={projectsList}
                         users={usersList}
                     />

@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import randomColor from 'randomcolor';
+import { FaPencilAlt, FaTrashAlt } from 'react-icons/fa';
 import ProjectReports from './ProjectReports';
+import TimeEntriesEdit from '../TimeEntries/TimeEntriesEdit';
 import Filters from './components/Filters';
 import MiniChart from './components/MiniChart';
 import UserPerDateChart from './components/UserPerDateChart';
 import TotalHoursTable from './components/TotalHoursTable';
 import Loading from '../../components/General/Loading';
-import TopStats from './components/TopStats';
+import AM2Modal from '../../components/General/AM2Modal';
+import ProjectData from './components/ProjectsList';
+// import TopStats from './components/TopStats';
 import WP_API from '../../data/Api';
 
 class ProjectReportsContainer extends Component {
@@ -20,6 +24,8 @@ class ProjectReportsContainer extends Component {
             filterProject: '',
             filterCompany: '',
             filterJobType: '',
+            singleTimeEntryData: '',
+            modal: false,
             filterDate: {
                 start: moment(
                     new Date(new Date().getFullYear(), new Date().getMonth(), 1),
@@ -33,8 +39,10 @@ class ProjectReportsContainer extends Component {
             userData: false,
             projectsList: [],
             companiesList: [],
+            usersList: [],
             projectReports: [],
             barChartData: [],
+            projectsData: [],
             hoursPerUser: [],
             hoursPerJobType: [],
             hoursPerMilestone: [],
@@ -53,11 +61,13 @@ class ProjectReportsContainer extends Component {
         const api = new WP_API();
         const projectsList = api.getPosts('projects').then(result => result.data);
         const companiesList = api.getPosts('companies').then(result => result.data);
+        const usersList = api.getPosts('users').then(result => result.data);
 
-        Promise.all([companiesList, projectsList]).then(result => {
+        Promise.all([companiesList, projectsList, usersList]).then(result => {
             this.setState({
                 companiesList: result[0],
-                projectsList: result[1]
+                projectsList: result[1],
+                usersList: result[2]
             });
         });
     }
@@ -164,6 +174,11 @@ class ProjectReportsContainer extends Component {
                             ...jobtype
                         })
                     ),
+                    projectsData: Object.values(result.report.data.totals.projects).map(
+                        project => ({
+                            ...project
+                        })
+                    ),
                     loading: false
                 });
             }
@@ -179,6 +194,7 @@ class ProjectReportsContainer extends Component {
                 hoursPerUser: [],
                 hoursPerJobType: [],
                 hoursPerMilestone: [],
+                projectsData: [],
                 userData: false,
                 [name]: value,
                 loading: true
@@ -217,6 +233,53 @@ class ProjectReportsContainer extends Component {
         </a>
     );
 
+    actionBtns = id => (
+        <React.Fragment>
+            <button
+                type="button"
+                className="button--table button--table--edit"
+                onClick={e => {
+                    this.editTimeEntry(e, id);
+                }}
+            >
+                <FaPencilAlt />
+            </button>
+            <button
+                type="button"
+                className="button--table button--table--delete"
+                onClick={e => {
+                    this.deleteTimeEntry(e, id);
+                }}
+            >
+                <FaTrashAlt />
+            </button>
+        </React.Fragment>
+    );
+
+    editTimeEntry = (e, id) => {
+        this.setState({ modal: true });
+        const { entryDataToFetch } = this.props;
+        const data = new WP_API();
+        data.get('time-entry', id, entryDataToFetch).then(result => {
+            this.setState({ singleTimeEntryData: result });
+        });
+    };
+
+    deleteTimeEntry = (e, id) => {
+        const data = new WP_API();
+        data.delete('time-entry', id).then(result => {
+            // Instead of another API call, remove from array?
+            this.getEntries(true);
+        });
+    };
+
+    handleModalClose = update => {
+        this.setState({ modal: false });
+        if (update === true) {
+            this.getData();
+        }
+    };
+
     render() {
         const {
             projectReports,
@@ -236,15 +299,20 @@ class ProjectReportsContainer extends Component {
             barChartData,
             hoursPerUser,
             hoursPerMilestone,
-            hoursPerJobType
+            hoursPerJobType,
+            usersList,
+            singleTimeEntryData,
+            projectsData,
+            modal
         } = this.state;
+
         const filteredData = projectReports.map(entry => ({
             ...entry,
             job_type: this.filterJobType(entry.job_type),
             hours: this.hours(entry.hours, entry.billable_hours),
             date: this.date(entry.date, entry.month),
-            asana_url: entry.asana_url && this.asana(entry.asana_url)
-            //    buttons: this.actionBtns(entry.id)
+            asana_url: entry.asana_url && this.asana(entry.asana_url),
+            buttons: this.actionBtns(entry.id)
         }));
 
         const filteredHoursPerUser = this.addLodingBar(hoursPerUser, totalHours);
@@ -259,7 +327,8 @@ class ProjectReportsContainer extends Component {
             { key: 'milestone', title: 'Milestone' },
             { key: 'job_type', title: 'Job Type' },
             { key: 'comment', title: 'Comment' },
-            { key: 'asana_url', title: 'Asana URL' }
+            { key: 'asana_url', title: 'Asana URL' },
+            { key: 'buttons', title: 'Action' }
         ];
 
         const totalHoursColumns = [
@@ -281,6 +350,10 @@ class ProjectReportsContainer extends Component {
                 </React.Fragment>
             );
         }
+        // Commented out for now, move to render to show.
+        // {hoursPerMilestone.map(milestone => (
+        //     <TopStats milestoneData={milestone} />
+        // ))}
         return (
             <React.Fragment>
                 <Filters
@@ -291,9 +364,17 @@ class ProjectReportsContainer extends Component {
                     filterCompany={filterCompany}
                     filterJobType={filterJobType}
                 />
-                {hoursPerMilestone.map(milestone => (
-                    <TopStats milestoneData={milestone} />
-                ))}
+                {
+                    // show bottom when multiple projects only
+                }
+                {projectsData.length > 1 &&
+                    projectsData.map(project => (
+                        <ProjectData
+                            projectData={project.milestones}
+                            name={project.name}
+                            billable={project.billable}
+                        />
+                    ))}
                 {userData ? (
                     <div className="section__content section__minicharts">
                         <div className="miniChartContainer">
@@ -344,9 +425,34 @@ class ProjectReportsContainer extends Component {
                     totalRecords={totalRecords}
                     empty={empty}
                 />
+                <AM2Modal open={modal} handleModalClose={this.handleModalClose}>
+                    <TimeEntriesEdit
+                        singleTimeEntryData={singleTimeEntryData}
+                        handleModalClose={this.handleModalClose}
+                        projects={projectsList}
+                        users={usersList}
+                    />
+                </AM2Modal>
             </React.Fragment>
         );
     }
 }
-
+ProjectReportsContainer.defaultProps = {
+    entryDataToFetch: [
+        'billable_hours',
+        'user_id',
+        'milestones',
+        'milestone',
+        'comment',
+        'company',
+        'date',
+        'hours',
+        'id',
+        'is_billable',
+        'job_type',
+        'project',
+        'project_feature',
+        'asana_url'
+    ]
+};
 export default ProjectReportsContainer;
