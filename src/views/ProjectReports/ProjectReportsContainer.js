@@ -365,16 +365,9 @@ class ProjectReportsContainer extends Component {
                     filterJobType={filterJobType}
                 />
                 {
-                    // show bottom when multiple projects only
+                    // show bottom for multiple projects only, like when filtering by company
                 }
-                {projectsData.length > 1 &&
-                    projectsData.map(project => (
-                        <ProjectData
-                            projectData={project.milestones}
-                            name={project.name}
-                            billable={project.billable}
-                        />
-                    ))}
+                {projectsData.length > 1 && <ProjectData data={projectsData} />}
                 {userData ? (
                     <div className="section__content section__minicharts">
                         <div className="miniChartContainer">

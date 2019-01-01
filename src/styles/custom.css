@@ -448,7 +448,7 @@ tbody tr:first-child td {
     flex-basis: 0;
     flex-grow: 1;
     flex-shrink: 1;
-    padding: 0 15px;
+    padding: 30px;
     background-color: #fff;
     text-align: center;
     display: inline-block;
@@ -467,7 +467,7 @@ tbody tr:first-child td {
     font-size: 2.25rem;
     color: #3e3f42;
     line-height: 3.125rem;
-    margin-bottom: 15px;
+    margin-bottom: 25px;
 }
 .positive .value {
     color: #39b54a;
