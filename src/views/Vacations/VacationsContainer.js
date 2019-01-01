@@ -2,44 +2,30 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import Vacations from './Vacations';
 import WP_API from '../../data/Api';
+import { SharedDataConsumer } from '../../data/SharedDataContext';
 
 class VacationsContainer extends Component {
     constructor() {
         super();
         this.state = {
             vacations: [],
-            users: [],
             loading: true
         };
     }
 
     componentWillMount() {
-        this.getVacations();
-    }
-
-    getVacations = () => {
-        const { offset } = this.state;
         const { itemsPerPage } = this.props;
         const api = new WP_API();
-        const usersList = api.getPosts('users').then(result => result.data);
-        const vacations = api
-            .getPosts('vacations', { itemsPerPage, offset })
-            .then(result => result.data);
-        Promise.all([usersList, vacations]).then(value => {
-            const users = value[0].map(user => ({
-                id: user.id,
-                title: `${user.first_name} ${user.last_name}`
-            }));
+        api.getPosts('vacations', { itemsPerPage }).then(result => {
             this.setState({
-                vacations: value[1],
-                users,
+                vacations: result.data,
                 loading: false
             });
         });
-    };
+    }
 
     render() {
-        const { vacations, loading, users } = this.state;
+        const { vacations, loading } = this.state;
         const filteredData = vacations.reduce((filtered, current) => {
             if (current.status === 'approved') {
                 filtered.push({
@@ -52,7 +38,11 @@ class VacationsContainer extends Component {
             }
             return filtered;
         }, []);
-        return <Vacations data={filteredData} users={users} loading={loading} />;
+        return (
+            <SharedDataConsumer>
+                {({ users }) => <Vacations data={filteredData} users={users} loading={loading} />}
+            </SharedDataConsumer>
+        );
     }
 }
 
