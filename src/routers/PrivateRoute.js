@@ -4,10 +4,11 @@ import WP_AUTH from '../data/Auth';
 import HeaderContainer from '../components/Header/HeaderContainer';
 import Footer from '../components/Footer/Footer';
 import Sidebar from '../components/Sidebar/Sidebar';
+import DataProvider from '../data/SharedDataContext';
 
 const auth = new WP_AUTH();
 const PrivateRoute = ({ component: Component, path, exact }) => (
-    <React.Fragment>
+    <DataProvider>
         <Sidebar />
         <div id="wrapper">
             <HeaderContainer />
@@ -35,7 +36,7 @@ const PrivateRoute = ({ component: Component, path, exact }) => (
             </main>
             <Footer />
         </div>
-    </React.Fragment>
+    </DataProvider>
 );
 
 export default PrivateRoute;
