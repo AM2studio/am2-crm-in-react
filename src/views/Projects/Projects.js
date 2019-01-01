@@ -3,7 +3,14 @@ import ViewWrapper from '../../components/General/ViewWrapper';
 import AM2Table from '../../components/Table/AM2Table';
 
 const Projects = props => {
-    const { data, columns, addProject, itemsPerPage, totalRecords, loading } = props;
+    const { data, columns, addProject, itemsPerPage, actionBtns } = props;
+
+    const loading = data.length === 0;
+    const formatedData = data.map(project => ({
+        ...project,
+        btn: actionBtns(project.id)
+    }));
+
     return (
         <ViewWrapper title="Projects">
             <p className="negative-margin text-right">
@@ -12,10 +19,10 @@ const Projects = props => {
                 </button>
             </p>
             <AM2Table
-                rows={data}
+                rows={formatedData}
                 columns={columns}
                 itemsPerPage={itemsPerPage}
-                totalRecords={totalRecords}
+                totalRecords={formatedData.length}
                 loading={loading}
                 clientFiltering
                 clientSorting

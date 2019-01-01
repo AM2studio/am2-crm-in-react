@@ -5,50 +5,18 @@ import AM2Modal from '../../components/General/AM2Modal';
 import ProjectsEdit from './ProjectsEdit';
 import Milestones from './ProjectsMilestones';
 import WP_API from '../../data/Api';
+import { SharedDataConsumer } from '../../data/SharedDataContext';
 
 class ProjectsContainer extends Component {
     constructor() {
         super();
         this.state = {
-            projects: [],
-            companies: [],
             modal: false,
             modalType: '',
             singleProjectData: {},
-            totalRecords: 0,
-            currentProject: '',
-            loading: true
+            currentProject: ''
         };
     }
-
-    // componentWillMount pravi problem?
-    componentWillMount() {
-        this.getProjects();
-    }
-
-    getProjects = (byPassCache = false) => {
-        const api = new WP_API();
-        const projectsList = api.getPosts('projects', null, byPassCache).then(result => result);
-        const Companies = api.getPosts('companies', null, byPassCache).then(result => result);
-        Promise.all([projectsList, Companies]).then(values => {
-            const projects = values[0].data.map(post => ({
-                id: post.id,
-                title: post.title,
-                company: post.company_name
-            }));
-            const companies = values[1].data.map(post => ({
-                id: post.id,
-                title: post.title,
-                city: post.city
-            }));
-            this.setState(() => ({
-                projects,
-                companies,
-                totalRecords: values[0].count.publish,
-                loading: false
-            }));
-        });
-    };
 
     addProject = () => {
         this.setState(() => ({
@@ -77,9 +45,10 @@ class ProjectsContainer extends Component {
     };
 
     handleModalClose = updated => {
+        const { getProjects } = this.context;
         this.setState({ modal: false });
         if (updated === true) {
-            this.getProjects(true);
+            getProjects(true);
         }
     };
 
@@ -121,23 +90,13 @@ class ProjectsContainer extends Component {
 
     render() {
         const {
-            projects,
             modal,
             modalType,
             singleProjectData,
-            companies,
-            totalRecords,
-            loading,
             projectMilestones,
             currentProject
         } = this.state;
-        const newComp =
-            projects &&
-            projects.map(value => {
-                const newValue = value;
-                newValue.btn = this.actionBtns(value.id);
-                return newValue;
-            });
+
         const columns = [
             { key: 'id', title: 'ID' },
             { key: 'title', title: 'Title' },
@@ -146,20 +105,27 @@ class ProjectsContainer extends Component {
         ];
         return (
             <React.Fragment>
-                <Projects
-                    columns={columns}
-                    data={newComp}
-                    addProject={this.addProject}
-                    totalRecords={totalRecords}
-                    loading={loading}
-                />
+                <SharedDataConsumer>
+                    {({ projects }) => (
+                        <Projects
+                            columns={columns}
+                            data={projects}
+                            addProject={this.addProject}
+                            actionBtns={this.actionBtns}
+                        />
+                    )}
+                </SharedDataConsumer>
                 <AM2Modal open={modal} handleModalClose={this.handleModalClose}>
                     {modalType === 'project' ? (
-                        <ProjectsEdit
-                            singleProjectData={singleProjectData}
-                            companies={companies}
-                            handleModalClose={this.handleModalClose}
-                        />
+                        <SharedDataConsumer>
+                            {({ companies }) => (
+                                <ProjectsEdit
+                                    singleProjectData={singleProjectData}
+                                    companies={companies}
+                                    handleModalClose={this.handleModalClose}
+                                />
+                            )}
+                        </SharedDataConsumer>
                     ) : (
                         <Milestones
                             projectMilestones={projectMilestones}
@@ -198,5 +164,7 @@ ProjectsContainer.defaultProps = {
     ],
     itemsPerPage: 20
 };
+
+ProjectsContainer.contextType = SharedDataConsumer;
 
 export default ProjectsContainer;
