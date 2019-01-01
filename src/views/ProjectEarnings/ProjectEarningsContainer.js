@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ProjectEarnings from './ProjectEarnings';
 import WP_API from '../../data/Api';
+import { SharedDataConsumer } from '../../data/SharedDataContext';
 
 class ProjectEarningsContainer extends Component {
     constructor() {
@@ -10,9 +11,7 @@ class ProjectEarningsContainer extends Component {
             offset: 0,
             totalRecords: 0,
             loading: true,
-            empty: false,
-            projectsList: [],
-            usersList: []
+            empty: false
         };
     }
 
@@ -30,30 +29,22 @@ class ProjectEarningsContainer extends Component {
         }
         const { itemsPerPage } = this.props;
         const api = new WP_API();
-        const projectsList = api.getPosts('projects').then(result => result.data);
-        const usersList = api.getPosts('users').then(result => result.data);
-        const projectEarnings = api
-            .getPosts(
-                'project-earnings',
-                {
-                    itemsPerPage,
-                    offset,
-                    filterUser,
-                    filterProject
-                },
-                byPassCache,
-                byPassCacheSave
-            )
-            .then(result => result);
-
-        Promise.all([projectsList, usersList, projectEarnings]).then(values => {
+        api.getPosts(
+            'project-earnings',
+            {
+                itemsPerPage,
+                offset,
+                filterUser,
+                filterProject
+            },
+            byPassCache,
+            byPassCacheSave
+        ).then(result => {
             this.setState({
-                projectsList: values[0],
-                usersList: values[1],
-                projectEarnings: values[2].data ? values[2].data : [],
-                totalRecords: values[2].count.publish,
+                projectEarnings: result.data ? result.data : [],
+                totalRecords: result.count.publish,
                 loading: false,
-                empty: values[2].data === undefined
+                empty: result.data === undefined
             });
         });
     };
@@ -93,13 +84,10 @@ class ProjectEarningsContainer extends Component {
             loading,
             filterUser,
             filterProject,
-            empty,
-            projectsList,
-            usersList
+            empty
         } = this.state;
 
         const { itemsPerPage } = this.props;
-        const filteredUsersList = usersList.filter(user => user.company_role === 'pm');
         const filteredData = projectEarnings.map((user, index) => ({
             ...user,
             status: this.status(user.status)
@@ -124,21 +112,25 @@ class ProjectEarningsContainer extends Component {
             { key: 'marza', title: 'Margin' }
         ];
         return (
-            <ProjectEarnings
-                columns={columns}
-                data={filteredData}
-                empty={empty}
-                addUser={this.addUser}
-                onPageChanged={this.onPageChanged}
-                totalRecords={totalRecords}
-                loading={loading}
-                itemsPerPage={itemsPerPage}
-                projectsList={projectsList}
-                usersList={filteredUsersList}
-                filterChangeEvent={this.filterChangeEvent}
-                filterProject={filterProject}
-                filterUser={filterUser}
-            />
+            <SharedDataConsumer>
+                {({ users, projects }) => (
+                    <ProjectEarnings
+                        columns={columns}
+                        data={filteredData}
+                        empty={empty}
+                        addUser={this.addUser}
+                        onPageChanged={this.onPageChanged}
+                        totalRecords={totalRecords}
+                        loading={loading}
+                        itemsPerPage={itemsPerPage}
+                        projectsList={projects}
+                        usersList={users}
+                        filterChangeEvent={this.filterChangeEvent}
+                        filterProject={filterProject}
+                        filterUser={filterUser}
+                    />
+                )}
+            </SharedDataConsumer>
         );
     }
 }

@@ -20,20 +20,17 @@ const Notes = props => {
         filterUser
     } = props;
 
-    if (usersList) {
-        usersList.unshift({ id: '', title: 'All Users' });
-    }
+    let filteredUsersList = usersList.filter(user => user.company_role === 'pm');
+    const filteredProjectsList = [{ id: '', title: 'All Projects' }, ...projectsList];
+    filteredUsersList = [{ id: '', title: 'All Users' }, ...filteredUsersList];
 
-    if (projectsList) {
-        projectsList.unshift({ id: '', title: 'All Projects' });
-    }
     return (
         <ViewWrapper title="AM2 Project Earnings">
             <div className="am2-filters">
                 <Select
                     name="filterProject"
                     label="Filter by Project:"
-                    list={projectsList}
+                    list={filteredProjectsList}
                     value={filterProject}
                     parentClass="form__column col-14"
                     inputChangeEvent={filterChangeEvent}
@@ -41,7 +38,7 @@ const Notes = props => {
                 <Select
                     name="filterUser"
                     label="Filter by PM:"
-                    list={usersList}
+                    list={filteredUsersList}
                     value={filterUser}
                     parentClass="form__column col-14"
                     inputChangeEvent={filterChangeEvent}
