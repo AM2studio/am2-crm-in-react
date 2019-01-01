@@ -117,68 +117,63 @@ class ProjectReportsContainer extends Component {
                     loading: false
                 });
             } else {
+                const { totals } = result.report.data;
                 this.setState({
                     projectReports: posts,
                     totalRecords: result.data ? result.data.count : 0,
-                    totalHours: result.report.data.totals.hours,
+                    totalHours: totals.hours,
                     userData: {
-                        labels: result.report.data.totals.users.labels,
+                        labels: totals.users.labels,
                         datasets: [
                             {
-                                data: result.report.data.totals.users.hours,
+                                data: totals.users.hours,
                                 backgroundColor: this.generateRandomColors(
-                                    result.report.data.totals.users.hours.length
+                                    totals.users.hours.length
                                 )
                             }
                         ]
                     },
                     jobTypeData: {
-                        labels: result.report.data.totals.job_type.labels,
+                        labels: totals.job_type.labels,
                         datasets: [
                             {
-                                data: result.report.data.totals.job_type.hours,
+                                data: totals.job_type.hours,
                                 backgroundColor: this.generateRandomColors(
-                                    result.report.data.totals.job_type.hours.length
+                                    totals.job_type.hours.length
                                 )
                             }
                         ]
                     },
                     milestoneList: {
-                        labels: result.report.data.totals.milestones.labels,
+                        labels: totals.milestones.labels,
                         datasets: [
                             {
-                                data: result.report.data.totals.milestones.hours,
+                                data: totals.milestones.hours,
                                 backgroundColor: this.generateRandomColors(
-                                    result.report.data.totals.milestones.hours.length
+                                    totals.milestones.hours.length
                                 )
                             }
                         ]
                     },
-                    barChartData: Object.values(result.report.data.totals.users.dates)
-                        ? Object.values(result.report.data.totals.users.dates).map(bar => ({
+                    barChartData: Object.values(totals.users.dates)
+                        ? Object.values(totals.users.dates).map(bar => ({
                               ...bar,
                               backgroundColor: randomColor({ luminosity: 'bright' })
                           }))
                         : [],
                     empty: result.totalRecords === 0,
-                    hoursPerUser: Object.values(result.report.data.totals.users.list).map(user => ({
+                    hoursPerUser: Object.values(totals.users.list).map(user => ({
                         ...user
                     })),
-                    hoursPerMilestone: Object.values(result.report.data.totals.milestones.list).map(
-                        milestone => ({
-                            ...milestone
-                        })
-                    ),
-                    hoursPerJobType: Object.values(result.report.data.totals.job_type.list).map(
-                        jobtype => ({
-                            ...jobtype
-                        })
-                    ),
-                    projectsData: Object.values(result.report.data.totals.projects).map(
-                        project => ({
-                            ...project
-                        })
-                    ),
+                    hoursPerMilestone: Object.values(totals.milestones.list).map(milestone => ({
+                        ...milestone
+                    })),
+                    hoursPerJobType: Object.values(totals.job_type.list).map(jobtype => ({
+                        ...jobtype
+                    })),
+                    projectsData: Object.values(totals.projects).map(project => ({
+                        ...project
+                    })),
                     loading: false
                 });
             }
