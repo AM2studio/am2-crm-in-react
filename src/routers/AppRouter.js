@@ -1,6 +1,9 @@
 import React, { Suspense, lazy } from 'react';
 import { Switch } from 'react-router-dom';
 import Loading from '../views/Loading';
+// Importing them directly due to split chunk not importing it in js that is used by some components.
+import 'react-dates/initialize';
+import 'react-dates/lib/css/_datepicker.css';
 
 const Dashboard = lazy(() => import('../views/Dashboard/Dashboard'));
 const NotFound = lazy(() => import('../views/NotFound'));
@@ -11,16 +14,10 @@ const UsersContainer = lazy(() => import('../views/Users/UsersContainer'));
 const NotesContainer = lazy(() => import('../views/Notes/NotesContainer'));
 const TimelineContainer = lazy(() => import('../views/Timeline/TimelineContainer'));
 const VacationsContainer = lazy(() => import('../views/Vacations/VacationsContainer'));
-const VacationsRequestsContainer = lazy(() =>
-    import('../views/VacationRequests/VacationRequestsContainer')
-);
+const VacationsRequestsContainer = lazy(() => import('../views/VacationRequests/VacationRequestsContainer'));
 const TimeEntriesContainer = lazy(() => import('../views/TimeEntries/TimeEntriesContainer'));
-const ProjectEarningsContainer = lazy(() =>
-    import('../views/ProjectEarnings/ProjectEarningsContainer')
-);
-const ProjectReportsContainer = lazy(() =>
-    import('../views/ProjectReports/ProjectReportsContainer')
-);
+const ProjectEarningsContainer = lazy(() => import('../views/ProjectEarnings/ProjectEarningsContainer'));
+const ProjectReportsContainer = lazy(() => import('../views/ProjectReports/ProjectReportsContainer'));
 const PrivateRoute = lazy(() => import('./PrivateRoute'));
 const PublicRoute = lazy(() => import('./PublicRoute'));
 
