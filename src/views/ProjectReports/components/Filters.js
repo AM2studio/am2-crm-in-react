@@ -13,13 +13,17 @@ const Filters = props => {
         filterJobType,
         filterCompany
     } = props;
+
+    const appendAllProjectSelect = [{ id: '', title: 'All Projects' }, ...projectsList];
+    const appendAllCompanySelect = [{ id: '', title: 'All Companies' }, ...companiesList];
+
     return (
         <ViewWrapper title="AM2 Project Reports">
             <div className="am2-filters">
                 <Select
                     name="filterProject"
                     label="Filter by Project:"
-                    list={projectsList}
+                    list={appendAllProjectSelect}
                     value={filterProject}
                     parentClass="form__column col-14"
                     inputChangeEvent={filterChangeEvent}
@@ -35,7 +39,7 @@ const Filters = props => {
                 <Select
                     name="filterCompany"
                     label="Filter by Company:"
-                    list={companiesList}
+                    list={appendAllCompanySelect}
                     value={filterCompany}
                     parentClass="form__column col-14"
                     inputChangeEvent={filterChangeEvent}

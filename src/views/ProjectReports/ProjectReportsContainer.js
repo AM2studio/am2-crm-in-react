@@ -11,8 +11,11 @@ import TotalHoursTable from './components/TotalHoursTable';
 import Loading from '../../components/General/Loading';
 import AM2Modal from '../../components/General/AM2Modal';
 import ProjectData from './components/ProjectsList';
+import { SharedDataConsumer } from '../../data/SharedDataContext';
 // import TopStats from './components/TopStats';
 import WP_API from '../../data/Api';
+
+const api = new WP_API();
 
 class ProjectReportsContainer extends Component {
     constructor() {
@@ -37,9 +40,6 @@ class ProjectReportsContainer extends Component {
                 )
             },
             userData: false,
-            projectsList: [],
-            companiesList: [],
-            usersList: [],
             projectReports: [],
             barChartData: [],
             projectsData: [],
@@ -57,21 +57,6 @@ class ProjectReportsContainer extends Component {
         };
     }
 
-    componentWillMount() {
-        const api = new WP_API();
-        const projectsList = api.getPosts('projects').then(result => result.data);
-        const companiesList = api.getPosts('companies').then(result => result.data);
-        const usersList = api.getPosts('users').then(result => result.data);
-
-        Promise.all([companiesList, projectsList, usersList]).then(result => {
-            this.setState({
-                companiesList: result[0],
-                projectsList: result[1],
-                usersList: result[2]
-            });
-        });
-    }
-
     generateRandomColors = length =>
         Array(length)
             .fill()
@@ -81,7 +66,6 @@ class ProjectReportsContainer extends Component {
         const { filterProject, filterCompany, filterJobType, filterDate } = this.state;
         const byPassCache = true;
         const byPassCacheSave = false;
-        const api = new WP_API();
         api.getPosts(
             'project-reports',
             {
@@ -213,16 +197,16 @@ class ProjectReportsContainer extends Component {
             )
         }));
 
-    hours = (hour, billable_hours) => <p data-tip={`billable: ${billable_hours}`}>{hour}</p>; // eslint-disable-line camelcase
+    formatHours = (hour, billable_hours) => <p data-tip={`billable: ${billable_hours}`}>{hour}</p>; // eslint-disable-line camelcase
 
-    date = (date, month) => <p data-tip={month}>{date}</p>;
+    formatDate = (date, month) => <p data-tip={month}>{date}</p>;
 
     filterJobType = jobType => {
         const jobTypeClass = jobType.replace(/[^a-zA-Z]+/g, '');
         return <span className={`jobtype ${jobTypeClass}`}>{jobType}</span>;
     };
 
-    asana = asana => (
+    formatAsana = asana => (
         <a href={asana} rel="noopener noreferrer" target="_blank" data-tip={asana}>
             {asana}
         </a>
@@ -254,15 +238,13 @@ class ProjectReportsContainer extends Component {
     editTimeEntry = (e, id) => {
         this.setState({ modal: true });
         const { entryDataToFetch } = this.props;
-        const data = new WP_API();
-        data.get('time-entry', id, entryDataToFetch).then(result => {
+        api.get('time-entry', id, entryDataToFetch).then(result => {
             this.setState({ singleTimeEntryData: result });
         });
     };
 
     deleteTimeEntry = (e, id) => {
-        const data = new WP_API();
-        data.delete('time-entry', id).then(result => {
+        api.delete('time-entry', id).then(result => {
             // Instead of another API call, remove from array?
             this.getEntries(true);
         });
@@ -285,8 +267,6 @@ class ProjectReportsContainer extends Component {
             filterCompany,
             filterJobType,
             empty,
-            projectsList,
-            companiesList,
             chartOptions,
             userData,
             jobTypeData,
@@ -295,7 +275,6 @@ class ProjectReportsContainer extends Component {
             hoursPerUser,
             hoursPerMilestone,
             hoursPerJobType,
-            usersList,
             singleTimeEntryData,
             projectsData,
             modal
@@ -304,9 +283,9 @@ class ProjectReportsContainer extends Component {
         const filteredData = projectReports.map(entry => ({
             ...entry,
             job_type: this.filterJobType(entry.job_type),
-            hours: this.hours(entry.hours, entry.billable_hours),
-            date: this.date(entry.date, entry.month),
-            asana_url: entry.asana_url && this.asana(entry.asana_url),
+            hours: this.formatHours(entry.hours, entry.billable_hours),
+            date: this.formatDate(entry.date, entry.month),
+            asana_url: entry.asana_url && this.formatAsana(entry.asana_url),
             buttons: this.actionBtns(entry.id)
         }));
 
@@ -333,14 +312,18 @@ class ProjectReportsContainer extends Component {
         if (loading) {
             return (
                 <React.Fragment>
-                    <Filters
-                        projectsList={projectsList}
-                        companiesList={companiesList}
-                        filterChangeEvent={this.filterChangeEvent}
-                        filterProject={filterProject}
-                        filterCompany={filterCompany}
-                        filterJobType={filterJobType}
-                    />
+                    <SharedDataConsumer>
+                        {({ projects, companies }) => (
+                            <Filters
+                                projectsList={projects}
+                                companiesList={companies}
+                                filterChangeEvent={this.filterChangeEvent}
+                                filterProject={filterProject}
+                                filterCompany={filterCompany}
+                                filterJobType={filterJobType}
+                            />
+                        )}
+                    </SharedDataConsumer>
                     <Loading />
                 </React.Fragment>
             );
@@ -351,14 +334,18 @@ class ProjectReportsContainer extends Component {
         // ))}
         return (
             <React.Fragment>
-                <Filters
-                    projectsList={projectsList}
-                    companiesList={companiesList}
-                    filterChangeEvent={this.filterChangeEvent}
-                    filterProject={filterProject}
-                    filterCompany={filterCompany}
-                    filterJobType={filterJobType}
-                />
+                <SharedDataConsumer>
+                    {({ projects, companies }) => (
+                        <Filters
+                            projectsList={projects}
+                            companiesList={companies}
+                            filterChangeEvent={this.filterChangeEvent}
+                            filterProject={filterProject}
+                            filterCompany={filterCompany}
+                            filterJobType={filterJobType}
+                        />
+                    )}
+                </SharedDataConsumer>
                 {
                     // show bottom for multiple projects only, like when filtering by company
                 }
@@ -414,12 +401,16 @@ class ProjectReportsContainer extends Component {
                     empty={empty}
                 />
                 <AM2Modal open={modal} handleModalClose={this.handleModalClose}>
-                    <TimeEntriesEdit
-                        singleTimeEntryData={singleTimeEntryData}
-                        handleModalClose={this.handleModalClose}
-                        projects={projectsList}
-                        users={usersList}
-                    />
+                    <SharedDataConsumer>
+                        {({ projects, companies }) => (
+                            <TimeEntriesEdit
+                                singleTimeEntryData={singleTimeEntryData}
+                                handleModalClose={this.handleModalClose}
+                                projects={projects}
+                                users={companies}
+                            />
+                        )}
+                    </SharedDataConsumer>
                 </AM2Modal>
             </React.Fragment>
         );
