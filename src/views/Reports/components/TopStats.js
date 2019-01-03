@@ -37,11 +37,7 @@ export default class extends Component {
                         <div className="label">Cost (CAD)</div>
                         <div className="value">${milestoneData.total_cost}</div>
                     </div>
-                    <div
-                        className={`topstats ${
-                            milestoneData.margin > 0.6 ? 'positive' : 'negative'
-                        }`}
-                    >
+                    <div className={`topstats ${milestoneData.margin > 0.6 ? 'positive' : 'negative'}`}>
                         <div className="label">Margin</div>
                         <div className="value">{milestoneData.margin}</div>
                     </div>

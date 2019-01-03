@@ -21,11 +21,7 @@ class PDFCreator extends Component {
 
     render() {
         return (
-            <button
-                type="button"
-                className="button button--primary button--pdf"
-                onClick={this.downloadPDF}
-            >
+            <button type="button" className="button button--primary button--pdf" onClick={this.downloadPDF}>
                 Download PDF
             </button>
         );

@@ -53,10 +53,7 @@ const Login = props => {
                                 ) : (
                                     ''
                                 )}
-                                <div
-                                    className="wrap-input100 validate-input m-b-20"
-                                    data-validate="Type user name"
-                                >
+                                <div className="wrap-input100 validate-input m-b-20" data-validate="Type user name">
                                     <input
                                         className="input100"
                                         type="text"
@@ -67,10 +64,7 @@ const Login = props => {
                                     />
                                     <span className="focus-input100" />
                                 </div>
-                                <div
-                                    className="wrap-input100 validate-input m-b-20"
-                                    data-validate="Type password"
-                                >
+                                <div className="wrap-input100 validate-input m-b-20" data-validate="Type password">
                                     <input
                                         type="password"
                                         className="input100"
@@ -82,11 +76,7 @@ const Login = props => {
                                 </div>
 
                                 <div className="container-login100-form-btn">
-                                    <button
-                                        type="button"
-                                        onClick={login}
-                                        className="login100-form-btn"
-                                    >
+                                    <button type="button" onClick={login} className="login100-form-btn">
                                         Sign in
                                     </button>
                                 </div>
