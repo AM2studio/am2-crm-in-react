@@ -33,9 +33,7 @@ const Navigation = props => {
     const links = [
         {
             to: '/',
-            parentClass: activeClass(location.pathname, '/')
-                ? 'menu__item menu__item--active'
-                : 'menu__item',
+            parentClass: activeClass(location.pathname, '/') ? 'menu__item menu__item--active' : 'menu__item',
             active: true,
             title: 'Dashboard',
             icon: FiHome
@@ -51,27 +49,21 @@ const Navigation = props => {
         },
         {
             to: '/users',
-            parentClass: activeClass(location.pathname, '/users')
-                ? 'menu__item menu__item--active'
-                : 'menu__item',
+            parentClass: activeClass(location.pathname, '/users') ? 'menu__item menu__item--active' : 'menu__item',
             active: !!permissions.includes('users'),
             title: 'Users',
             icon: FiUsers
         },
         {
             to: '/companies',
-            parentClass: activeClass(location.pathname, '/companies')
-                ? 'menu__item menu__item--active'
-                : 'menu__item',
+            parentClass: activeClass(location.pathname, '/companies') ? 'menu__item menu__item--active' : 'menu__item',
             active: !!permissions.includes('companies'),
             title: 'Companies',
             icon: FiFolder
         },
         {
             to: '/projects',
-            parentClass: activeClass(location.pathname, '/projects')
-                ? 'menu__item menu__item--active'
-                : 'menu__item',
+            parentClass: activeClass(location.pathname, '/projects') ? 'menu__item menu__item--active' : 'menu__item',
             active: !!permissions.includes('projects'),
             title: 'Projects',
             icon: FiFileText
@@ -96,27 +88,21 @@ const Navigation = props => {
         },
         {
             to: '/timeline',
-            parentClass: activeClass(location.pathname, '/timeline')
-                ? 'menu__item menu__item--active'
-                : 'menu__item',
+            parentClass: activeClass(location.pathname, '/timeline') ? 'menu__item menu__item--active' : 'menu__item',
             active: !!permissions.includes('timeline'),
             title: 'Timeline',
             icon: FiBarChart2
         },
         {
             to: '/notes',
-            parentClass: activeClass(location.pathname, '/notes')
-                ? 'menu__item menu__item--active'
-                : 'menu__item',
+            parentClass: activeClass(location.pathname, '/notes') ? 'menu__item menu__item--active' : 'menu__item',
             active: !!permissions.includes('user-note'),
             title: 'Notes',
             icon: FiPaperclip
         },
         {
             to: '/vacations',
-            parentClass: activeClass(location.pathname, '/vacations')
-                ? 'menu__item menu__item--active'
-                : 'menu__item',
+            parentClass: activeClass(location.pathname, '/vacations') ? 'menu__item menu__item--active' : 'menu__item',
             active: true,
             title: 'Vacations',
             icon: FiSun
