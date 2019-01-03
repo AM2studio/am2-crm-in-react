@@ -64,14 +64,7 @@ class UsersEdit extends Component {
     };
 
     render() {
-        const {
-            handleModalClose,
-            departments,
-            countries,
-            companyRoles,
-            permissionsList,
-            trackResources
-        } = this.props;
+        const { handleModalClose, departments, countries, companyRoles, permissionsList, trackResources } = this.props;
 
         const {
             loading,
@@ -208,18 +201,10 @@ class UsersEdit extends Component {
                                 })}
                             </div>
                             <div className="form__row">
-                                <button
-                                    type="button"
-                                    className="button button--primary"
-                                    onClick={this.updateUserData}
-                                >
+                                <button type="button" className="button button--primary" onClick={this.updateUserData}>
                                     Submit
                                 </button>
-                                <button
-                                    type="button"
-                                    className="button right"
-                                    onClick={handleModalClose}
-                                >
+                                <button type="button" className="button right" onClick={handleModalClose}>
                                     Cancel
                                 </button>
                             </div>

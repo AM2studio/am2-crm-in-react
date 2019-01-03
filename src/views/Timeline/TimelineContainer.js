@@ -39,10 +39,7 @@ export default class TimelineContainer extends Component {
             result.data
                 .filter(user => {
                     if (filterRole !== '' && filterDepartment !== '') {
-                        return (
-                            filterRole === user.company_role &&
-                            user.department.indexOf(filterDepartment) !== -1
-                        );
+                        return filterRole === user.company_role && user.department.indexOf(filterDepartment) !== -1;
                     }
                     if (filterRole !== '') {
                         return filterRole === user.company_role;
@@ -124,11 +121,7 @@ export default class TimelineContainer extends Component {
                         inputChangeEvent={this.filterChangeEvent}
                     />
                 </div>
-                <Timeline
-                    users={{ data }}
-                    onTaskUpdated={this.onTaskUpdated}
-                    onLinkUpdated={this.onLinkUpdated}
-                />
+                <Timeline users={{ data }} onTaskUpdated={this.onTaskUpdated} onLinkUpdated={this.onLinkUpdated} />
             </ViewWrapper>
         );
     }

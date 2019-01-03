@@ -89,13 +89,7 @@ class ProjectsContainer extends Component {
     );
 
     render() {
-        const {
-            modal,
-            modalType,
-            singleProjectData,
-            projectMilestones,
-            currentProject
-        } = this.state;
+        const { modal, modalType, singleProjectData, projectMilestones, currentProject } = this.state;
 
         const columns = [
             { key: 'id', title: 'ID' },

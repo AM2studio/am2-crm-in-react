@@ -74,18 +74,10 @@ class Milestones extends Component {
                                 ))}
                             </div>
                             <div className="form__row">
-                                <button
-                                    type="button"
-                                    className="button button--primary"
-                                    onClick={this.addMilestone}
-                                >
+                                <button type="button" className="button button--primary" onClick={this.addMilestone}>
                                     Add New
                                 </button>
-                                <button
-                                    type="button"
-                                    className="button right"
-                                    onClick={handleModalClose}
-                                >
+                                <button type="button" className="button right" onClick={handleModalClose}>
                                     Close
                                 </button>
                             </div>

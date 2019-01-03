@@ -50,13 +50,7 @@ class ProjectsEdit extends Component {
     };
 
     render() {
-        const {
-            handleModalClose,
-            companies,
-            departments,
-            projectMngrs,
-            activeProjects
-        } = this.props;
+        const { handleModalClose, companies, departments, projectMngrs, activeProjects } = this.props;
 
         const {
             loading,
@@ -190,11 +184,7 @@ class ProjectsEdit extends Component {
                                 >
                                     Submit
                                 </button>
-                                <button
-                                    type="button"
-                                    className="button right"
-                                    onClick={handleModalClose}
-                                >
+                                <button type="button" className="button right" onClick={handleModalClose}>
                                     Cancel
                                 </button>
                             </div>
@@ -216,11 +206,7 @@ ProjectsEdit.defaultProps = {
         { id: 'CAD', title: 'CAD' }
     ],
     paymentTypes: [{ id: 'per_project', title: 'Per project' }, { id: 'hourly', title: 'Hourly' }],
-    departments: [
-        { id: 2, title: 'WP' },
-        { id: 3, title: 'Design' },
-        { id: 4, title: 'Enterprise' }
-    ],
+    departments: [{ id: 2, title: 'WP' }, { id: 3, title: 'Design' }, { id: 4, title: 'Enterprise' }],
     activeProjects: [{ id: 1, title: 'Yes' }, { id: 0, title: 'No' }],
     projectMngrs: [
         { id: 51, title: 'Brankica Basta' },

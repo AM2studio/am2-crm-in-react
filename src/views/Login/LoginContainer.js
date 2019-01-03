@@ -44,14 +44,7 @@ class LoginForm extends Component {
             return <Redirect to="/" />;
         }
 
-        return (
-            <Login
-                login={this.login}
-                handleChange={this.handleChange}
-                loader={loader}
-                error={error}
-            />
-        );
+        return <Login login={this.login} handleChange={this.handleChange} loader={loader} error={error} />;
     }
 }
 

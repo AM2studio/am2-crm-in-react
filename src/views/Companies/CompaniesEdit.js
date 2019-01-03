@@ -156,11 +156,7 @@ export default class extends Component {
                                 >
                                     Submit
                                 </button>
-                                <button
-                                    type="button"
-                                    className="button right"
-                                    onClick={handleModalClose}
-                                >
+                                <button type="button" className="button right" onClick={handleModalClose}>
                                     Cancel
                                 </button>
                             </div>

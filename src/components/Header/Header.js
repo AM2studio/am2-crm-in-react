@@ -50,9 +50,7 @@ const Header = props => {
             <div className="header__bottom clearfix">
                 <div className="header__left">
                     <h2 className="header__title">AM2Studio CRM</h2>
-                    <p className="header__subtitle">
-                        Change is inevitable – except from a vending machine...
-                    </p>
+                    <p className="header__subtitle">Change is inevitable – except from a vending machine...</p>
                 </div>
                 <div className="header__right">
                     <div className="header__info">

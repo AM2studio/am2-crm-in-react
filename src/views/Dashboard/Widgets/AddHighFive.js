@@ -107,12 +107,7 @@ class AddHighFive extends Component {
         ];
 
         if (loader === true || users.length === 0) {
-            return (
-                <LoadingWidget
-                    className="section col-14 widget widget--highfive"
-                    title="Give High Five"
-                />
-            );
+            return <LoadingWidget className="section col-14 widget widget--highfive" title="Give High Five" />;
         }
         return (
             <ReactCSSTransitionGroup
@@ -130,15 +125,7 @@ class AddHighFive extends Component {
                 <div className="section__content">
                     <div className="widget">
                         <form className="form">
-                            {status ? (
-                                <Notification
-                                    text={msgText}
-                                    type={status}
-                                    close={this.closeNotification}
-                                />
-                            ) : (
-                                ''
-                            )}
+                            {status ? <Notification text={msgText} type={status} close={this.closeNotification} /> : ''}
                             <div className="form__row">
                                 {inputs.map(field => (
                                     <field.type

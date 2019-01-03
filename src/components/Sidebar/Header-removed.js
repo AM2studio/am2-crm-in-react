@@ -51,13 +51,7 @@ class Header extends Component {
                 <div className="user-box">
                     <figure className="user-box__image js-user-box-dropdown-toggle">
                         <a href="/">
-                            <img
-                                className="user-box__img"
-                                src={logo}
-                                alt=""
-                                width="400"
-                                height="500"
-                            />
+                            <img className="user-box__img" src={logo} alt="" width="400" height="500" />
                         </a>
                     </figure>
                     <div
@@ -77,11 +71,7 @@ class Header extends Component {
                             </a>
                         </li>
                         <li className="user-box__dropdown-item">
-                            <button
-                                type="button"
-                                onClick={this.logout}
-                                className="user-box__dropdown-item-anchor"
-                            >
+                            <button type="button" onClick={this.logout} className="user-box__dropdown-item-anchor">
                                 Log Out
                             </button>
                         </li>

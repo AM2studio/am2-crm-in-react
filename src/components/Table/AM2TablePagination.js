@@ -71,9 +71,7 @@ class AM2TablePagination extends Component {
                             <button
                                 key={page}
                                 type="button"
-                                className={`paginate_button${
-                                    currentPage === page ? ' active' : ''
-                                }`}
+                                className={`paginate_button${currentPage === page ? ' active' : ''}`}
                                 tabIndex={page}
                                 onClick={() => this.gotoPage(currentPage - 5)}
                             >
@@ -86,9 +84,7 @@ class AM2TablePagination extends Component {
                             <button
                                 key={page}
                                 type="button"
-                                className={`paginate_button${
-                                    currentPage === page ? ' active' : ''
-                                }`}
+                                className={`paginate_button${currentPage === page ? ' active' : ''}`}
                                 tabIndex={page}
                                 onClick={() => this.gotoPage(currentPage + 5)}
                             >

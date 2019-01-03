@@ -39,9 +39,7 @@ class DateFilter extends Component {
                 startDateId="startDateId"
                 endDateId="endDateId"
                 endDate={end}
-                onDatesChange={({ startDate, endDate }) =>
-                    this.handleDateChange(startDate, endDate)
-                }
+                onDatesChange={({ startDate, endDate }) => this.handleDateChange(startDate, endDate)}
                 focusedInput={focusedInput}
                 onFocusChange={focused => this.setState({ focusedInput: focused })}
                 isOutsideRange={() => false}

@@ -92,11 +92,7 @@ class AM2Table extends Component {
                                     <th
                                         className="table__heading text-left"
                                         key={column.key}
-                                        onClick={
-                                            clientSorting
-                                                ? this.sortColumn.bind(this, column.key)
-                                                : undefined
-                                        }
+                                        onClick={clientSorting ? this.sortColumn.bind(this, column.key) : undefined}
                                     >
                                         {column.title}
                                     </th>

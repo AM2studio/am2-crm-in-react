@@ -72,11 +72,6 @@ export default class Gantt extends Component {
     };
 
     render() {
-        return (
-            <div
-                ref={this.container}
-                style={{ width: '100%', minHeight: '750px', height: '100%' }}
-            />
-        );
+        return <div ref={this.container} style={{ width: '100%', minHeight: '750px', height: '100%' }} />;
     }
 }

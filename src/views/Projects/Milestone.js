@@ -140,28 +140,16 @@ class Milestone extends Component {
                 <div className="form__column col-12">
                     <label htmlFor="actions">Actions</label>
                     <div className="form__column__buttons">
-                        <button
-                            type="button"
-                            className="button"
-                            onClick={() => this.milestoneAction('save')}
-                        >
+                        <button type="button" className="button" onClick={() => this.milestoneAction('save')}>
                             Save
                         </button>
-                        <button
-                            type="button"
-                            className="button"
-                            onClick={() => this.milestoneAction('delete')}
-                        >
+                        <button type="button" className="button" onClick={() => this.milestoneAction('delete')}>
                             Delete
                         </button>
                         {snapshot ? (
                             <span className="button--snapshot">Snapshot taken</span>
                         ) : (
-                            <button
-                                type="button"
-                                className="button"
-                                onClick={this.milestoneSnapshot}
-                            >
+                            <button type="button" className="button" onClick={this.milestoneSnapshot}>
                                 Snapshot
                             </button>
                         )}

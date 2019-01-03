@@ -211,18 +211,10 @@ class TimeEntriesEdit extends Component {
                                 ))}
                             </div>
                             <div className="form__row">
-                                <button
-                                    type="button"
-                                    className="button button--primary"
-                                    onClick={this.updateEntryData}
-                                >
+                                <button type="button" className="button button--primary" onClick={this.updateEntryData}>
                                     Submit
                                 </button>
-                                <button
-                                    type="button"
-                                    className="button right"
-                                    onClick={handleModalClose}
-                                >
+                                <button type="button" className="button right" onClick={handleModalClose}>
                                     Cancel
                                 </button>
                             </div>

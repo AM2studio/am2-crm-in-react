@@ -78,14 +78,7 @@ class ProjectEarningsContainer extends Component {
     };
 
     render() {
-        const {
-            projectEarnings,
-            totalRecords,
-            loading,
-            filterUser,
-            filterProject,
-            empty
-        } = this.state;
+        const { projectEarnings, totalRecords, loading, filterUser, filterProject, empty } = this.state;
 
         const { itemsPerPage } = this.props;
         const filteredData = projectEarnings.map((user, index) => ({

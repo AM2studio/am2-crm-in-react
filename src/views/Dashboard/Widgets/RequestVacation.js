@@ -113,12 +113,7 @@ class RequestVacation extends Component {
         ];
 
         if (loader === true) {
-            return (
-                <LoadingWidget
-                    className="section col-14 widget widget--vacation"
-                    title="Request Vacation"
-                />
-            );
+            return <LoadingWidget className="section col-14 widget widget--vacation" title="Request Vacation" />;
         }
         return (
             <ReactCSSTransitionGroup
@@ -136,15 +131,7 @@ class RequestVacation extends Component {
                 <div className="section__content">
                     <div className="widget">
                         <form className="form">
-                            {sent ? (
-                                <Notification
-                                    text={msgText}
-                                    type={sent}
-                                    close={this.closeNotification}
-                                />
-                            ) : (
-                                ''
-                            )}
+                            {sent ? <Notification text={msgText} type={sent} close={this.closeNotification} /> : ''}
                             <div className="form__row">
                                 {inputs.map(field => (
                                     <field.type

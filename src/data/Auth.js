@@ -12,8 +12,7 @@ class WP_AUTH {
 
     getSessionToken = () => sessionStorage.getItem(this.tokenKey);
 
-    getPermissions = () =>
-        sessionStorage.getItem(this.permissions) ? sessionStorage.getItem(this.permissions) : '';
+    getPermissions = () => (sessionStorage.getItem(this.permissions) ? sessionStorage.getItem(this.permissions) : '');
 
     removeSessionToken = () => {
         localStorage.clear();
