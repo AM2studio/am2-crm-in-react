@@ -54,6 +54,14 @@ class ReportsContainer extends Component {
         };
     }
 
+    componentDidMount() {
+        // Load data for past 30 days for users without full report access
+        if (!permissions.includes('project-reports')) {
+            this.setState({ loading: true });
+            this.getData();
+        }
+    }
+
     generateRandomColors = length =>
         Array(length)
             .fill()
@@ -324,6 +332,7 @@ class ReportsContainer extends Component {
                                 filterProject={filterProject}
                                 filterCompany={filterCompany}
                                 filterJobType={filterJobType}
+                                permission={!!permissions.includes('project-reports')}
                             />
                         )}
                     </SharedDataConsumer>
