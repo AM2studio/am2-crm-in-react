@@ -7,25 +7,39 @@ const Filters = props => {
     const {
         projectsList,
         companiesList,
+        usersList,
+        filterUser,
         filterProject,
         filterChangeEvent,
         jobType,
         filterJobType,
-        filterCompany
+        filterCompany,
+        permission
     } = props;
 
+    const appendAllUsersSelect = [{ id: '', title: 'All Users' }, ...usersList];
     const appendAllProjectSelect = [{ id: '', title: 'All Projects' }, ...projectsList];
     const appendAllCompanySelect = [{ id: '', title: 'All Companies' }, ...companiesList];
 
     return (
-        <ViewWrapper title="AM2 Project Reports">
+        <ViewWrapper title="AM2 Reports">
             <div className="am2-filters">
+                {permission && (
+                    <Select
+                        name="filterUser"
+                        label="Filter by User:"
+                        list={appendAllUsersSelect}
+                        value={filterUser}
+                        parentClass="form__column col-16"
+                        inputChangeEvent={filterChangeEvent}
+                    />
+                )}
                 <Select
                     name="filterProject"
                     label="Filter by Project:"
                     list={appendAllProjectSelect}
                     value={filterProject}
-                    parentClass="form__column col-14"
+                    parentClass="form__column col-16"
                     inputChangeEvent={filterChangeEvent}
                 />
                 <Select
@@ -33,7 +47,7 @@ const Filters = props => {
                     label="Filter by Job Type:"
                     list={jobType}
                     value={filterJobType}
-                    parentClass="form__column col-14"
+                    parentClass="form__column col-16"
                     inputChangeEvent={filterChangeEvent}
                 />
                 <Select
@@ -41,14 +55,15 @@ const Filters = props => {
                     label="Filter by Company:"
                     list={appendAllCompanySelect}
                     value={filterCompany}
-                    parentClass="form__column col-14"
+                    parentClass="form__column col-16"
                     inputChangeEvent={filterChangeEvent}
                 />
-                <div className="form__column col-14">
+                <div className="form__column col-16">
                     <label htmlFor="filterDate">Filter by Date:</label>
                     <DateFilter inputChangeEvent={filterChangeEvent} />
                 </div>
             </div>
+            <div className="clearfix" />
         </ViewWrapper>
     );
 };

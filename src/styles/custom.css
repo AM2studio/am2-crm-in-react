@@ -357,16 +357,33 @@ tbody tr:first-child td {
     display: flex;
     flex-wrap: wrap;
 }
+.tableListContainer {
+    display: flex;
+    flex-wrap: wrap;
+}
+.tableListContainer > div {
+    display: block;
+    flex-basis: 0;
+    flex-grow: 1;
+    flex-shrink: 1;
+    margin-right: 30px;
+}
+.tableListContainer > div:last-child {
+    margin-right: 0;
+}
 .miniChartContainer .miniChart {
     text-align: center;
     background: #ffffff;
     display: block;
-    flex-basis: calc(33% - -5px);
-    min-width: 1px;
+    flex-basis: 0;
+    flex-grow: 1;
     flex-shrink: 1;
-    flex-grow: 0;
+    min-width: 1px;
     padding: 45px;
     border-right: 1px solid #e8e8e8;
+}
+.miniChartContainer .miniChart:last-child {
+    border-right: 0;
 }
 .miniChartContainer .barChart {
     text-align: center;
@@ -398,14 +415,7 @@ tbody tr:first-child td {
 .withTopMargin {
     margin-top: 35px !important;
 }
-.section__third {
-    width: 32%;
-    margin-right: 2%;
-    display: inline-block;
-}
-.section__third.last {
-    margin-right: 0;
-}
+
 .loaderHolder {
     display: -webkit-box;
     display: -ms-flexbox;

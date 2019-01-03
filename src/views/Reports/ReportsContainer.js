@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import randomColor from 'randomcolor';
 import { FaPencilAlt, FaTrashAlt } from 'react-icons/fa';
-import ProjectReports from './ProjectReports';
+import Reports from './Reports';
 import TimeEntriesEdit from '../TimeEntries/TimeEntriesEdit';
 import Filters from './components/Filters';
 import MiniChart from './components/MiniChart';
@@ -10,14 +10,16 @@ import UserPerDateChart from './components/UserPerDateChart';
 import TotalHoursTable from './components/TotalHoursTable';
 import Loading from '../../components/General/Loading';
 import AM2Modal from '../../components/General/AM2Modal';
-import ProjectData from './components/ProjectsList';
 import { SharedDataConsumer } from '../../data/SharedDataContext';
 // import TopStats from './components/TopStats';
 import WP_API from '../../data/Api';
+import WP_AUTH from '../../data/Auth';
 
+const auth = new WP_AUTH();
 const api = new WP_API();
+const permissions = auth.getPermissions();
 
-class ProjectReportsContainer extends Component {
+class ReportsContainer extends Component {
     constructor() {
         super();
         this.state = {
@@ -27,22 +29,17 @@ class ProjectReportsContainer extends Component {
             filterProject: '',
             filterCompany: '',
             filterJobType: '',
+            filterUser: '',
             singleTimeEntryData: '',
             modal: false,
             filterDate: {
-                start: moment(
-                    new Date(new Date().getFullYear(), new Date().getMonth(), 1),
-                    'YYYY-MM-DD'
-                ),
-                end: moment(
-                    new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0),
-                    'YYYY-MM-DD'
-                )
+                start: moment(new Date(new Date().getFullYear(), new Date().getMonth(), 1), 'YYYY-MM-DD'),
+                end: moment(new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0), 'YYYY-MM-DD')
             },
             userData: false,
             projectReports: [],
             barChartData: [],
-            projectsData: [],
+            hoursPerProject: [],
             hoursPerUser: [],
             hoursPerJobType: [],
             hoursPerMilestone: [],
@@ -63,7 +60,7 @@ class ProjectReportsContainer extends Component {
             .map((_, i) => randomColor({ luminosity: 'bright' }));
 
     getData = () => {
-        const { filterProject, filterCompany, filterJobType, filterDate } = this.state;
+        const { filterProject, filterCompany, filterJobType, filterUser, filterDate } = this.state;
         const byPassCache = true;
         const byPassCacheSave = false;
         api.getPosts(
@@ -72,6 +69,7 @@ class ProjectReportsContainer extends Component {
                 itemsPerPage: 20000,
                 filterProject,
                 filterCompany,
+                filterUser,
                 filterJobType,
                 filterDate
             },
@@ -111,9 +109,16 @@ class ProjectReportsContainer extends Component {
                         datasets: [
                             {
                                 data: totals.users.hours,
-                                backgroundColor: this.generateRandomColors(
-                                    totals.users.hours.length
-                                )
+                                backgroundColor: this.generateRandomColors(totals.users.hours.length)
+                            }
+                        ]
+                    },
+                    projectData: {
+                        labels: totals.projects.labels,
+                        datasets: [
+                            {
+                                data: totals.projects.hours,
+                                backgroundColor: this.generateRandomColors(totals.projects.hours.length)
                             }
                         ]
                     },
@@ -122,9 +127,7 @@ class ProjectReportsContainer extends Component {
                         datasets: [
                             {
                                 data: totals.job_type.hours,
-                                backgroundColor: this.generateRandomColors(
-                                    totals.job_type.hours.length
-                                )
+                                backgroundColor: this.generateRandomColors(totals.job_type.hours.length)
                             }
                         ]
                     },
@@ -133,9 +136,7 @@ class ProjectReportsContainer extends Component {
                         datasets: [
                             {
                                 data: totals.milestones.hours,
-                                backgroundColor: this.generateRandomColors(
-                                    totals.milestones.hours.length
-                                )
+                                backgroundColor: this.generateRandomColors(totals.milestones.hours.length)
                             }
                         ]
                     },
@@ -155,7 +156,7 @@ class ProjectReportsContainer extends Component {
                     hoursPerJobType: Object.values(totals.job_type.list).map(jobtype => ({
                         ...jobtype
                     })),
-                    projectsData: Object.values(totals.projects).map(project => ({
+                    hoursPerProject: Object.values(totals.projects.list).map(project => ({
                         ...project
                     })),
                     loading: false
@@ -173,7 +174,7 @@ class ProjectReportsContainer extends Component {
                 hoursPerUser: [],
                 hoursPerJobType: [],
                 hoursPerMilestone: [],
-                projectsData: [],
+                hoursPerProject: [],
                 userData: false,
                 [name]: value,
                 loading: true
@@ -263,12 +264,14 @@ class ProjectReportsContainer extends Component {
             totalHours,
             totalRecords,
             loading,
+            filterUser,
             filterProject,
             filterCompany,
             filterJobType,
             empty,
             chartOptions,
             userData,
+            projectData,
             jobTypeData,
             milestoneList,
             barChartData,
@@ -276,7 +279,7 @@ class ProjectReportsContainer extends Component {
             hoursPerMilestone,
             hoursPerJobType,
             singleTimeEntryData,
-            projectsData,
+            hoursPerProject,
             modal
         } = this.state;
 
@@ -289,6 +292,7 @@ class ProjectReportsContainer extends Component {
             buttons: this.actionBtns(entry.id)
         }));
 
+        const filteredHoursPerProject = this.addLodingBar(hoursPerProject, totalHours);
         const filteredHoursPerUser = this.addLodingBar(hoursPerUser, totalHours);
         const filteredHoursPerMilestone = this.addLodingBar(hoursPerMilestone, totalHours);
         const filteredHoursPerJobType = this.addLodingBar(hoursPerJobType, totalHours);
@@ -305,18 +309,17 @@ class ProjectReportsContainer extends Component {
             { key: 'buttons', title: 'Action' }
         ];
 
-        const totalHoursColumns = [
-            { key: 'name', title: 'User' },
-            { key: 'billable', title: 'Hours' }
-        ];
+        const totalHoursColumns = [{ key: 'name', title: 'User' }, { key: 'billable', title: 'Hours' }];
         if (loading) {
             return (
                 <React.Fragment>
                     <SharedDataConsumer>
-                        {({ projects, companies }) => (
+                        {({ projects, companies, users }) => (
                             <Filters
                                 projectsList={projects}
                                 companiesList={companies}
+                                usersList={users}
+                                filterUser={filterUser}
                                 filterChangeEvent={this.filterChangeEvent}
                                 filterProject={filterProject}
                                 filterCompany={filterCompany}
@@ -335,41 +338,62 @@ class ProjectReportsContainer extends Component {
         return (
             <React.Fragment>
                 <SharedDataConsumer>
-                    {({ projects, companies }) => (
+                    {({ projects, companies, users }) => (
                         <Filters
                             projectsList={projects}
                             companiesList={companies}
+                            usersList={users}
+                            filterUser={filterUser}
                             filterChangeEvent={this.filterChangeEvent}
                             filterProject={filterProject}
                             filterCompany={filterCompany}
                             filterJobType={filterJobType}
+                            permission={!!permissions.includes('project-reports')}
                         />
                     )}
                 </SharedDataConsumer>
                 {
                     // show bottom for multiple projects only, like when filtering by company
                 }
-                {projectsData.length > 1 && <ProjectData data={projectsData} />}
                 {userData ? (
                     <div className="section__content section__minicharts">
                         <div className="miniChartContainer">
-                            <MiniChart
-                                data={userData}
-                                title="Total Hours per User"
-                                totalHours={totalHours}
-                                options={chartOptions}
-                            />
-                            <MiniChart
-                                data={jobTypeData}
-                                title="Total Hours per Job Type"
-                                totalHours={totalHours}
-                                options={chartOptions}
-                            />
+                            {filterProject === '' && (
+                                <MiniChart
+                                    data={projectData}
+                                    title="Total Hours per Project"
+                                    totalHours={totalHours}
+                                    options={chartOptions}
+                                />
+                            )}
+                            {!!permissions.includes('project-reports') && filterUser === '' && (
+                                <MiniChart
+                                    data={userData}
+                                    title="Total Hours per User"
+                                    totalHours={totalHours}
+                                    options={chartOptions}
+                                />
+                            )}
+                            {filterJobType === '' && (
+                                <MiniChart
+                                    data={jobTypeData}
+                                    title="Total Hours per Job Type"
+                                    totalHours={totalHours}
+                                    options={chartOptions}
+                                />
+                            )}
                             <MiniChart
                                 data={milestoneList}
                                 title="Total Hours per Milestone"
                                 totalHours={totalHours}
-                                options={chartOptions}
+                                options={{
+                                    legend: {
+                                        position: 'bottom'
+                                    },
+                                    tooltips: {
+                                        intersect: false
+                                    }
+                                }}
                             />
                         </div>
                     </div>
@@ -377,23 +401,36 @@ class ProjectReportsContainer extends Component {
                     ''
                 )}
                 {barChartData.length ? <UserPerDateChart data={barChartData} /> : ''}
-                <TotalHoursTable
-                    title="Total Hours per User"
-                    columns={totalHoursColumns}
-                    data={filteredHoursPerUser}
-                />
-                <TotalHoursTable
-                    title="Total Hours per Job Type"
-                    columns={totalHoursColumns}
-                    data={filteredHoursPerJobType}
-                />
-                <TotalHoursTable
-                    title="Total Hours per Milestone"
-                    columns={totalHoursColumns}
-                    data={filteredHoursPerMilestone}
-                    className="last"
-                />
-                <ProjectReports
+                <div className="tableListContainer">
+                    {filterProject === '' && (
+                        <TotalHoursTable
+                            title="Total Hours per Project"
+                            columns={totalHoursColumns}
+                            data={filteredHoursPerProject}
+                        />
+                    )}
+                    {!!permissions.includes('project-reports') && filterUser === '' && (
+                        <TotalHoursTable
+                            title="Total Hours per User"
+                            columns={totalHoursColumns}
+                            data={filteredHoursPerUser}
+                        />
+                    )}
+                    {filterJobType === '' && (
+                        <TotalHoursTable
+                            title="Total Hours per Job Type"
+                            columns={totalHoursColumns}
+                            data={filteredHoursPerJobType}
+                        />
+                    )}
+                    <TotalHoursTable
+                        title="Total Hours per Milestone"
+                        columns={totalHoursColumns}
+                        data={filteredHoursPerMilestone}
+                        className="last"
+                    />
+                </div>
+                <Reports
                     pdfrows={projectReports}
                     columns={entriesColumns}
                     data={filteredData}
@@ -416,7 +453,7 @@ class ProjectReportsContainer extends Component {
         );
     }
 }
-ProjectReportsContainer.defaultProps = {
+ReportsContainer.defaultProps = {
     entryDataToFetch: [
         'billable_hours',
         'user_id',
@@ -434,4 +471,4 @@ ProjectReportsContainer.defaultProps = {
         'asana_url'
     ]
 };
-export default ProjectReportsContainer;
+export default ReportsContainer;

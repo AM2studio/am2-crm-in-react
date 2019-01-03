@@ -69,12 +69,10 @@ const Navigation = props => {
             icon: FiFileText
         },
         {
-            to: '/projectreports',
-            parentClass: activeClass(location.pathname, '/projectreports')
-                ? 'menu__item menu__item--active'
-                : 'menu__item',
-            active: !!permissions.includes('project-reports'),
-            title: 'Project Reports',
+            to: '/reports',
+            parentClass: activeClass(location.pathname, '/reports') ? 'menu__item menu__item--active' : 'menu__item',
+            active: true,
+            title: 'Reports',
             icon: FiBarChart
         },
         {
