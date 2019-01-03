@@ -45,10 +45,10 @@ class ProjectsContainer extends Component {
     };
 
     handleModalClose = updated => {
-        const { getProjects } = this.context;
+        const { refreshProjects } = this.context;
         this.setState({ modal: false });
         if (updated === true) {
-            getProjects(true);
+            refreshProjects(true);
         }
     };
 

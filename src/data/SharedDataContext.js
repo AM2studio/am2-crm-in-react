@@ -16,17 +16,33 @@ export default class DataProvider extends Component {
     }
 
     componentDidMount() {
-        // Get Users
-        this.getUsers();
-        // Get Projects
-        this.getProjects();
-        // Get Companies
-        this.getCompanies();
+        // Fetch Data
+        Promise.all([this.getUsers(), this.getProjects(), this.getCompanies()]).then(result => {
+            this.setState({ users: result[0], projects: result[1], companies: result[2] });
+        });
     }
 
-    getUsers = () => {
-        api.getPosts('users').then(result => {
-            const posts = result.data.map(post => ({
+    getProjects = (byPassCache = false) =>
+        api.getPosts('projects', null, byPassCache).then(result =>
+            result.data.map(post => ({
+                id: post.id,
+                title: post.title,
+                company: post.company_name
+            }))
+        );
+
+    getCompanies = (byPassCache = false) =>
+        api.getPosts('companies', null, byPassCache).then(result =>
+            result.data.map(post => ({
+                id: post.id,
+                title: post.title,
+                city: post.city
+            }))
+        );
+
+    getUsers = () =>
+        api.getPosts('users').then(result =>
+            result.data.map(post => ({
                 id: post.id,
                 first_name: post.first_name,
                 last_name: post.last_name,
@@ -35,32 +51,24 @@ export default class DataProvider extends Component {
                 department: post.department,
                 email: post.email,
                 role: post.role
-            }));
-            this.setState({ users: posts });
+            }))
+        );
+
+    refreshProjects = byPassCache => {
+        this.getProjects(byPassCache).then(projects => {
+            this.setState({ projects });
         });
     };
 
-    getProjects = (byPassCache = false) => {
-        api.getPosts('projects', null, byPassCache).then(result => {
-            const posts = result.data.map(post => ({
-                id: post.id,
-                title: post.title,
-                company: post.company_name
-            }));
-            this.setState({ projects: posts });
+    refreshCompanies = byPassCache => {
+        this.getCompanies(byPassCache).then(companies => {
+            this.setState({ companies });
         });
     };
 
-    getCompanies = (byPassCache = false) => {
-        api.getPosts('companies', null, byPassCache).then(result => {
-            const posts = result.data.map(post => ({
-                id: post.id,
-                title: post.title,
-                city: post.city
-            }));
-            this.setState({
-                companies: posts
-            });
+    refreshUsers = () => {
+        this.getUsers().then(users => {
+            this.setState({ users });
         });
     };
 
@@ -74,9 +82,9 @@ export default class DataProvider extends Component {
                     projects,
                     users,
                     companies,
-                    getCompanies: this.getCompanies,
-                    getProjects: this.getProjects,
-                    getUsers: this.getUsers
+                    refreshCompanies: this.refreshCompanies,
+                    refreshProjects: this.refreshProjects,
+                    refreshUsers: this.refreshUsers
                 }}
             >
                 {children}

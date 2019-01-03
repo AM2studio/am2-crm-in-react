@@ -43,10 +43,10 @@ class CompaniesContainer extends Component {
     };
 
     handleModalClose = updated => {
-        const { getCompanies } = this.context;
+        const { refreshCompanies } = this.context;
         this.setState({ modal: false });
         if (updated === true) {
-            getCompanies(true);
+            refreshCompanies(true);
         }
     };
 
