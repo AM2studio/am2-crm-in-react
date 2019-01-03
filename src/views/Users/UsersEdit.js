@@ -85,7 +85,8 @@ class UsersEdit extends Component {
             track_resources, // eslint-disable-line camelcase
             hourly_rate, // eslint-disable-line camelcase
             daily_workable_hours, // eslint-disable-line camelcase,
-            do_not_track_workable_hours // eslint-disable-line camelcase
+            do_not_track_workable_hours, // eslint-disable-line camelcase
+            vacationDays
         } = this.state;
 
         const fields = [
@@ -124,6 +125,13 @@ class UsersEdit extends Component {
                 label: 'Daily Workable Hours',
                 required: true,
                 value: daily_workable_hours
+            },
+            {
+                type: Text,
+                name: 'vacationDays',
+                label: 'Vacation Days',
+                required: true,
+                value: vacationDays
             },
             {
                 type: Select,

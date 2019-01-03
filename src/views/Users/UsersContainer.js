@@ -62,7 +62,8 @@ class UsersContainer extends Component {
             'hourly_rate',
             'daily_workable_hours',
             'do_not_track_workable_hours',
-            'am2Permissions'
+            'am2Permissions',
+            'vacationDays'
         ];
         const data = new WP_API();
         data.get('users', id, dataToFetch).then(result => {
