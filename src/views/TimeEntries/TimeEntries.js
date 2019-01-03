@@ -18,7 +18,8 @@ const TimeEntries = props => {
         filterProject,
         filterChangeEvent,
         usersList,
-        filterUser
+        filterUser,
+        isAdmin
     } = props;
 
     usersList.unshift({ id: '', title: 'All Users' });
@@ -35,14 +36,16 @@ const TimeEntries = props => {
                     parentClass="form__column col-14"
                     inputChangeEvent={filterChangeEvent}
                 />
-                <Select
-                    name="filterUser"
-                    label="Filter by User:"
-                    list={usersList}
-                    value={filterUser}
-                    parentClass="form__column col-14"
-                    inputChangeEvent={filterChangeEvent}
-                />
+                {isAdmin && (
+                    <Select
+                        name="filterUser"
+                        label="Filter by User:"
+                        list={usersList}
+                        value={filterUser}
+                        parentClass="form__column col-14"
+                        inputChangeEvent={filterChangeEvent}
+                    />
+                )}
                 <div className="form__column col-14">
                     <label htmlFor="filterDate">Filter by Date:</label>
                     <DateFilter inputChangeEvent={filterChangeEvent} />

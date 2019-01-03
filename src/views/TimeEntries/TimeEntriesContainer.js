@@ -201,12 +201,7 @@ class TimeEntriesContainer extends Component {
     );
 
     milestonesSelect = (id, milestones, milestone) => (
-        <Select
-            name={id}
-            value={milestone}
-            list={milestones}
-            inputChangeEvent={this.milestoneChange}
-        />
+        <Select name={id} value={milestone} list={milestones} inputChangeEvent={this.milestoneChange} />
     );
 
     handleModalClose = update => {
@@ -315,6 +310,7 @@ class TimeEntriesContainer extends Component {
                     filterChangeEvent={this.filterChangeEvent}
                     filterProject={filterProject}
                     filterUser={filterUser}
+                    isAdmin={isAdmin}
                 />
                 <AM2Modal open={modal} handleModalClose={this.handleModalClose}>
                     <TimeEntriesEdit
