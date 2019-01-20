@@ -382,6 +382,12 @@ tbody tr:first-child td {
     padding: 45px;
     border-right: 1px solid #e8e8e8;
 }
+.miniChartContainer--company .miniChart {
+    display: block;
+    width: 50%;
+    flex-basis: unset;
+    border-right: 0;
+}
 .miniChartContainer .miniChart:last-child {
     border-right: 0;
 }
@@ -433,8 +439,8 @@ tbody tr:first-child td {
     height: 4px;
     background: #eaecee;
     border-radius: 4px;
-    -ms-flex-preferred-size: 140px;
-    flex-basis: 140px;
+    -ms-flex-preferred-size: 90px;
+    flex-basis: 90px;
     -webkit-box-flex: 0;
     -ms-flex-positive: 0;
     flex-grow: 0;
@@ -484,4 +490,12 @@ tbody tr:first-child td {
 }
 .negative .value {
     color: red;
+}
+.button--filter {
+    margin-top: 30px;
+    height: 32px;
+    line-height: 13px;
+}
+.button--filter:disabled {
+    background-color: #c2e4c7;
 }

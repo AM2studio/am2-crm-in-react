@@ -14,7 +14,9 @@ const Filters = props => {
         jobType,
         filterJobType,
         filterCompany,
-        permission
+        permission,
+        getFilteredData,
+        loading
     } = props;
 
     const appendAllUsersSelect = [{ id: '', title: 'All Users' }, ...usersList];
@@ -61,6 +63,16 @@ const Filters = props => {
                 <div className="form__column col-16">
                     <label htmlFor="filterDate">Filter by Date:</label>
                     <DateFilter inputChangeEvent={filterChangeEvent} />
+                </div>
+                <div className="form__column col-16">
+                    <button
+                        type="button"
+                        disabled={loading ? 'disabled' : false}
+                        onClick={getFilteredData}
+                        className="button button--primary button--filter"
+                    >
+                        Filter Report
+                    </button>
                 </div>
             </div>
             <div className="clearfix" />

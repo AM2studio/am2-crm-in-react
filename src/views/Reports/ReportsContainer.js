@@ -57,7 +57,6 @@ class ReportsContainer extends Component {
     componentDidMount() {
         // Load data for past 30 days for users without full report access
         if (!permissions.includes('project-reports')) {
-            this.setState({ loading: true });
             this.getData();
         }
     }
@@ -71,6 +70,7 @@ class ReportsContainer extends Component {
         const { filterProject, filterCompany, filterJobType, filterUser, filterDate } = this.state;
         const byPassCache = true;
         const byPassCacheSave = false;
+        this.setState({ loading: true });
         api.getPosts(
             'project-reports',
             {
@@ -175,22 +175,16 @@ class ReportsContainer extends Component {
 
     filterChangeEvent = e => {
         const { name, value } = e.target;
-        this.setState(
-            {
-                projectReports: [],
-                barChartData: [],
-                hoursPerUser: [],
-                hoursPerJobType: [],
-                hoursPerMilestone: [],
-                hoursPerProject: [],
-                userData: false,
-                [name]: value,
-                loading: true
-            },
-            () => {
-                this.getData();
-            }
-        );
+        this.setState({
+            projectReports: [],
+            barChartData: [],
+            hoursPerUser: [],
+            hoursPerJobType: [],
+            hoursPerMilestone: [],
+            hoursPerProject: [],
+            userData: false,
+            [name]: value
+        });
     };
 
     addLodingBar = (data, totalHours) =>
@@ -332,6 +326,8 @@ class ReportsContainer extends Component {
                                 filterProject={filterProject}
                                 filterCompany={filterCompany}
                                 filterJobType={filterJobType}
+                                getFilteredData={this.getData}
+                                loading={loading}
                                 permission={!!permissions.includes('project-reports')}
                             />
                         )}
@@ -357,6 +353,8 @@ class ReportsContainer extends Component {
                             filterProject={filterProject}
                             filterCompany={filterCompany}
                             filterJobType={filterJobType}
+                            getFilteredData={this.getData}
+                            loading={loading}
                             permission={!!permissions.includes('project-reports')}
                         />
                     )}
@@ -366,7 +364,11 @@ class ReportsContainer extends Component {
                 }
                 {userData ? (
                     <div className="section__content section__minicharts">
-                        <div className="miniChartContainer">
+                        <div
+                            className={
+                                filterCompany ? 'miniChartContainer miniChartContainer--company' : 'miniChartContainer'
+                            }
+                        >
                             {filterProject === '' && (
                                 <MiniChart
                                     data={projectData}
@@ -448,12 +450,12 @@ class ReportsContainer extends Component {
                 />
                 <AM2Modal open={modal} handleModalClose={this.handleModalClose}>
                     <SharedDataConsumer>
-                        {({ projects, companies }) => (
+                        {({ projects, users }) => (
                             <TimeEntriesEdit
                                 singleTimeEntryData={singleTimeEntryData}
                                 handleModalClose={this.handleModalClose}
                                 projects={projects}
-                                users={companies}
+                                users={users}
                             />
                         )}
                     </SharedDataConsumer>
