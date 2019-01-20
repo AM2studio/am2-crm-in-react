@@ -6,8 +6,9 @@ import WP_API from '../../data/Api';
 export default class extends Component {
     constructor(props) {
         super(props);
+        const { singleCompanyData } = props;
         this.state = {
-            loading: true
+            loading: !!singleCompanyData
         };
     }
 
