@@ -12,7 +12,7 @@ const logoStyle = {
 };
 
 const Login = props => {
-    const { handleChange, login, loader, error } = props;
+    const { handleChange, login, loader, error, clearError } = props;
     return (
         <div className="limiter">
             <div className="container-login100">
@@ -44,7 +44,9 @@ const Login = props => {
                                             data-dismiss="alert"
                                             aria-label="Close"
                                         >
-                                            <span aria-hidden="true">×</span>
+                                            <span aria-hidden="true" onClick={clearError}>
+                                                ×
+                                            </span>
                                         </button>
                                         <p>
                                             <strong>Error:</strong> Wrong username or password.
