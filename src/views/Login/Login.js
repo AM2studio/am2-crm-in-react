@@ -76,7 +76,7 @@ const Login = props => {
                                 </div>
 
                                 <div className="container-login100-form-btn">
-                                    <button type="button" onClick={login} className="login100-form-btn">
+                                    <button type="submit" onClick={login} className="login100-form-btn">
                                         Sign in
                                     </button>
                                 </div>
