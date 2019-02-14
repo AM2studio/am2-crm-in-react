@@ -16,6 +16,7 @@ class LoginForm extends Component {
 
         this.login = this.login.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.clearError = this.clearError.bind(this);
     }
 
     login() {
@@ -30,6 +31,10 @@ class LoginForm extends Component {
         });
     }
 
+    clearError() {
+        this.setState({ error: false });
+    }
+
     handleChange(e) {
         const { id, value } = e.target;
         this.setState({
@@ -39,12 +44,20 @@ class LoginForm extends Component {
     }
 
     render() {
-        const { redirectTo, loader, error } = this.state;
+        const { redirectTo, loader, error, clearError } = this.state;
         if (redirectTo) {
             return <Redirect to="/" />;
         }
 
-        return <Login login={this.login} handleChange={this.handleChange} loader={loader} error={error} />;
+        return (
+            <Login
+                login={this.login}
+                handleChange={this.handleChange}
+                loader={loader}
+                error={error}
+                clearError={this.clearError}
+            />
+        );
     }
 }
 
