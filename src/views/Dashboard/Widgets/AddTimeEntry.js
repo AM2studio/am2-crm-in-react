@@ -65,7 +65,7 @@ class AddTime extends Component {
         const { project: projectId, comment, milestone } = this.state;
         // Validation
         if (projectId === '' || comment === '' || milestone === '') {
-            this.setState(() => ({ status: 'error', msgText: 'Required fields are missing.' }));
+            this.setState(() => ({ status: 'is-danger', msgText: 'Required fields are missing.' }));
             return;
         }
         // Proceed
@@ -74,11 +74,11 @@ class AddTime extends Component {
         api.set('time-entry', '', this.state).then(result => {
             if (result.success === true) {
                 this.setState(this.initialState);
-                this.setState(() => ({ status: 'success', msgText: 'Entry Added!' }));
+                this.setState(() => ({ status: 'is-success', msgText: 'Entry Added!' }));
                 lscache.flush();
             } else {
                 this.setState(() => ({
-                    status: 'error',
+                    status: 'is-danger',
                     msgText: 'Upss.. something went wrong! Check with Goran.',
                     loader: false
                 }));

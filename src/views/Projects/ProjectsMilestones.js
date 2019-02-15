@@ -58,8 +58,8 @@ class Milestones extends Component {
                                     key={key}
                                     className={
                                         milestones[key].action
-                                            ? `${milestones[key].action} columns is-multiline`
-                                            : 'columns is-multiline'
+                                            ? `${milestones[key].action} columns is-multiline single-milestone`
+                                            : 'columns is-multiline single-milestone'
                                     }
                                 >
                                     <Milestone

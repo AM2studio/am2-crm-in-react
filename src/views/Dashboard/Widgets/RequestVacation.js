@@ -41,7 +41,7 @@ class RequestVacation extends Component {
         const { start_date: startDate, end_date: endDate, days, note } = this.state; // eslint-disable-line camelcase
         // Validation
         if (startDate === '' || endDate === '' || days === '') {
-            this.setState(() => ({ sent: 'error', msgText: 'Required fields are missing.' }));
+            this.setState(() => ({ sent: 'is-danger', msgText: 'Required fields are missing.' }));
             return;
         }
         // Proceed
@@ -52,7 +52,7 @@ class RequestVacation extends Component {
                 // Pop a success message
                 this.setState(this.initialState);
                 this.setState(() => ({
-                    sent: 'success',
+                    sent: 'is-success',
                     msgText: 'Request sent! We will get back to you soon.'
                 }));
                 // Notify everyone on slack
@@ -64,7 +64,7 @@ class RequestVacation extends Component {
                 slackAPI.send(notificationTitle, 'management-am2');
             } else {
                 this.setState(() => ({
-                    sent: 'error',
+                    sent: 'is-danger',
                     msgText: 'Ups..something went wrong. Check with Goran!',
                     loader: false
                 }));

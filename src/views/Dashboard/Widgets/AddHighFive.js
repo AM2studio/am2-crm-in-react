@@ -50,7 +50,7 @@ class AddHighFive extends Component {
         // Validation
         const { hf_user_to_id: userId, content, selectedUser } = this.state; // eslint-disable-line camelcase
         if (userId === '' || content === '') {
-            this.setState(() => ({ status: 'error', msgText: 'Required fields are missing.' }));
+            this.setState(() => ({ status: 'is-danger', msgText: 'Required fields are missing.' }));
             return;
         }
 
@@ -61,7 +61,7 @@ class AddHighFive extends Component {
                 // Pop a success message
                 this.setState(this.initialState);
                 this.setState(() => ({
-                    status: 'success',
+                    status: 'is-success',
                     msgText: 'Wooot a high five? You are a good friend!'
                 }));
                 // Notify everyone on slack
@@ -72,7 +72,7 @@ class AddHighFive extends Component {
                 slackAPI.send(notificationTitle, 'highfive', title, content);
             } else {
                 this.setState(() => ({
-                    status: 'error',
+                    status: 'is-danger',
                     loader: false,
                     msgText: 'Ups..something went wrong. Check with Goran!'
                 }));
