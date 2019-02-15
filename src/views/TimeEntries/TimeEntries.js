@@ -27,30 +27,40 @@ const TimeEntries = props => {
 
     return (
         <ViewWrapper title="Time Entries">
-            <div className="am2-filters">
-                <Select
-                    name="filterProject"
-                    label="Filter by Project:"
-                    list={projectsList}
-                    value={filterProject}
-                    parentClass="form__column col-14"
-                    inputChangeEvent={filterChangeEvent}
-                />
-                {isAdmin && (
-                    <Select
-                        name="filterUser"
-                        label="Filter by User:"
-                        list={usersList}
-                        value={filterUser}
-                        parentClass="form__column col-14"
-                        inputChangeEvent={filterChangeEvent}
-                    />
-                )}
-                <div className="form__column col-14">
-                    <label htmlFor="filterDate">Filter by Date:</label>
-                    <DateFilter inputChangeEvent={filterChangeEvent} />
+            <nav className="level">
+                <div className="level-left">
+                    <div className="level-item">
+                        <Select
+                            name="filterProject"
+                            label="Filter by Project:"
+                            list={projectsList}
+                            value={filterProject}
+                            parentClass="field--medium"
+                            inputChangeEvent={filterChangeEvent}
+                        />
+                    </div>
+                    {isAdmin && (
+                        <div className="level-item">
+                            <Select
+                                name="filterUser"
+                                label="Filter by User:"
+                                list={usersList}
+                                value={filterUser}
+                                parentClass="field--medium"
+                                inputChangeEvent={filterChangeEvent}
+                            />
+                        </div>
+                    )}
+                    <div className="level-item">
+                        <div className="field field--medium">
+                            <label className="label is-small" htmlFor="filterDate">
+                                Filter by Date:
+                            </label>
+                            <DateFilter inputChangeEvent={filterChangeEvent} />
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </nav>
             {!empty ? (
                 <AM2Table
                     rows={data}

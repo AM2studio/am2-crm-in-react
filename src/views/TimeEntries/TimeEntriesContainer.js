@@ -181,7 +181,7 @@ class TimeEntriesContainer extends Component {
         <React.Fragment>
             <button
                 type="button"
-                className="button--table button--table--edit"
+                className="button is-primary"
                 onClick={e => {
                     this.editTimeEntry(e, id);
                 }}
@@ -190,7 +190,7 @@ class TimeEntriesContainer extends Component {
             </button>
             <button
                 type="button"
-                className="button--table button--table--delete"
+                className="button is-danger"
                 onClick={e => {
                     this.deleteTimeEntry(e, id);
                 }}
@@ -217,7 +217,7 @@ class TimeEntriesContainer extends Component {
 
     filterJobType = jobType => {
         const jobTypeClass = jobType.replace(/[^a-zA-Z]+/g, '');
-        return <span className={`jobtype ${jobTypeClass}`}>{jobType}</span>;
+        return <span className={`tag ${jobTypeClass}`}>{jobType}</span>;
     };
 
     comment = comment => (
@@ -271,7 +271,7 @@ class TimeEntriesContainer extends Component {
             job_type: this.filterJobType(entry.job_type),
             hours: this.hours(entry.hours, entry.billable_hours),
             date: this.date(entry.date, entry.month),
-            comment: this.comment(entry.comment),
+            comment: entry.comment ? this.comment(entry.comment) : '',
             asana_url: entry.asana_url && this.asana(entry.asana_url),
             buttons: this.actionBtns(entry.id),
             milestone: this.milestonesSelect(entry.id, entry.milestones, entry.milestone),

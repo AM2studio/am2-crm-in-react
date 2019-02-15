@@ -60,7 +60,7 @@ class ProjectsContainer extends Component {
         <React.Fragment>
             <button
                 type="button"
-                className="button--table button--table--edit"
+                className="button is-primary"
                 onClick={e => {
                     this.editProject(e, id);
                 }}
@@ -69,7 +69,7 @@ class ProjectsContainer extends Component {
             </button>
             <button
                 type="button"
-                className="button--table button--table--delete"
+                className="button is-danger"
                 onClick={e => {
                     this.deleteProject(e, id);
                 }}
@@ -78,7 +78,7 @@ class ProjectsContainer extends Component {
             </button>
             <button
                 type="button"
-                className="button--table button--table--milestones"
+                className="button is-info"
                 onClick={e => {
                     this.editMilestones(e, id);
                 }}

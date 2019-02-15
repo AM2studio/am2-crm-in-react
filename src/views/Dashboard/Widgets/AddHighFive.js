@@ -91,9 +91,7 @@ class AddHighFive extends Component {
                 label: 'To user',
                 list: users,
                 required: true,
-                className: 'form__input',
-                value: hf_user_to_id,
-                parentClass: 'form__column col-1 form__row'
+                value: hf_user_to_id
             },
             {
                 type: Textarea,
@@ -101,54 +99,52 @@ class AddHighFive extends Component {
                 name: 'content',
                 label: 'For',
                 required: true,
-                value: content,
-                parentClass: 'form__column col-1 form__row'
+                value: content
             }
         ];
 
         if (loader === true || users.length === 0) {
-            return <LoadingWidget className="section col-14 widget widget--highfive" title="Give High Five" />;
+            return <LoadingWidget className="column widget widget--highfive" title="Give High Five" />;
         }
         return (
             <ReactCSSTransitionGroup
                 component="div"
-                className="section col-14 widget widget--highfive"
+                className="column widget widget--highfive"
                 transitionAppear
                 transitionName="loadComponentHighFive"
                 transitionEnterTimeout={600}
                 transitionLeaveTimeout={300}
                 transitionAppearTimeout={0}
             >
-                <header className="section__header">
-                    <h4 className="section__title">Give High Five</h4>
+                <header className="widget__header">
+                    <h4 className="widget__title">Give High Five</h4>
                 </header>
-                <div className="section__content">
+                <div className="widget__content has-background-white">
                     <div className="widget">
                         <form className="form">
                             {status ? <Notification text={msgText} type={status} close={this.closeNotification} /> : ''}
-                            <div className="form__row">
-                                {inputs.map(field => (
-                                    <field.type
-                                        key={field.name}
-                                        label={field.label}
-                                        name={field.name}
-                                        parentClass={field.parentClass}
-                                        required={field.required}
-                                        value={field.value}
-                                        list={field.list}
-                                        rows={field.rows}
-                                        className="form__input"
-                                        inputChangeEvent={this.inputChangeEvent}
-                                    />
-                                ))}
+                            {inputs.map(field => (
+                                <field.type
+                                    key={field.name}
+                                    label={field.label}
+                                    name={field.name}
+                                    parentClass={field.parentClass}
+                                    required={field.required}
+                                    value={field.value}
+                                    list={field.list}
+                                    rows={field.rows}
+                                    inputChangeEvent={this.inputChangeEvent}
+                                />
+                            ))}
+                            <div className="field">
+                                <button
+                                    type="button"
+                                    className="button is-primary is-fullwidth"
+                                    onClick={this.giveHighFive}
+                                >
+                                    Submit
+                                </button>
                             </div>
-                            <button
-                                type="button"
-                                className="button button--primary button--custom"
-                                onClick={this.giveHighFive}
-                            >
-                                Submit
-                            </button>
                         </form>
                     </div>
                 </div>

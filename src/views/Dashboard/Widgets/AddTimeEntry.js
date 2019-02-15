@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import moment from 'moment';
+import lscache from 'lscache';
 import WP_API from '../../../data/Api';
 import Time from '../../../components/Form/TimePicker';
 import Text from '../../../components/Form/Text';
@@ -74,6 +75,7 @@ class AddTime extends Component {
             if (result.success === true) {
                 this.setState(this.initialState);
                 this.setState(() => ({ status: 'success', msgText: 'Entry Added!' }));
+                lscache.flush();
             } else {
                 this.setState(() => ({
                     status: 'error',
@@ -127,8 +129,7 @@ class AddTime extends Component {
                 placeholder: 'Select Project',
                 list: projects,
                 required: true,
-                value: project,
-                parentClass: 'form__column col-1 form__row'
+                value: project
             },
             {
                 type: Select,
@@ -137,32 +138,28 @@ class AddTime extends Component {
                 placeholder: 'Select Milestone',
                 list: milestones,
                 required: true,
-                value: milestone,
-                parentClass: 'column twelve'
+                value: milestone
             },
             {
                 type: DatePicker,
                 name: 'date',
                 label: 'Date',
                 value: date,
-                required: true,
-                parentClass: 'form__column col-1 form__row'
+                required: true
             },
             {
                 type: Time,
                 name: 'hours',
                 label: 'Hours of Work',
                 required: true,
-                value: hours,
-                parentClass: 'form__column col-1 form__row'
+                value: hours
             },
             {
                 type: Time,
                 name: 'billable_hours',
                 label: 'Billable Hours',
                 required: true,
-                value: billable_hours,
-                parentClass: 'form__column col-1 form__row'
+                value: billable_hours
             },
             {
                 type: Select,
@@ -171,15 +168,13 @@ class AddTime extends Component {
                 placeholder: 'Select Work Type',
                 required: true,
                 value: job_type,
-                list: jobType,
-                parentClass: 'form__column col-1 form__row'
+                list: jobType
             },
             {
                 type: Text,
                 name: 'asana_url',
                 label: 'Asana URL',
-                value: asana_url,
-                parentClass: 'form__column col-1 form__row'
+                value: asana_url
             },
             {
                 type: Textarea,
@@ -187,55 +182,54 @@ class AddTime extends Component {
                 label: 'Comment',
                 rows: '4',
                 required: true,
-                value: comment,
-                parentClass: 'form__column col-1 form__row'
+                value: comment
             }
         ];
 
         if (loader === true) {
-            return <LoadingWidget className="section col-14 widget" title="Add New Time Entry" />;
+            return <LoadingWidget className="column widget" title="Add New Time Entry" />;
         }
         return (
             <ReactCSSTransitionGroup
                 component="div"
-                className="section col-14 widget widget"
+                className="column widget"
                 transitionAppear
                 transitionName="loadComponent"
                 transitionEnterTimeout={600}
                 transitionLeaveTimeout={300}
                 transitionAppearTimeout={0}
             >
-                <header className="section__header">
-                    <h4 className="section__title">Add New Time Entry</h4>
+                <header className="widget__header">
+                    <h4 className="widget__title">Add New Time Entry</h4>
                 </header>
-                <div className="section__content">
+                <div className="widget__content has-background-white">
                     <div className="widget">
                         <form className="form">
                             {status ? <Notification text={msgText} type={status} close={this.closeNotification} /> : ''}
-                            <div className="form__row">
-                                {inputs.map(field => (
-                                    <field.type
-                                        key={field.name}
-                                        label={field.label}
-                                        name={field.name}
-                                        parentClass={field.parentClass}
-                                        required={field.required}
-                                        value={field.value}
-                                        list={field.list}
-                                        rows={field.rows}
-                                        className="form__input"
-                                        placeholder={field.placeholder}
-                                        inputChangeEvent={this.inputChangeEvent}
-                                    />
-                                ))}
+
+                            {inputs.map(field => (
+                                <field.type
+                                    key={field.name}
+                                    label={field.label}
+                                    name={field.name}
+                                    parentClass={field.parentClass}
+                                    required={field.required}
+                                    value={field.value}
+                                    list={field.list}
+                                    rows={field.rows}
+                                    placeholder={field.placeholder}
+                                    inputChangeEvent={this.inputChangeEvent}
+                                />
+                            ))}
+                            <div className="field">
+                                <button
+                                    type="button"
+                                    className="button is-primary is-fullwidth"
+                                    onClick={this.addUserEntry}
+                                >
+                                    Submit
+                                </button>
                             </div>
-                            <button
-                                type="button"
-                                className="button button--primary button--custom"
-                                onClick={this.addUserEntry}
-                            >
-                                Submit
-                            </button>
                         </form>
                     </div>
                 </div>

@@ -103,24 +103,30 @@ export default class TimelineContainer extends Component {
         const { companyRoles, departments } = this.props;
         return (
             <ViewWrapper title="Timeline">
-                <div className="am2-filters">
-                    <Select
-                        name="filterRole"
-                        label="Filter by Role:"
-                        list={companyRoles}
-                        value={filterRole}
-                        parentClass="form__column col-14"
-                        inputChangeEvent={this.filterChangeEvent}
-                    />
-                    <Select
-                        name="filterDepartment"
-                        label="Filter by Department:"
-                        list={departments}
-                        value={filterDepartment}
-                        parentClass="form__column col-14"
-                        inputChangeEvent={this.filterChangeEvent}
-                    />
-                </div>
+                <nav className="level">
+                    <div className="level-left">
+                        <div className="level-item">
+                            <Select
+                                name="filterRole"
+                                label="Filter by Role:"
+                                list={companyRoles}
+                                value={filterRole}
+                                parentClass="field--medium"
+                                inputChangeEvent={this.filterChangeEvent}
+                            />
+                        </div>
+                        <div className="level-item">
+                            <Select
+                                name="filterDepartment"
+                                label="Filter by Department:"
+                                list={departments}
+                                value={filterDepartment}
+                                parentClass="field--medium"
+                                inputChangeEvent={this.filterChangeEvent}
+                            />
+                        </div>
+                    </div>
+                </nav>
                 <Timeline users={{ data }} onTaskUpdated={this.onTaskUpdated} onLinkUpdated={this.onLinkUpdated} />
             </ViewWrapper>
         );

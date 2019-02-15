@@ -19,17 +19,18 @@ class Time extends Component {
             value = '01:00';
         }
         if (required) {
-            required = <span className="form__required">* (required)</span>;
+            required = <span className="is-required">* (required)</span>;
         }
 
         return (
-            <div className={parentClass}>
-                <label htmlFor={name}>
+            <div className={`field ${parentClass || ''}`}>
+                <label className="label is-small" htmlFor={name}>
                     {label}
                     {required}
                 </label>
-
-                <TimePicker time={value} onTimeChange={e => this.handleTimeChange(e)} />
+                <div className="control">
+                    <TimePicker time={value} onTimeChange={e => this.handleTimeChange(e)} />
+                </div>
             </div>
         );
     }

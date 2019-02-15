@@ -7,50 +7,48 @@ const Header = props => {
     const { logout, handleMobileMenu } = props;
     return (
         <header id="header" className="header">
-            <div className="mobile-header">
-                <div className="mobile-header__logo">
-                    <a href="page/dashboard.html" className="mobile-header__logo-link">
-                        <h1>AM2Studio CRM</h1>
-                    </a>
-                    <span className="mobile-header__logo-subtitle">admin v.1.0</span>
-                </div>
-                <div className="mobile-header__actions">
+            <nav className="navbar is-white" role="navigation" aria-label="main navigation">
+                <div className="navbar-brand">
                     <button
                         type="button"
-                        className="js-sidebar-left-toggle c-hamburger c-hamburger--htx"
+                        className="navbar-burger burger"
+                        aria-label="menu"
+                        aria-expanded="false"
+                        data-target="navbarBasicExample"
                         onClick={handleMobileMenu}
                     >
-                        <span>toggle menu</span>
+                        <span aria-hidden="true" />
+                        <span aria-hidden="true" />
+                        <span aria-hidden="true" />
                     </button>
                 </div>
-            </div>
 
-            <div className="header__top clearfix">
-                <ul className="user-menu left">
-                    <li className="user-menu__item">
-                        <p className="user-menu__link" />
-                    </li>
-                </ul>
-                <ul className="user-menu right">
-                    <li className="user-menu__item">
-                        <a href="/" className="user-menu__link effect effect--waves">
-                            <FaWrench />
-                            &nbsp; Settings
-                        </a>
-                    </li>
-                    <li className="user-menu__item">
-                        <button type="button" onClick={logout} className="user-menu__link">
-                            <FaUser />
-                            &nbsp; Logout
-                        </button>
-                    </li>
-                </ul>
-            </div>
+                <div id="navbarBasicExample" className="navbar-menu">
+                    <div className="navbar-end">
+                        <div className="navbar-item">
+                            <div className="buttons">
+                                <button type="button" className="button is-info">
+                                    <span className="icon is-small">
+                                        <FaWrench />
+                                    </span>
+                                    <span>Settings</span>
+                                </button>
+                                <button type="button" onClick={logout} className="button is-light">
+                                    <span className="icon is-small">
+                                        <FaUser />
+                                    </span>
+                                    <span>Logout</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
 
             <div className="header__bottom clearfix">
                 <div className="header__left">
-                    <h2 className="header__title">AM2Studio CRM</h2>
-                    <p className="header__subtitle">Change is inevitable – except from a vending machine...</p>
+                    <h1 className="title">AM2Studio CRM</h1>
+                    <h2 className="subtitle">Change is inevitable – except from a vending machine...</h2>
                 </div>
                 <div className="header__right">
                     <div className="header__info">

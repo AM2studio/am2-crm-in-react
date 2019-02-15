@@ -13,8 +13,7 @@ class SlackAPI {
         const content = JSON.stringify({
             title,
             channel,
-            text: notificationTitle,
-            attachments: { '': { title, text: message } }
+            attachments: [{ pretext: notificationTitle, title, text: message }]
         });
         console.log(content);
         return axios({
