@@ -2,7 +2,6 @@ import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import WP_AUTH from '../data/Auth';
 import HeaderContainer from '../components/Header/HeaderContainer';
-import Footer from '../components/Footer/Footer';
 import Sidebar from '../components/Sidebar/Sidebar';
 import DataProvider from '../data/SharedDataContext';
 
@@ -13,8 +12,8 @@ const PrivateRoute = ({ component: Component, path, exact }) => (
         <div id="wrapper">
             <HeaderContainer />
             <main id="content" className="main">
-                <div className="container">
-                    <div className="section">
+                <section className="section">
+                    <div className="container is-fluid">
                         <Route
                             path={path}
                             exact={exact}
@@ -32,9 +31,8 @@ const PrivateRoute = ({ component: Component, path, exact }) => (
                             }
                         />
                     </div>
-                </div>
+                </section>
             </main>
-            <Footer />
         </div>
     </DataProvider>
 );

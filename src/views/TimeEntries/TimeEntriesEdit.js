@@ -100,8 +100,7 @@ class TimeEntriesEdit extends Component {
                 placeholder: 'Select User',
                 required: true,
                 value: user_id,
-                list: users,
-                parentClass: 'form__column col-1 form__row'
+                list: users
             },
             {
                 type: Select,
@@ -110,8 +109,7 @@ class TimeEntriesEdit extends Component {
                 placeholder: 'Select Project',
                 list: projects,
                 required: true,
-                value: project,
-                parentClass: 'form__column col-1 form__row'
+                value: project
             },
             {
                 type: Select,
@@ -120,32 +118,28 @@ class TimeEntriesEdit extends Component {
                 placeholder: 'Select Milestone',
                 list: milestones,
                 required: true,
-                value: milestone,
-                parentClass: 'column twelve'
+                value: milestone
             },
             {
                 type: DatePicker,
                 name: 'date',
                 label: 'Date',
                 value: date,
-                required: true,
-                parentClass: 'form__column col-1 form__row'
+                required: true
             },
             {
                 type: Time,
                 name: 'hours',
                 label: 'Hours of Work',
                 required: true,
-                value: hours,
-                parentClass: 'form__column col-1 form__row'
+                value: hours
             },
             {
                 type: Time,
                 name: 'billable_hours',
                 label: 'Billable Hours',
                 required: true,
-                value: billable_hours,
-                parentClass: 'form__column col-1 form__row'
+                value: billable_hours
             },
             {
                 type: Select,
@@ -154,15 +148,13 @@ class TimeEntriesEdit extends Component {
                 placeholder: 'Select Work Type',
                 required: true,
                 value: job_type,
-                list: jobType,
-                parentClass: 'form__column col-1 form__row'
+                list: jobType
             },
             {
                 type: Text,
                 name: 'asana_url',
                 label: 'Asana URL',
-                value: asana_url,
-                parentClass: 'form__column col-1 form__row'
+                value: asana_url
             },
             {
                 type: Textarea,
@@ -170,8 +162,7 @@ class TimeEntriesEdit extends Component {
                 label: 'Comment',
                 rows: '4',
                 required: true,
-                value: comment,
-                parentClass: 'form__column col-1 form__row'
+                value: comment
             },
             {
                 type: Radio,
@@ -179,9 +170,7 @@ class TimeEntriesEdit extends Component {
                 label: 'Track Resources',
                 required: true,
                 value: is_billable,
-                list: isBillable,
-                parentClass: 'form__column col-12',
-                className: 'form__input'
+                list: isBillable
             }
         ];
         return (
@@ -194,27 +183,26 @@ class TimeEntriesEdit extends Component {
                 ) : (
                     <div className="section__content">
                         <form className="form">
-                            <div className="form__row">
+                            <div className="columns is-multiline">
                                 {fields.map(field => (
                                     <field.type
                                         label={field.label}
                                         name={field.name}
-                                        parentClass={field.parentClass}
+                                        parentClass={field.parentClass || 'column is-half'}
                                         email={field.email}
                                         propType={field.propType}
                                         required={field.required}
                                         value={field.value}
                                         list={field.list}
-                                        className="form__input"
                                         inputChangeEvent={this.inputChangeEvent}
                                     />
                                 ))}
                             </div>
-                            <div className="form__row">
-                                <button type="button" className="button button--primary" onClick={this.updateEntryData}>
+                            <div className="field">
+                                <button type="button" className="button is-primary" onClick={this.updateEntryData}>
                                     Submit
                                 </button>
-                                <button type="button" className="button right" onClick={handleModalClose}>
+                                <button type="button" className="button is-warning right" onClick={handleModalClose}>
                                     Cancel
                                 </button>
                             </div>

@@ -25,57 +25,72 @@ const Filters = props => {
 
     return (
         <ViewWrapper title="AM2 Reports">
-            <div className="am2-filters">
-                {permission && (
-                    <Select
-                        name="filterUser"
-                        label="Filter by User:"
-                        list={appendAllUsersSelect}
-                        value={filterUser}
-                        parentClass="form__column col-16"
-                        inputChangeEvent={filterChangeEvent}
-                    />
-                )}
-                <Select
-                    name="filterProject"
-                    label="Filter by Project:"
-                    list={appendAllProjectSelect}
-                    value={filterProject}
-                    parentClass="form__column col-16"
-                    inputChangeEvent={filterChangeEvent}
-                />
-                <Select
-                    name="filterJobType"
-                    label="Filter by Job Type:"
-                    list={jobType}
-                    value={filterJobType}
-                    parentClass="form__column col-16"
-                    inputChangeEvent={filterChangeEvent}
-                />
-                <Select
-                    name="filterCompany"
-                    label="Filter by Company:"
-                    list={appendAllCompanySelect}
-                    value={filterCompany}
-                    parentClass="form__column col-16"
-                    inputChangeEvent={filterChangeEvent}
-                />
-                <div className="form__column col-16">
-                    <label htmlFor="filterDate">Filter by Date:</label>
-                    <DateFilter inputChangeEvent={filterChangeEvent} />
+            <nav className="level">
+                <div className="level-left">
+                    {permission && (
+                        <div className="level-item">
+                            <Select
+                                name="filterUser"
+                                label="Filter by User:"
+                                list={appendAllUsersSelect}
+                                value={filterUser}
+                                parentClass="field--medium"
+                                inputChangeEvent={filterChangeEvent}
+                            />
+                        </div>
+                    )}
+                    <div className="level-item">
+                        <Select
+                            name="filterProject"
+                            label="Filter by Project:"
+                            list={appendAllProjectSelect}
+                            value={filterProject}
+                            parentClass="field--medium"
+                            inputChangeEvent={filterChangeEvent}
+                        />
+                    </div>
+                    <div className="level-item">
+                        <Select
+                            name="filterJobType"
+                            label="Filter by Job Type:"
+                            list={jobType}
+                            value={filterJobType}
+                            parentClass="field--medium"
+                            inputChangeEvent={filterChangeEvent}
+                        />
+                    </div>
+                    <div className="level-item">
+                        <Select
+                            name="filterCompany"
+                            label="Filter by Company:"
+                            list={appendAllCompanySelect}
+                            value={filterCompany}
+                            parentClass="field--medium"
+                            inputChangeEvent={filterChangeEvent}
+                        />
+                    </div>
+                    <div className="level-item">
+                        <div className="field field--medium">
+                            <label className="label is-small" htmlFor="filterDate">
+                                Filter by Date:
+                            </label>
+                            <DateFilter inputChangeEvent={filterChangeEvent} />
+                        </div>
+                    </div>
+
+                    <div className="level-item">
+                        <label className="label is-small" htmlFor="filterOn" />
+                        <button
+                            type="button"
+                            disabled={loading ? 'disabled' : false}
+                            onClick={getFilteredData}
+                            className="button is-primary no-label"
+                        >
+                            Filter Report
+                        </button>
+                    </div>
                 </div>
-                <div className="form__column col-16">
-                    <button
-                        type="button"
-                        disabled={loading ? 'disabled' : false}
-                        onClick={getFilteredData}
-                        className="button button--primary button--filter"
-                    >
-                        Filter Report
-                    </button>
-                </div>
-            </div>
-            <div className="clearfix" />
+            </nav>
         </ViewWrapper>
     );
 };

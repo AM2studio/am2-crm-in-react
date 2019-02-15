@@ -114,7 +114,7 @@ class UsersContainer extends Component {
         <React.Fragment>
             <button
                 type="button"
-                className="button--table button--table--edit"
+                className="button is-primary"
                 onClick={e => {
                     this.editUser(e, id);
                 }}
@@ -123,7 +123,7 @@ class UsersContainer extends Component {
             </button>
             <button
                 type="button"
-                className="button--table button--table--delete"
+                className="button is-danger"
                 onClick={e => {
                     this.deleteUser(e, id);
                 }}

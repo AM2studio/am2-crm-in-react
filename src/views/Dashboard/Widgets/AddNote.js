@@ -51,7 +51,7 @@ class AddNote extends Component {
         // Validation
         const { note_for: noteFor, note_type: noteType, content, selectedUser } = this.state; // eslint-disable-line camelcase
         if (noteFor === '' || noteType === '' || content === '') {
-            this.setState(() => ({ status: 'error', msgText: 'Required fields are missing.' }));
+            this.setState(() => ({ status: 'is-danger', msgText: 'Required fields are missing.' }));
             return;
         }
         // Fire loader
@@ -61,7 +61,7 @@ class AddNote extends Component {
         api.set('user-note', '', this.state).then(result => {
             if (result.success === true) {
                 this.setState(this.initialState);
-                this.setState(() => ({ status: 'success', msgText: 'Thanks for the Note!' }));
+                this.setState(() => ({ status: 'is-success', msgText: 'Thanks for the Note!' }));
                 const user = sessionStorage.getItem('crmUserName');
                 const slackAPI = new SlackAPI(
                     'https://hooks.slack.com/services/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'
@@ -70,7 +70,7 @@ class AddNote extends Component {
                 slackAPI.send(notificationTitle, 'management-am2');
             } else {
                 this.setState(() => ({
-                    status: 'error',
+                    status: 'is-danger',
                     msgText: 'Ups..something went wrong. Check with Goran!',
                     loader: false
                 }));
@@ -96,8 +96,7 @@ class AddNote extends Component {
                 list: users,
                 placeholder: 'Select User',
                 required: true,
-                value: note_for,
-                parentClass: 'form__column col-1 form__row'
+                value: note_for
             },
             {
                 type: Select,
@@ -106,8 +105,7 @@ class AddNote extends Component {
                 label: 'Type',
                 list: noteType,
                 required: true,
-                value: note_type,
-                parentClass: 'form__column col-1 form__row'
+                value: note_type
             },
             {
                 type: Textarea,
@@ -115,52 +113,49 @@ class AddNote extends Component {
                 label: 'Comment',
                 rows: '4',
                 required: true,
-                value: content,
-                parentClass: 'form__column col-1 form__row'
+                value: content
             }
         ];
 
         if (loader === true || users.length === 0) {
-            return <LoadingWidget className="section col-14 widget widget--usernotes" title="Add New User Note" />;
+            return <LoadingWidget className="column widget widget--usernotes" title="Add New User Note" />;
         }
         return (
             <ReactCSSTransitionGroup
                 component="div"
-                className="section col-14 widget widget--usernotes"
+                className="column widget widget--usernotes"
                 transitionAppear
                 transitionName="loadComponentNotes"
                 transitionEnterTimeout={600}
                 transitionLeaveTimeout={300}
                 transitionAppearTimeout={0}
             >
-                <header className="section__header">
-                    <h4 className="section__title">Add New User Note</h4>
+                <header className="widget__header">
+                    <h4 className="widget__title">Add New User Note</h4>
                 </header>
-                <div className="section__content">
+                <div className="widget__content has-background-white">
                     <div className="widget">
                         <form className="form">
                             {status ? <Notification text={msgText} type={status} close={this.closeNotification} /> : ''}
-                            <div className="form__row">
-                                {inputs.map(field => (
-                                    <field.type
-                                        key={field.name}
-                                        label={field.label}
-                                        name={field.name}
-                                        parentClass={field.parentClass}
-                                        required={field.required}
-                                        value={field.value}
-                                        list={field.list}
-                                        rows={field.rows}
-                                        className="form__input"
-                                        placeholder={field.placeholder}
-                                        inputChangeEvent={this.inputChangeEvent}
-                                    />
-                                ))}
-                            </div>
-                            <div className="form__row">
+
+                            {inputs.map(field => (
+                                <field.type
+                                    key={field.name}
+                                    label={field.label}
+                                    name={field.name}
+                                    parentClass={field.parentClass}
+                                    required={field.required}
+                                    value={field.value}
+                                    list={field.list}
+                                    rows={field.rows}
+                                    placeholder={field.placeholder}
+                                    inputChangeEvent={this.inputChangeEvent}
+                                />
+                            ))}
+                            <div className="field">
                                 <button
                                     type="button"
-                                    className="button button--primary button--custom"
+                                    className="button is-primary is-fullwidth"
                                     onClick={this.addUserNote}
                                 >
                                     Submit

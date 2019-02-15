@@ -9,8 +9,9 @@ import WP_API from '../../data/Api';
 class UsersEdit extends Component {
     constructor(props) {
         super(props);
+        const { singleUserData } = props;
         this.state = {
-            loading: true
+            loading: !!singleUserData
         };
     }
 
@@ -171,6 +172,7 @@ class UsersEdit extends Component {
                 name: 'am2Permissions',
                 label: 'Permissions',
                 required: true,
+                parentClass: 'column is-half permissions',
                 value: am2Permissions,
                 list: permissionsList
             }
@@ -185,26 +187,25 @@ class UsersEdit extends Component {
                 ) : (
                     <div className="section__content">
                         <form className="form">
-                            <div className="form__row">
+                            <div className="columns is-multiline">
                                 {fields.map(field => {
-                                    const { type, name, ...rest } = field; // spread operator
+                                    const { type, parentClass, name, ...rest } = field;
                                     return (
                                         <field.type
                                             key={name}
                                             name={name}
+                                            parentClass={parentClass || 'column is-half'}
                                             inputChangeEvent={this.inputChangeEvent}
-                                            parentClass="form__column col-12"
-                                            className="form__input"
                                             {...rest}
                                         />
                                     );
                                 })}
                             </div>
-                            <div className="form__row">
-                                <button type="button" className="button button--primary" onClick={this.updateUserData}>
+                            <div className="field">
+                                <button type="button" className="button is-primary" onClick={this.updateUserData}>
                                     Submit
                                 </button>
-                                <button type="button" className="button right" onClick={handleModalClose}>
+                                <button type="button" className="button is-danger right" onClick={handleModalClose}>
                                     Cancel
                                 </button>
                             </div>

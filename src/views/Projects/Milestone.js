@@ -130,26 +130,35 @@ class Milestone extends Component {
                         <field.type
                             key={name}
                             name={name}
-                            parentClass="form__column col-12"
-                            className="form__input"
+                            parentClass="column is-half"
                             inputChangeEvent={this.inputChangeEvent}
                             {...rest}
                         />
                     );
                 })}
-                <div className="form__column col-12">
-                    <label htmlFor="actions">Actions</label>
+                <div className="field column is-half">
+                    <label className="label is-small" htmlFor="actions">
+                        Actions
+                    </label>
                     <div className="form__column__buttons">
-                        <button type="button" className="button" onClick={() => this.milestoneAction('save')}>
+                        <button
+                            type="button"
+                            className="button is-primary"
+                            onClick={() => this.milestoneAction('save')}
+                        >
                             Save
                         </button>
-                        <button type="button" className="button" onClick={() => this.milestoneAction('delete')}>
+                        <button
+                            type="button"
+                            className="button is-danger"
+                            onClick={() => this.milestoneAction('delete')}
+                        >
                             Delete
                         </button>
                         {snapshot ? (
                             <span className="button--snapshot">Snapshot taken</span>
                         ) : (
-                            <button type="button" className="button" onClick={this.milestoneSnapshot}>
+                            <button type="button" className="button is-info" onClick={this.milestoneSnapshot}>
                                 Snapshot
                             </button>
                         )}

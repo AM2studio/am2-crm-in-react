@@ -14,7 +14,7 @@ const Companies = props => {
     return (
         <ViewWrapper title="Companies">
             <p className="negative-margin text-right">
-                <button type="button" className="button button--primary" onClick={addCompany}>
+                <button type="button" className="button is-primary" onClick={addCompany}>
                     Add New
                 </button>
             </p>

@@ -29,21 +29,23 @@ class DateFilter extends Component {
     render() {
         const { start, end, focusedInput } = this.state;
         return (
-            <DateRangePicker
-                inputIconPosition="after"
-                small
-                regular
-                block
-                numberOfMonths={2}
-                startDate={start}
-                startDateId="startDateId"
-                endDateId="endDateId"
-                endDate={end}
-                onDatesChange={({ startDate, endDate }) => this.handleDateChange(startDate, endDate)}
-                focusedInput={focusedInput}
-                onFocusChange={focused => this.setState({ focusedInput: focused })}
-                isOutsideRange={() => false}
-            />
+            <div className="control">
+                <DateRangePicker
+                    inputIconPosition="after"
+                    small
+                    regular
+                    block
+                    numberOfMonths={2}
+                    startDate={start}
+                    startDateId="startDateId"
+                    endDateId="endDateId"
+                    endDate={end}
+                    onDatesChange={({ startDate, endDate }) => this.handleDateChange(startDate, endDate)}
+                    focusedInput={focusedInput}
+                    onFocusChange={focused => this.setState({ focusedInput: focused })}
+                    isOutsideRange={() => false}
+                />
+            </div>
         );
     }
 }

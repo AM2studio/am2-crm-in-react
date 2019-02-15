@@ -6,19 +6,21 @@ export default props => {
     let type = 'text';
 
     if (required) {
-        required = <span className="form__required">* (required)</span>;
+        required = <span className="is-required">* (required)</span>;
     }
     if (propType) {
         type = propType;
     }
 
     return (
-        <div className={parentClass}>
-            <label htmlFor={name}>
+        <div className={`field ${parentClass || ''}`}>
+            <label className="label is-small" htmlFor={name}>
                 {label}
                 {required}
             </label>
-            <input name={name} id={name} type={type} onChange={inputChangeEvent} {...rest} />
+            <div className="control">
+                <input className="input" name={name} id={name} type={type} onChange={inputChangeEvent} {...rest} />
+            </div>
         </div>
     );
 };

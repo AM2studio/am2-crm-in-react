@@ -161,30 +161,25 @@ class ProjectsEdit extends Component {
                 ) : (
                     <div className="section__content">
                         <form className="form">
-                            <div className="form__row">
+                            <div className="columns is-multiline">
                                 {fields.map(field => {
                                     const { name, ...rest } = field;
                                     return (
                                         <field.type
                                             key={name}
                                             name={name}
-                                            parentClass="form__column col-12"
-                                            className="form__input"
+                                            parentClass="column is-half"
                                             inputChangeEvent={this.inputChangeEvent}
                                             {...rest}
                                         />
                                     );
                                 })}
                             </div>
-                            <div className="form__row">
-                                <button
-                                    type="button"
-                                    className="button button--primary"
-                                    onClick={this.updateProjectData}
-                                >
+                            <div className="field">
+                                <button type="button" className="button is-primary" onClick={this.updateProjectData}>
                                     Submit
                                 </button>
-                                <button type="button" className="button right" onClick={handleModalClose}>
+                                <button type="button" className="button is-danger right" onClick={handleModalClose}>
                                     Cancel
                                 </button>
                             </div>

@@ -6,10 +6,10 @@ const loadingWidget = props => {
 
     return (
         <div className={className}>
-            <header className="section__header">
-                <h4 className="section__title">{title}</h4>
+            <header className="widget__header">
+                <h4 className="widget__title">{title}</h4>
             </header>
-            <div className="section__content">
+            <div className="widget__content has-background-white">
                 <div className="widget">
                     <Loading width="400" height="280" />
                 </div>

@@ -41,7 +41,7 @@ class RequestVacation extends Component {
         const { start_date: startDate, end_date: endDate, days, note } = this.state; // eslint-disable-line camelcase
         // Validation
         if (startDate === '' || endDate === '' || days === '') {
-            this.setState(() => ({ sent: 'error', msgText: 'Required fields are missing.' }));
+            this.setState(() => ({ sent: 'is-danger', msgText: 'Required fields are missing.' }));
             return;
         }
         // Proceed
@@ -52,7 +52,7 @@ class RequestVacation extends Component {
                 // Pop a success message
                 this.setState(this.initialState);
                 this.setState(() => ({
-                    sent: 'success',
+                    sent: 'is-success',
                     msgText: 'Request sent! We will get back to you soon.'
                 }));
                 // Notify everyone on slack
@@ -64,7 +64,7 @@ class RequestVacation extends Component {
                 slackAPI.send(notificationTitle, 'management-am2');
             } else {
                 this.setState(() => ({
-                    sent: 'error',
+                    sent: 'is-danger',
                     msgText: 'Ups..something went wrong. Check with Goran!',
                     loader: false
                 }));
@@ -81,16 +81,14 @@ class RequestVacation extends Component {
                 name: 'start_date',
                 label: 'Start Date',
                 required: true,
-                value: start_date,
-                parentClass: 'form__row'
+                value: start_date
             },
             {
                 type: DatePicker,
                 name: 'end_date',
                 label: 'End Date',
                 required: true,
-                value: end_date,
-                parentClass: 'form__row'
+                value: end_date
             },
             {
                 type: Text,
@@ -98,8 +96,7 @@ class RequestVacation extends Component {
                 label: 'Working Days',
                 propType: 'number',
                 required: true,
-                value: days,
-                parentClass: 'form__row'
+                value: days
             },
             {
                 type: Textarea,
@@ -107,55 +104,55 @@ class RequestVacation extends Component {
                 label: 'Comment',
                 rows: '4',
                 required: true,
-                value: note,
-                parentClass: 'form__column col-1 form__row'
+                value: note
             }
         ];
 
         if (loader === true) {
-            return <LoadingWidget className="section col-14 widget widget--vacation" title="Request Vacation" />;
+            return <LoadingWidget className="column widget widget--vacation" title="Request Vacation" />;
         }
         return (
             <ReactCSSTransitionGroup
                 component="div"
-                className="section col-14 widget widget--vacation"
+                className="column widget widget--vacation"
                 transitionAppear
                 transitionName="loadComponentVacation"
                 transitionEnterTimeout={600}
                 transitionLeaveTimeout={300}
                 transitionAppearTimeout={0}
             >
-                <header className="section__header">
-                    <h4 className="section__title">Request Vacation</h4>
+                <header className="widget__header">
+                    <h4 className="widget__title">Request Vacation</h4>
                 </header>
-                <div className="section__content">
+                <div className="widget__content has-background-white">
                     <div className="widget">
                         <form className="form">
                             {sent ? <Notification text={msgText} type={sent} close={this.closeNotification} /> : ''}
-                            <div className="form__row">
-                                {inputs.map(field => (
-                                    <field.type
-                                        key={field.name}
-                                        label={field.label}
-                                        name={field.name}
-                                        parentClass={field.parentClass}
-                                        email={field.email}
-                                        propType={field.propType}
-                                        required={field.required}
-                                        value={field.value}
-                                        list={field.list}
-                                        className="form__input"
-                                        inputChangeEvent={this.inputChangeEvent}
-                                    />
-                                ))}
+
+                            {inputs.map(field => (
+                                <field.type
+                                    key={field.name}
+                                    label={field.label}
+                                    name={field.name}
+                                    parentClass={field.parentClass}
+                                    email={field.email}
+                                    propType={field.propType}
+                                    required={field.required}
+                                    value={field.value}
+                                    list={field.list}
+                                    inputChangeEvent={this.inputChangeEvent}
+                                />
+                            ))}
+
+                            <div className="field">
+                                <button
+                                    type="button"
+                                    className="button is-primary is-fullwidth"
+                                    onClick={this.requestVacation}
+                                >
+                                    Submit
+                                </button>
                             </div>
-                            <button
-                                type="button"
-                                className="button button--primary button--custom"
-                                onClick={this.requestVacation}
-                            >
-                                Submit
-                            </button>
                         </form>
                     </div>
                 </div>

@@ -53,31 +53,28 @@ class Milestones extends Component {
                 ) : (
                     <div className="section__content">
                         <form className="form">
-                            <div className="form__row">
-                                {Object.keys(milestones).map(key => (
-                                    <div
-                                        key={key}
-                                        className={
-                                            milestones[key].action
-                                                ? `${milestones[key].action} single-milestone`
-                                                : 'single-milestone'
-                                        }
-                                    >
-                                        <Milestone
-                                            milestoneKey={key}
-                                            milestones={milestones[key]}
-                                            project={project}
-                                            actionType={this.actionType}
-                                        />
-                                        <div className="clearfix" />
-                                    </div>
-                                ))}
-                            </div>
-                            <div className="form__row">
-                                <button type="button" className="button button--primary" onClick={this.addMilestone}>
+                            {Object.keys(milestones).map(key => (
+                                <div
+                                    key={key}
+                                    className={
+                                        milestones[key].action
+                                            ? `${milestones[key].action} columns is-multiline single-milestone`
+                                            : 'columns is-multiline single-milestone'
+                                    }
+                                >
+                                    <Milestone
+                                        milestoneKey={key}
+                                        milestones={milestones[key]}
+                                        project={project}
+                                        actionType={this.actionType}
+                                    />
+                                </div>
+                            ))}
+                            <div className="field">
+                                <button type="button" className="button is-primary" onClick={this.addMilestone}>
                                     Add New
                                 </button>
-                                <button type="button" className="button right" onClick={handleModalClose}>
+                                <button type="button" className="button is-danger right" onClick={handleModalClose}>
                                     Close
                                 </button>
                             </div>

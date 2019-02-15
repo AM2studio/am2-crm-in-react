@@ -5,16 +5,18 @@ export default props => {
     let { required } = props;
 
     if (required) {
-        required = <span className="form__required">* (required)</span>;
+        required = <span className="is-required">* (required)</span>;
     }
 
     return (
-        <div className={parentClass}>
-            <label htmlFor={name}>
+        <div className={`field ${parentClass || ''}`}>
+            <label className="label is-small" htmlFor={name}>
                 {label}
                 {required}
             </label>
-            <textarea name={name} onChange={inputChangeEvent} {...rest} />
+            <div className="control">
+                <textarea className="textarea" name={name} onChange={inputChangeEvent} {...rest} />
+            </div>
         </div>
     );
 };

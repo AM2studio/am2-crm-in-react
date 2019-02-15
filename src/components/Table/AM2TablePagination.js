@@ -64,46 +64,54 @@ class AM2TablePagination extends Component {
         const { currentPage } = this.props;
         const pages = this.fetchPageNumbers();
         return (
-            <div className="dataTables_paginate paging_simple_numbers">
-                {pages.map(page => {
-                    if (page === 'LEFT')
-                        return (
-                            <button
-                                key={page}
-                                type="button"
-                                className={`paginate_button${currentPage === page ? ' active' : ''}`}
-                                tabIndex={page}
-                                onClick={() => this.gotoPage(currentPage - 5)}
-                            >
-                                <span aria-hidden="true">&laquo;</span>
-                            </button>
-                        );
+            <nav className="pagination" role="navigation" aria-label="pagination">
+                <ul className="pagination-list">
+                    {pages.map(page => {
+                        if (page === 'LEFT')
+                            return (
+                                <li>
+                                    <button
+                                        key={page}
+                                        type="button"
+                                        className={`pagination-link${currentPage === page ? ' is-current' : ''}`}
+                                        tabIndex={page}
+                                        onClick={() => this.gotoPage(currentPage - 5)}
+                                    >
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </button>
+                                </li>
+                            );
 
-                    if (page === 'RIGHT')
+                        if (page === 'RIGHT')
+                            return (
+                                <li>
+                                    <button
+                                        key={page}
+                                        type="button"
+                                        className={`pagination-link${currentPage === page ? ' is-current' : ''}`}
+                                        tabIndex={page}
+                                        onClick={() => this.gotoPage(currentPage + 5)}
+                                    >
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </button>
+                                </li>
+                            );
                         return (
-                            <button
-                                key={page}
-                                type="button"
-                                className={`paginate_button${currentPage === page ? ' active' : ''}`}
-                                tabIndex={page}
-                                onClick={() => this.gotoPage(currentPage + 5)}
-                            >
-                                <span aria-hidden="true">&raquo;</span>
-                            </button>
+                            <li>
+                                <button
+                                    type="button"
+                                    key={page}
+                                    className={`pagination-link${currentPage === page ? ' is-current' : ''}`}
+                                    tabIndex={page}
+                                    onClick={() => this.gotoPage(page)}
+                                >
+                                    {page}
+                                </button>
+                            </li>
                         );
-                    return (
-                        <button
-                            type="button"
-                            key={page}
-                            className={`paginate_button${currentPage === page ? ' active' : ''}`}
-                            tabIndex={page}
-                            onClick={() => this.gotoPage(page)}
-                        >
-                            {page}
-                        </button>
-                    );
-                })}
-            </div>
+                    })}
+                </ul>
+            </nav>
         );
     }
 }

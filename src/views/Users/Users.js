@@ -7,7 +7,7 @@ const Users = props => {
     return (
         <ViewWrapper title="Users">
             <p className="negative-margin text-right">
-                <button type="button" className="button button--primary" onClick={addUser}>
+                <button type="button" className="button is-primary" onClick={addUser}>
                     Add New
                 </button>
             </p>

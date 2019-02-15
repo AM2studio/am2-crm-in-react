@@ -30,28 +30,29 @@ export default class DatePicker extends Component {
         const { focused, date } = this.state;
 
         if (required) {
-            required = <span className="form__required">* (required)</span>;
+            required = <span className="is-required">* (required)</span>;
         }
 
         return (
-            <div className={parentClass}>
-                <label htmlFor={name}>
+            <div className={`field ${parentClass || ''}`}>
+                <label className="label is-small" htmlFor={name}>
                     {label}
                     {required}
                 </label>
-
-                <SingleDatePicker
-                    inputIconPosition="after"
-                    small
-                    regular
-                    block
-                    numberOfMonths={1}
-                    date={date}
-                    onDateChange={newDate => this.handleDateChange(newDate)}
-                    focused={focused}
-                    onFocusChange={e => this.setState(e)}
-                    isOutsideRange={() => false}
-                />
+                <div className="control">
+                    <SingleDatePicker
+                        inputIconPosition="after"
+                        small
+                        regular
+                        block
+                        numberOfMonths={1}
+                        date={date}
+                        onDateChange={newDate => this.handleDateChange(newDate)}
+                        focused={focused}
+                        onFocusChange={e => this.setState(e)}
+                        isOutsideRange={() => false}
+                    />
+                </div>
             </div>
         );
     }

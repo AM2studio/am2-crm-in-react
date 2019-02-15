@@ -219,7 +219,7 @@ class ReportsContainer extends Component {
         <React.Fragment>
             <button
                 type="button"
-                className="button--table button--table--edit"
+                className="button is-primary"
                 onClick={e => {
                     this.editTimeEntry(e, id);
                 }}
@@ -228,7 +228,7 @@ class ReportsContainer extends Component {
             </button>
             <button
                 type="button"
-                className="button--table button--table--delete"
+                className="button is-danger"
                 onClick={e => {
                     this.deleteTimeEntry(e, id);
                 }}

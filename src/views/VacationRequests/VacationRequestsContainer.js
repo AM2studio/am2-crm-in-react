@@ -47,16 +47,14 @@ class VacationsContainer extends Component {
             };
         });
         const api = new WP_API();
-        api.set('vacations', id, { status: type }).then(result => {
-            console.log(result);
-        });
+        api.set('vacations', id, { status: type });
     };
 
     actionBtns = (id, index) => (
         <React.Fragment>
             <button
                 type="button"
-                className="button--table button--table--edit"
+                className="button is-primary"
                 onClick={() => {
                     this.vacationRequest(id, 'approved', index);
                 }}
@@ -65,7 +63,7 @@ class VacationsContainer extends Component {
             </button>
             <button
                 type="button"
-                className="button--table button--table--delete"
+                className="button is-danger"
                 onClick={() => {
                     this.vacationRequest(id, 'rejected', index);
                 }}

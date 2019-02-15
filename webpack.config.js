@@ -3,7 +3,7 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const WebpackMd5Hash = require('webpack-md5-hash');
 const AsyncChunkNames = require('webpack-async-chunk-names-plugin');
-
+const Autoprefixer = require('autoprefixer');
 const path = require('path');
 
 const htmlPlugin = new HTMLWebPackPlugin({
@@ -56,10 +56,15 @@ module.exports = (env, options) => ({
                 use: ['babel-loader', 'eslint-loader']
             },
             {
-                test: /\.css$/,
+                test: /\.(css|sass|scss)$/,
                 use: [
                     options.mode === 'production' ? MiniCssExtractPlugin.loader : 'style-loader',
-                    'css-loader'
+                    { loader: 'css-loader', options: { importLoaders: 2, sourceMap: true } },
+                    {
+                        loader: 'postcss-loader',
+                        options: { plugins: () => [Autoprefixer], sourceMap: true }
+                    },
+                    { loader: 'sass-loader', options: { sourceMap: true } }
                 ]
             },
             {

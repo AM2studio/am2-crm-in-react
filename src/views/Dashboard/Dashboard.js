@@ -8,12 +8,12 @@ import { SharedDataConsumer } from '../../data/SharedDataContext';
 export default () => (
     <SharedDataConsumer>
         {({ users, projects }) => (
-            <React.Fragment>
+            <div className="columns">
                 <AddTimeEntry projects={projects} />
                 <RequestVacation />
                 <AddNote users={users} />
                 <AddHighFive users={users} />
-            </React.Fragment>
+            </div>
         )}
     </SharedDataConsumer>
 );
