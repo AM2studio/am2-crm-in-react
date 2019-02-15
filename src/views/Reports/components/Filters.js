@@ -82,9 +82,8 @@ const Filters = props => {
                         <label className="label is-small" htmlFor="filterOn" />
                         <button
                             type="button"
-                            disabled={loading ? 'disabled' : false}
                             onClick={getFilteredData}
-                            className="button is-primary no-label"
+                            className={`button is-primary no-label ${loading ? 'is-loading' : ''}`}
                         >
                             Filter Report
                         </button>

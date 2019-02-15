@@ -693,7 +693,7 @@ tbody tr:first-child td {
     margin-top: 35px !important;
 }
 
-.loaderHolder {
+.progressHolder {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -705,7 +705,7 @@ tbody tr:first-child td {
     align-items: center;
     max-width: 300px;
 }
-.loader {
+.progress {
     width: 100%;
     height: 4px;
     background: #eaecee;
@@ -719,7 +719,7 @@ tbody tr:first-child td {
     flex-shrink: 0;
     margin-left: 20px;
 }
-.loader div {
+.progress div {
     width: 100%;
     height: 4px;
     border-radius: 4px;

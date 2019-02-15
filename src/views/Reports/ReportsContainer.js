@@ -191,9 +191,9 @@ class ReportsContainer extends Component {
         data.map(obj => ({
             ...obj,
             billable: (
-                <div className="loaderHolder">
+                <div className="progressHolder">
                     {obj.billable}
-                    <div className="loader">
+                    <div className="progress">
                         <div style={{ width: `${(obj.billable / totalHours) * 100}%` }} />
                     </div>
                 </div>
