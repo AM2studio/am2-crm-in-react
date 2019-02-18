@@ -53,7 +53,12 @@ class TimeEntriesEdit extends Component {
         if (name === 'project') {
             const api = new WP_API();
             api.getPosts('milestones', { id: value }).then(response => {
-                this.setState({ milestones: response, milestone: response[0].id });
+                this.setState({
+                    milestones: response.milestones,
+                    milestone: response.milestones[0].id,
+                    features: response.features,
+                    feature: response.features[0].value
+                });
             });
         }
     };
@@ -70,6 +75,8 @@ class TimeEntriesEdit extends Component {
             is_billable, // eslint-disable-line camelcase
             milestone,
             milestones,
+            feature,
+            features,
             comment,
             loading
         } = this.state;
@@ -119,6 +126,15 @@ class TimeEntriesEdit extends Component {
                 list: milestones,
                 required: true,
                 value: milestone
+            },
+            {
+                type: Select,
+                name: 'feature',
+                label: 'Feature',
+                placeholder: 'Select Feature',
+                list: features,
+                required: true,
+                value: feature
             },
             {
                 type: DatePicker,

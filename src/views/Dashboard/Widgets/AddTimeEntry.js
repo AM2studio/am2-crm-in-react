@@ -22,6 +22,8 @@ class AddTime extends Component {
             project: '',
             milestone: '',
             milestones: [],
+            feature: '',
+            features: [],
             job_type: '2',
             is_billable: 1,
             asana_url: '',
@@ -43,12 +45,15 @@ class AddTime extends Component {
         } else if (name === 'project') {
             const api = new WP_API();
             api.getPosts('milestones', { id: value }, true, false).then(response => {
-                if (response.length) {
+                console.log(response);
+                if (response.milestones.length || response.features.length) {
                     this.setState({
                         [name]: value,
                         status: false,
-                        milestones: response,
-                        milestone: ''
+                        milestones: response.milestones,
+                        features: response.features,
+                        milestone: '',
+                        feature: ''
                     });
                 }
             });
@@ -62,9 +67,10 @@ class AddTime extends Component {
     };
 
     addUserEntry = () => {
-        const { project: projectId, comment, milestone } = this.state;
+        const { project: projectId, comment, milestone, feature, features } = this.state;
+
         // Validation
-        if (projectId === '' || comment === '' || milestone === '') {
+        if (projectId === '' || comment === '' || milestone === '' || (feature === '' && features.length > 0)) {
             this.setState(() => ({ status: 'is-danger', msgText: 'Required fields are missing.' }));
             return;
         }
@@ -101,7 +107,9 @@ class AddTime extends Component {
             loader,
             msgText,
             milestone,
-            milestones
+            milestones,
+            features,
+            feature
         } = this.state;
 
         const jobType = [
@@ -139,6 +147,15 @@ class AddTime extends Component {
                 list: milestones,
                 required: true,
                 value: milestone
+            },
+            {
+                type: Select,
+                name: 'feature',
+                label: 'Feature',
+                placeholder: 'Select Feature',
+                list: features,
+                required: true,
+                value: feature
             },
             {
                 type: DatePicker,

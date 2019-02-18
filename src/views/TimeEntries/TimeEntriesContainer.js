@@ -96,7 +96,8 @@ class TimeEntriesContainer extends Component {
                         project: post.project,
                         milestones: post.milestones,
                         milestone: post.milestone,
-                        project_feature: post.project_feature,
+                        features: post.features,
+                        feature: post.feature,
                         date: post.date,
                         hours: post.hours,
                         job_type: post.job_type,
@@ -142,6 +143,7 @@ class TimeEntriesContainer extends Component {
         const { dataToFetch } = this.props;
         const data = new WP_API();
         data.get('time-entry', id, dataToFetch).then(result => {
+            console.log(result);
             this.setState({ singleTimeEntryData: result });
         });
     };
@@ -332,6 +334,8 @@ TimeEntriesContainer.defaultProps = {
         'user_id',
         'milestones',
         'milestone',
+        'features',
+        'feature',
         'comment',
         'company',
         'date',
@@ -340,7 +344,6 @@ TimeEntriesContainer.defaultProps = {
         'is_billable',
         'job_type',
         'project',
-        'project_feature',
         'asana_url'
     ]
 };

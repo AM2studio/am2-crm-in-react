@@ -10,11 +10,18 @@ class AM2Select extends Component {
             // So, this package requires selected value to be an object
             // Our select list is using id property ( this was prior to installing this package), so we first need to filter object via id = value
             // Then need to convert it to expected object
-            const result = list.filter(obj => obj.id.toString() === value.toString());
-            let filteredResults;
-            if (result !== undefined) {
-                filteredResults = result.map(o => ({ value: o.id, label: o.title }));
-                this.state = { selectedOption: filteredResults[0] };
+            if (Object.prototype.hasOwnProperty.call(list[0], 'id')) {
+                const result = list.filter(obj => obj.id && obj.id.toString() === value.toString());
+                let filteredResults;
+                if (result !== undefined) {
+                    filteredResults = result.map(o => ({ value: o.id, label: o.title }));
+                    this.state = { selectedOption: filteredResults[0] };
+                }
+            } else {
+                const result = list.filter(obj => obj.value && obj.value.toString() === value.toString());
+                if (result !== undefined) {
+                    this.state = { selectedOption: result };
+                }
             }
         } else {
             this.state = { selectedOption: '' };
@@ -49,6 +56,11 @@ class AM2Select extends Component {
         let { required } = this.props;
         const { selectedOption } = this.state;
         let formatedList = list;
+
+        // No list? Dont render Select element.
+        if (!list) {
+            return '';
+        }
 
         // Are we getting title and id from WordPress, if so, format it to label/value:
         if (list.length > 0 && !Object.prototype.hasOwnProperty.call(list[0], 'label')) {
