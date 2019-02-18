@@ -5,13 +5,13 @@ class AM2Select extends Component {
     constructor(props) {
         super(props);
         const { value, list } = this.props;
-        this.state = { list, value: value || '', isLoading: false };
+        this.state = { list, value: value || [], isLoading: false };
     }
 
-    handleChange = value => {
+    handleChange = (value, action) => {
         this.setState({ value, isLoading: false });
         const { multiSelectChangeEvent } = this.props;
-        multiSelectChangeEvent(value, 'removeOption');
+        multiSelectChangeEvent(value, action);
     };
 
     handleCreate = option => {
