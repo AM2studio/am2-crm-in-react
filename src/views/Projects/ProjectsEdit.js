@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import Text from '../../components/Form/Text';
 import Select from '../../components/Form/Select';
+import MultiSelect from '../../components/Form/MultiSelect';
 import WP_API from '../../data/Api';
 import DatePicker from '../../components/Form/DatePicker';
 import Radio from '../../components/Form/Radio';
 import Loading from '../../components/General/Loading';
+
+const data = new WP_API();
 
 class ProjectsEdit extends Component {
     constructor(props) {
@@ -34,7 +37,6 @@ class ProjectsEdit extends Component {
     updateProjectData = () => {
         const { id } = this.state; // eslint-disable-line camelcase
         const { handleModalClose } = this.props;
-        const data = new WP_API();
         data.set('projects', id, this.state).then(result => {
             if (result.success === true) {
                 handleModalClose(true);
@@ -44,6 +46,18 @@ class ProjectsEdit extends Component {
         });
     };
 
+    multiSelectChangeEvent = (value, actionMeta) => {
+        const { id } = this.state;
+        this.setState({ projectFeatures: value });
+        if (actionMeta.action === 'remove-value') {
+            data.set('features', id, { action: 'remove-value', value: actionMeta.removedValue.value });
+        }
+        if (actionMeta.action === 'create-option') {
+            const newOption = value.pop();
+            data.set('features', id, { action: 'new-value', value: newOption });
+        }
+    };
+
     inputChangeEvent = e => {
         const { name, value } = e.target;
         this.setState({ [name]: value });
@@ -51,6 +65,8 @@ class ProjectsEdit extends Component {
 
     render() {
         const { handleModalClose, companies, departments, projectMngrs, activeProjects } = this.props;
+
+        const features = '';
 
         const {
             loading,
@@ -64,7 +80,8 @@ class ProjectsEdit extends Component {
             asanaID,
             company_id, // eslint-disable-line camelcase
             project_mngr, // eslint-disable-line camelcase
-            active_project // eslint-disable-line camelcase
+            active_project, // eslint-disable-line camelcase
+            projectFeatures
             // project_features // eslint-disable-line camelcase
         } = this.state;
 
@@ -133,6 +150,15 @@ class ProjectsEdit extends Component {
                 list: departments,
                 required: true,
                 value: department_id
+            },
+            {
+                type: MultiSelect,
+                name: 'features',
+                label: 'Features',
+                list: features,
+                required: true,
+                value: projectFeatures,
+                multiSelectChangeEvent: this.multiSelectChangeEvent
             },
             {
                 type: Select,

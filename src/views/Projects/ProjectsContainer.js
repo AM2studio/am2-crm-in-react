@@ -154,7 +154,7 @@ ProjectsContainer.defaultProps = {
         'staging_link',
         'slack_channel',
         'asanaID',
-        'project_features'
+        'projectFeatures'
     ],
     itemsPerPage: 20
 };

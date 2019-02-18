@@ -75,13 +75,13 @@ class WP_API {
     }
 
     set(type, id = undefined, dataToUpdate = undefined) {
-        this.url = `${this.url}${type}/`;
+        let url = `${this.url}${type}/`;
         if (id) {
-            this.url = `${this.url}${id}/`;
+            url = `${url}${id}/`;
         }
         return axios({
             method: 'post',
-            url: this.url,
+            url,
             headers: {
                 Authorization: `Bearer ${this.auth.getSessionToken()}`
             },
