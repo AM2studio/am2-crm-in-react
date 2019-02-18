@@ -286,7 +286,7 @@ class TimeEntriesContainer extends Component {
             { key: 'date', title: 'Date' },
             { key: 'project', title: 'Project' },
             { key: 'milestone', title: 'Milestone' },
-            // { key: 'project_feature', title: 'Feature' },
+            { key: 'feature', title: 'Feature' },
             { key: 'job_type', title: 'Job Type' },
             { key: 'comment', title: 'Comment' },
             { key: 'asana_url', title: 'Asana URL' },
