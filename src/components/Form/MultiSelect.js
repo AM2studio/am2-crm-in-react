@@ -8,20 +8,25 @@ class AM2Select extends Component {
         this.state = { list, value: value || '', isLoading: false };
     }
 
-    handleChange = (value, action) => {
-        // console.log(value, action);
+    handleChange = value => {
         this.setState({ value, isLoading: false });
         const { multiSelectChangeEvent } = this.props;
-        multiSelectChangeEvent(value, action);
+        multiSelectChangeEvent(value, 'removeOption');
+    };
+
+    handleCreate = option => {
+        const { multiSelectChangeEvent } = this.props;
+        const { value } = this.state;
+        value.push({ label: option, value: option });
+        multiSelectChangeEvent(option, 'createOption');
+        this.setState({ value });
     };
 
     render() {
         const { label, name, parentClass } = this.props;
         let { required } = this.props;
         const { value, isLoading, list } = this.state;
-        // console.log(value);
-        // console.log(list);
-        // const testlist = [{ value: 'blue', label: 'Blue' }];
+
         if (required) {
             required = <span className="is-required">* (required)</span>;
         }
@@ -40,6 +45,7 @@ class AM2Select extends Component {
                             isClearable={false}
                             isMulti
                             onChange={this.handleChange}
+                            onCreateOption={this.handleCreate}
                             options={list}
                             value={value}
                         />

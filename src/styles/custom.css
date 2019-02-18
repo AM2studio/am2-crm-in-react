@@ -333,7 +333,9 @@ select {
 .loadComponentLogin-appear {
     transform: translateY(30px);
 }
-
+.w-full.logo {
+    width: 100%;
+}
 .loadComponent-appear.loadComponent-appear-active,
 .loadComponentVacation-appear.loadComponentVacation-appear-active,
 .loadComponentNotes-appear.loadComponentNotes-appear-active,

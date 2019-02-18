@@ -49,12 +49,11 @@ class ProjectsEdit extends Component {
     multiSelectChangeEvent = (value, actionMeta) => {
         const { id } = this.state;
         this.setState({ projectFeatures: value });
-        if (actionMeta.action === 'remove-value') {
-            data.set('features', id, { action: 'remove-value', value: actionMeta.removedValue.value });
+        if (actionMeta === 'removeOption') {
+            data.set('features', id, { action: 'removeOption', value: actionMeta.removedValue.value });
         }
-        if (actionMeta.action === 'create-option') {
-            const newOption = value.pop();
-            data.set('features', id, { action: 'new-value', value: newOption });
+        if (actionMeta === 'createOption') {
+            data.set('features', id, { action: 'createOption', value });
         }
     };
 

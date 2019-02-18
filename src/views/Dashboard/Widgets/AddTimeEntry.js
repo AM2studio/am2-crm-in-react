@@ -45,7 +45,6 @@ class AddTime extends Component {
         } else if (name === 'project') {
             const api = new WP_API();
             api.getPosts('milestones', { id: value }, true, false).then(response => {
-                console.log(response);
                 if (response.milestones.length || response.features.length) {
                     this.setState({
                         [name]: value,

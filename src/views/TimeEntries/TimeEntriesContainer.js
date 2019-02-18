@@ -143,7 +143,6 @@ class TimeEntriesContainer extends Component {
         const { dataToFetch } = this.props;
         const data = new WP_API();
         data.get('time-entry', id, dataToFetch).then(result => {
-            console.log(result);
             this.setState({ singleTimeEntryData: result });
         });
     };
