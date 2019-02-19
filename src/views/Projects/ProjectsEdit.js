@@ -230,7 +230,7 @@ ProjectsEdit.defaultProps = {
     activeProjects: [{ id: 1, title: 'Yes' }, { id: 0, title: 'No' }],
     projectMngrs: [
         { id: 51, title: 'Brankica Basta' },
-        { id: 59, title: 'Lynette Sawyer' },
+        { id: 29, title: 'Ljiljana Tušek Puhalo' },
         { id: 32, title: 'Pero Tolic' },
         { id: 4, title: 'Nikola Latin' }
     ]

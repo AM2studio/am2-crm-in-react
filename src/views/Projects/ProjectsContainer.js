@@ -40,7 +40,7 @@ class ProjectsContainer extends Component {
         const data = new WP_API();
         data.get('milestones', id).then(result => {
             const milestones = result;
-            this.setState({ projectMilestones: milestones, currentProject: id });
+            this.setState({ projectMilestones: milestones.milestones, currentProject: id });
         });
     };
 

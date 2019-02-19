@@ -15,7 +15,6 @@ class SlackAPI {
             channel,
             attachments: [{ pretext: notificationTitle, title, text: message }]
         });
-        console.log(content);
         return axios({
             method: 'post',
             url: this.url,
