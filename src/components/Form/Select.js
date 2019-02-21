@@ -6,7 +6,7 @@ class AM2Select extends Component {
         super(props);
         const { value, list } = this.props;
 
-        if (value && list) {
+        if (value && list && list.length) {
             // So, this package requires selected value to be an object
             // Our select list is using id property ( this was prior to installing this package), so we first need to filter object via id = value
             // Then need to convert it to expected object
