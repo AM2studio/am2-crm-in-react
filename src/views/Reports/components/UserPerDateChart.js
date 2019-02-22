@@ -21,6 +21,8 @@ export default props => {
                                 xAxes: [
                                     {
                                         type: 'time',
+                                        bounds: 'ticks', // data, ticks
+                                        offset: true,
                                         time: {
                                             format: 'DD-MM-YYYY',
                                             unit: 'day'

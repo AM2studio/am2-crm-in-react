@@ -84,7 +84,6 @@ class ReportsContainer extends Component {
             byPassCache,
             byPassCacheSave
         ).then(result => {
-            console.log(result);
             const posts =
                 result.data &&
                 result.data.map(post => ({
@@ -284,7 +283,7 @@ class ReportsContainer extends Component {
             hoursPerProject,
             modal
         } = this.state;
-
+        console.log(barChartData);
         const filteredData = projectReports.map(entry => ({
             ...entry,
             job_type: this.filterJobType(entry.job_type),
