@@ -4,7 +4,7 @@ export default props => {
     const { label, value, name, parentClass, list, inputChangeEvent } = props;
     let { required } = props;
     if (required) {
-        required = <span className="is-required">* (required)</span>;
+        required = <span className="is-required">*</span>;
     }
 
     return (

@@ -28,7 +28,7 @@ class AM2Select extends Component {
         const { value, isLoading, list } = this.state;
 
         if (required) {
-            required = <span className="is-required">* (required)</span>;
+            required = <span className="is-required">*</span>;
         }
 
         return (

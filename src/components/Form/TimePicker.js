@@ -19,7 +19,7 @@ class Time extends Component {
             value = '01:00';
         }
         if (required) {
-            required = <span className="is-required">* (required)</span>;
+            required = <span className="is-required">*</span>;
         }
 
         return (

@@ -5,7 +5,7 @@ export default props => {
     let { required } = props;
 
     if (required) {
-        required = <span className="is-required">* (required)</span>;
+        required = <span className="is-required">*</span>;
     }
 
     return (

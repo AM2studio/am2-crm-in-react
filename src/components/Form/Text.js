@@ -6,7 +6,7 @@ export default props => {
     let type = 'text';
 
     if (required) {
-        required = <span className="is-required">* (required)</span>;
+        required = <span className="is-required">*</span>;
     }
     if (propType) {
         type = propType;

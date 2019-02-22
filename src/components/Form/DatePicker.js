@@ -30,7 +30,7 @@ export default class DatePicker extends Component {
         const { focused, date } = this.state;
 
         if (required) {
-            required = <span className="is-required">* (required)</span>;
+            required = <span className="is-required">*</span>;
         }
 
         return (
