@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import lscache from 'lscache';
 import { FaPencilAlt, FaTrashAlt, FaSafari } from 'react-icons/fa';
 import TimeEntriesEdit from './TimeEntriesEdit';
 import TimeEntries from './TimeEntries';
@@ -53,6 +54,22 @@ class TimeEntriesContainer extends Component {
         }).then(result => {
             if (!result.success === true) {
                 console.log('Something went wrong!');
+            } else {
+                lscache.flush();
+            }
+        });
+    };
+
+    featureChange = e => {
+        const api = new WP_API();
+        api.set('time-entry', e.target.name, {
+            singleUpdate: true,
+            just_feature: e.target.value
+        }).then(result => {
+            if (!result.success === true) {
+                console.log('Something went wrong!');
+            } else {
+                lscache.flush();
             }
         });
     };
@@ -205,6 +222,10 @@ class TimeEntriesContainer extends Component {
         <Select name={id} value={milestone} list={milestones} inputChangeEvent={this.milestoneChange} />
     );
 
+    featuresSelect = (id, features, feature) => (
+        <Select name={id} value={feature} list={features} inputChangeEvent={this.featureChange} />
+    );
+
     handleModalClose = update => {
         this.setState({ modal: false });
         if (update === true) {
@@ -276,6 +297,7 @@ class TimeEntriesContainer extends Component {
             asana_url: entry.asana_url && this.asana(entry.asana_url),
             buttons: this.actionBtns(entry.id),
             milestone: this.milestonesSelect(entry.id, entry.milestones, entry.milestone),
+            feature: this.featuresSelect(entry.id, entry.features, entry.feature),
             is_billable: this.isBillable(entry.id)
         }));
         const columns = [

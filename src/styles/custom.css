@@ -113,20 +113,23 @@
 }
 .header__info-value {
     vertical-align: middle;
-    font-size: 42px;
+    font-size: 35px;
     font-weight: 200;
     float: left;
 }
 .header__info-text {
     margin-left: 10px;
-    margin-top: 20px;
+    margin-top: 12px;
     float: right;
     vertical-align: bottom;
     line-height: 1;
 }
 .header__bottom {
-    padding: 20px;
-    min-height: 110px;
+    padding: 0 20px;
+}
+.header__bottom .title {
+    font-size: 28px;
+    line-height: 56px;
 }
 
 /* Widgets */
@@ -135,7 +138,7 @@
     padding: 20px;
 }
 .widget__header {
-    padding: 15px 20px;
+    padding: 12px 20px;
     background-color: #6d60b0;
     border-left: 0;
 }

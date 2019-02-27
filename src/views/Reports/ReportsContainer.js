@@ -43,6 +43,7 @@ class ReportsContainer extends Component {
             hoursPerUser: [],
             hoursPerJobType: [],
             hoursPerMilestone: [],
+            hoursPerFeature: [],
             chartOptions: {
                 legend: {
                     position: 'right'
@@ -94,7 +95,7 @@ class ReportsContainer extends Component {
                     project: post.project,
                     milestones: post.milestones,
                     milestone: post.milestone,
-                    project_feature: post.project_feature,
+                    feature: post.feature,
                     date: post.date,
                     // hours: post.hours,
                     job_type: post.job_type,
@@ -106,6 +107,7 @@ class ReportsContainer extends Component {
                     loading: false
                 });
             } else {
+                console.log(result.report);
                 const { totals } = result.report.data;
                 this.setState({
                     projectReports: posts,
@@ -160,6 +162,9 @@ class ReportsContainer extends Component {
                     hoursPerMilestone: Object.values(totals.milestones.list).map(milestone => ({
                         ...milestone
                     })),
+                    hoursPerFeature: Object.values(totals.features.list).map(feature => ({
+                        ...feature
+                    })),
                     hoursPerJobType: Object.values(totals.job_type.list).map(jobtype => ({
                         ...jobtype
                     })),
@@ -180,6 +185,7 @@ class ReportsContainer extends Component {
             hoursPerUser: [],
             hoursPerJobType: [],
             hoursPerMilestone: [],
+            hoursPerFeature: [],
             hoursPerProject: [],
             userData: false,
             [name]: value
@@ -278,12 +284,13 @@ class ReportsContainer extends Component {
             barChartData,
             hoursPerUser,
             hoursPerMilestone,
+            hoursPerFeature,
             hoursPerJobType,
             singleTimeEntryData,
             hoursPerProject,
             modal
         } = this.state;
-        console.log(barChartData);
+
         const filteredData = projectReports.map(entry => ({
             ...entry,
             job_type: this.filterJobType(entry.job_type),
@@ -296,6 +303,7 @@ class ReportsContainer extends Component {
         const filteredHoursPerProject = this.addLodingBar(hoursPerProject, totalHours);
         const filteredHoursPerUser = this.addLodingBar(hoursPerUser, totalHours);
         const filteredHoursPerMilestone = this.addLodingBar(hoursPerMilestone, totalHours);
+        const filteredHoursPerFeature = this.addLodingBar(hoursPerFeature, totalHours);
         const filteredHoursPerJobType = this.addLodingBar(hoursPerJobType, totalHours);
 
         const entriesColumns = [
@@ -304,6 +312,7 @@ class ReportsContainer extends Component {
             { key: 'date', title: 'Date' },
             { key: 'project', title: 'Project' },
             { key: 'milestone', title: 'Milestone' },
+            { key: 'feature', title: 'Feature' },
             { key: 'job_type', title: 'Job Type' },
             { key: 'comment', title: 'Comment' },
             { key: 'asana_url', title: 'Asana URL' },
@@ -437,6 +446,12 @@ class ReportsContainer extends Component {
                         title="Total Hours per Milestone"
                         columns={totalHoursColumns}
                         data={filteredHoursPerMilestone}
+                        className="last"
+                    />
+                    <TotalHoursTable
+                        title="Total Hours per Feature"
+                        columns={totalHoursColumns}
+                        data={filteredHoursPerFeature}
                         className="last"
                     />
                 </div>
