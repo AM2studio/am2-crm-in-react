@@ -44,11 +44,9 @@ const Header = props => {
                     </div>
                 </div>
             </nav>
-
             <div className="header__bottom clearfix">
                 <div className="header__left">
                     <h1 className="title">AM2Studio CRM</h1>
-                    <h2 className="subtitle">Change is inevitable – except from a vending machine...</h2>
                 </div>
                 <div className="header__right">
                     <div className="header__info">
