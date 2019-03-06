@@ -35,7 +35,7 @@ export default class TimelineContainer extends Component {
     getTimeline = () => {
         const { filterRole, filterDepartment } = this.state;
         const api = new WP_API();
-        const users = api.getPosts('users').then(result =>
+        const users = api.getPosts('users', undefined, true, false).then(result =>
             result.data
                 .filter(user => {
                     if (filterRole !== '' && filterDepartment !== '') {
@@ -59,7 +59,7 @@ export default class TimelineContainer extends Component {
                     readonly: true
                 }))
         );
-        const tasks = api.getPosts('timeline', null, true).then(result => result);
+        const tasks = api.getPosts('timeline', null, true, false).then(result => result);
         Promise.all([users, tasks]).then(result => {
             this.setState({ data: [...result[0], ...result[1]] });
         });
