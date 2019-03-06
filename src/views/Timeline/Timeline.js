@@ -14,7 +14,11 @@ export default class Gantt extends Component {
         const { onTaskUpdated } = this.props;
         gantt.attachEvent('onAfterTaskAdd', (id, task) => {
             if (onTaskUpdated) {
-                onTaskUpdated(id, 'inserted', task);
+                let data = '';
+                data = onTaskUpdated(id, 'inserted', task);
+                Promise.all([data]).then(result => {
+                    gantt.changeTaskId(id, result[0][0].id);
+                });
             }
         });
 
