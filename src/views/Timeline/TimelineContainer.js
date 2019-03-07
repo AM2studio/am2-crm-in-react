@@ -79,7 +79,6 @@ export default class TimelineContainer extends Component {
 
     onTaskUpdated = (id, type, taskObject = {}) => {
         const api = new WP_API();
-        let response = '';
         let data = {
             taskID: taskObject.id,
             action: type
@@ -93,8 +92,7 @@ export default class TimelineContainer extends Component {
                 duration: taskObject.duration
             };
         }
-        response = api.set('timeline', id, data);
-        return Promise.all([response]).then(result => result);
+        return api.set('timeline', id, data).then(result => result);
     };
 
     filterChangeEvent = e => {
