@@ -28,6 +28,7 @@ class WP_API {
                 params: data
             })
                 .then(response => {
+                    console.log(response);
                     if (byPassCacheSave === true) {
                         lscache.set(cacheKey, response.data, TTL_MINUTES);
                     }

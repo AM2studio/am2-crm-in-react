@@ -71,7 +71,11 @@ export default class TimelineContainer extends Component {
         return `0${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
     };
 
-    formatSaveDate = date => `0${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
+    formatSaveDate = date => {
+        let day = date.getDate();
+        if (day < 10) day = `0${day}`;
+        return `${day}-${date.getMonth() + 1}-${date.getFullYear()}`;
+    };
 
     onTaskUpdated = (id, type, taskObject = {}) => {
         const api = new WP_API();
@@ -88,7 +92,7 @@ export default class TimelineContainer extends Component {
                 duration: taskObject.duration
             };
         }
-        api.set('timeline', id, data);
+        return api.set('timeline', id, data).then(result => result);
     };
 
     filterChangeEvent = e => {
