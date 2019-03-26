@@ -10,13 +10,12 @@ class WP_AUTH {
         this.permissions = 'permissions';
     }
 
-    getSessionToken = () => sessionStorage.getItem(this.tokenKey);
+    getSessionToken = () => localStorage.getItem(this.tokenKey);
 
-    getPermissions = () => (sessionStorage.getItem(this.permissions) ? sessionStorage.getItem(this.permissions) : '');
+    getPermissions = () => (localStorage.getItem(this.permissions) ? localStorage.getItem(this.permissions) : '');
 
     removeSessionToken = () => {
         localStorage.clear();
-        sessionStorage.clear();
     };
 
     /* Used for private routes */
@@ -48,8 +47,8 @@ class WP_AUTH {
                 password
             })
             .then(response => {
-                sessionStorage.setItem(this.tokenKey, response.data.token);
-                sessionStorage.setItem(this.userName, response.data.user_display_name);
+                localStorage.setItem(this.tokenKey, response.data.token);
+                localStorage.setItem(this.userName, response.data.user_display_name);
                 // Get role
                 return axios({
                     method: 'post',
@@ -61,7 +60,7 @@ class WP_AUTH {
                 });
             })
             .then(response => {
-                sessionStorage.setItem(this.permissions, response.data);
+                localStorage.setItem(this.permissions, response.data);
                 return response.status;
             })
             .catch(error => {
