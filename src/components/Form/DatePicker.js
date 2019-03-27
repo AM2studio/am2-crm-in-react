@@ -19,9 +19,11 @@ export default class DatePicker extends Component {
 
     handleDateChange = date => {
         const { name, inputChangeEvent } = this.props;
-        this.state.date = date;
-        const e = { target: { name, value: date.format('DD/MM/YYYY') } };
-        inputChangeEvent(e);
+        this.setState({ date });
+        if (date !== null) {
+            const e = { target: { name, value: date.format('DD/MM/YYYY') } };
+            inputChangeEvent(e);
+        }
     };
 
     render() {
@@ -45,6 +47,7 @@ export default class DatePicker extends Component {
                         small
                         regular
                         block
+                        id="date_input"
                         numberOfMonths={1}
                         date={date}
                         onDateChange={newDate => this.handleDateChange(newDate)}
