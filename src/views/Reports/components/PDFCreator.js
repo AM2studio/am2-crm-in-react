@@ -7,17 +7,43 @@ class PDFCreator extends Component {
         const { options, columns, rows } = this.props;
         const filteredRows = this.filterColumns(rows);
         const doc = new JSPDF(options, 'pt');
-        doc.autoTable(columns, filteredRows);
+        const tableOptions = {
+            body: filteredRows,
+            columns,
+            bodyStyles: { valign: 'top' },
+            styles: { overflow: 'linebreak', cellWidth: 'wrap' },
+            columnStyles: {
+                job_type: {
+                    cellWidth: 10
+                },
+                milestone: {
+                    cellWidth: 25
+                },
+                project: {
+                    cellWidth: 25
+                },
+                comment: {
+                    cellWidth: 150
+                }
+            }
+        };
+        doc.autoTable(tableOptions);
         doc.save('table.pdf');
     };
 
-    filterUserUTF = user => user.replace('ć', 'c');
-
     filterColumns = rows =>
-        rows.map(row => ({
-            ...row,
-            user: this.filterUserUTF(row.user)
-        }));
+        rows.reduce((filtered, current) => {
+            filtered.push({
+                user: current.user.replace('ć', 'c'),
+                billable_hours: current.billable_hours,
+                date: current.date,
+                project: current.project,
+                milestone: current.milestone,
+                job_type: current.job_type,
+                comment: current.comment
+            });
+            return filtered;
+        }, []);
 
     render() {
         return (
@@ -35,21 +61,21 @@ PDFCreator.defaultProps = {
         orientation: 'l',
         unit: 'mm',
         format: 'a3',
-        compress: true,
         fontSize: 5,
+        compress: true,
         lineHeight: 1,
         autoSize: true,
         printHeaders: true
     },
     columns: [
-        { key: 'user', title: 'User' },
-        { key: 'billable_hours', title: 'Billable Hours' },
-        { key: 'date', title: 'Date' },
-        { key: 'project', title: 'Project' },
-        { key: 'milestone', title: 'Milestone' },
-        // { key: 'project_feature', title: 'Feature' },
-        { key: 'job_type', title: 'Job Type' },
-        { key: 'comment', title: 'Comment' }
+        { dataKey: 'user', header: 'User' },
+        { dataKey: 'billable_hours', header: 'Billable Hours' },
+        { dataKey: 'date', header: 'Date' },
+        { dataKey: 'project', header: 'Project' },
+        { dataKey: 'milestone', header: 'Milestone' },
+        // { dataKey: 'project_feature', header: 'Feature' },
+        { dataKey: 'job_type', header: 'Job Type' },
+        { dataKey: 'comment', header: 'Comment' }
         // { key: 'asana_url', title: 'Asana URL' }
     ]
 };
