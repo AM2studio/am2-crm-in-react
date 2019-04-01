@@ -4,7 +4,7 @@ import WP_API from '../../../data/Api';
 import SlackAPI from '../../../data/SlackAPI';
 import Text from '../../../components/Form/Text';
 import Textarea from '../../../components/Form/Textarea';
-import DatePicker from '../../../components/Form/DatePicker';
+import DatePicker from '../../../components/Form/MultiDatePicker';
 import Notification from '../../../components/Form/Notification';
 import LoadingWidget from './LoadingWidget';
 
@@ -30,7 +30,12 @@ class RequestVacation extends Component {
 
     inputChangeEvent = e => {
         const { name, value } = e.target;
-        this.setState({ [name]: value, sent: false });
+
+        if (name === 'filterDate') {
+            this.setState({ start_date: value.start, end_date: value.end, sent: false });
+        } else {
+            this.setState({ [name]: value, sent: false });
+        }
     };
 
     closeNotification = () => {
@@ -39,6 +44,7 @@ class RequestVacation extends Component {
 
     requestVacation = () => {
         const { start_date: startDate, end_date: endDate, days, note } = this.state; // eslint-disable-line camelcase
+        console.log(this.state);
         // Validation
         if (startDate === '' || endDate === '' || days === '') {
             this.setState(() => ({ sent: 'is-danger', msgText: 'Required fields are missing.' }));
@@ -73,28 +79,21 @@ class RequestVacation extends Component {
     };
 
     render() {
-        const { start_date, end_date, days, note, sent, loader, msgText } = this.state; // eslint-disable-line camelcase
+        const { days, note, sent, loader, msgText } = this.state; // eslint-disable-line camelcase
 
         const inputs = [
             {
                 type: DatePicker,
                 name: 'start_date',
-                label: 'Start Date',
-                required: true,
-                value: start_date
-            },
-            {
-                type: DatePicker,
-                name: 'end_date',
-                label: 'End Date',
-                required: true,
-                value: end_date
+                label: 'Vacation Date',
+                required: true
             },
             {
                 type: Text,
                 name: 'days',
                 label: 'Working Days',
                 propType: 'number',
+                min: 1,
                 required: true,
                 value: days
             },
@@ -141,6 +140,7 @@ class RequestVacation extends Component {
                                     value={field.value}
                                     list={field.list}
                                     inputChangeEvent={this.inputChangeEvent}
+                                    min={field.min}
                                 />
                             ))}
 

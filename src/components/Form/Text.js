@@ -19,7 +19,7 @@ export default props => {
                 {required}
             </label>
             <div className="control">
-                <input className="input" name={name} id={name} type={type} onChange={inputChangeEvent} {...rest} />
+                <input {...rest} className="input" name={name} id={name} type={type} onChange={inputChangeEvent} />
             </div>
         </div>
     );
