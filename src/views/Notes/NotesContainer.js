@@ -7,9 +7,11 @@ class NotesContainer extends Component {
         super();
         this.state = {
             notes: [],
+            usersList: [],
             offset: 0,
             totalRecords: 0,
-            loading: true
+            loading: true,
+            filterUser: ''
         };
     }
 
@@ -17,20 +19,46 @@ class NotesContainer extends Component {
         this.getNotes();
     }
 
-    getNotes = () => {
-        const { offset } = this.state;
+    filterChangeEvent = e => {
+        const { name, value } = e.target;
+        this.setState({ [name]: value, loading: true }, () => {
+            this.getNotes(true);
+        });
+    };
+
+    getNotes = (update = false) => {
+        const { offset, filterUser } = this.state;
         const { itemsPerPage } = this.props;
+        let byPassCache = update;
+        let byPassCacheSave = true;
+        if (filterUser) {
+            byPassCache = true;
+            byPassCacheSave = false;
+        }
         const api = new WP_API();
-        api.getPosts('user-note', { itemsPerPage, offset }).then(result => {
-            const posts = result.data.map(post => ({
-                id: post.id,
-                date: post.date,
-                note_from: post.author,
-                note_for: post.note_for,
-                note_type: post.note_type,
-                content: post.content
-            }));
-            this.setState({ notes: posts, totalRecords: result.count.publish, loading: false });
+        const usersList = api.getPosts('users').then(result => result.data);
+        let notesCount = 0;
+        const notes = api
+            .getPosts('user-note', { itemsPerPage, offset, filterUser }, byPassCache, byPassCacheSave)
+            .then(result => {
+                notesCount = result.count.publish;
+                console.log(result);
+                return result.data.map(post => ({
+                    id: post.id,
+                    date: post.date,
+                    note_from: post.author,
+                    note_for: post.note_for,
+                    note_type: post.note_type,
+                    content: post.content
+                }));
+            });
+        Promise.all([usersList, notes]).then(result => {
+            this.setState({
+                notes: result[1],
+                totalRecords: notesCount,
+                usersList: result[0],
+                loading: false
+            });
         });
     };
 
@@ -60,7 +88,7 @@ class NotesContainer extends Component {
     };
 
     render() {
-        const { notes, totalRecords, loading } = this.state;
+        const { notes, totalRecords, loading, usersList } = this.state;
         const { itemsPerPage } = this.props;
         const filteredData = notes.map(user => {
             const filteredUser = user;
@@ -85,6 +113,8 @@ class NotesContainer extends Component {
                     totalRecords={totalRecords}
                     loading={loading}
                     itemsPerPage={itemsPerPage}
+                    usersList={usersList}
+                    filterChangeEvent={this.filterChangeEvent}
                 />
             </React.Fragment>
         );

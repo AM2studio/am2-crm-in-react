@@ -96,7 +96,6 @@
 }
 .header__left {
     display: inline-block;
-    float: left;
 }
 .header__right {
     display: inline-block;
