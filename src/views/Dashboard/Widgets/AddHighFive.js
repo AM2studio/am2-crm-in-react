@@ -67,7 +67,7 @@ class AddHighFive extends Component {
                 // Notify everyone on slack
                 const slackAPI = new SlackAPI();
                 const notificationTitle = 'New highfive is added!';
-                const user = sessionStorage.getItem('crmUserName');
+                const user = localStorage.getItem('crmUserName');
                 const title = `${user} gave high5 to ${selectedUser}:`;
                 slackAPI.send(notificationTitle, 'highfive', title, content);
             } else {

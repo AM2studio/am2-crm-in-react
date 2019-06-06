@@ -62,7 +62,7 @@ class AddNote extends Component {
             if (result.success === true) {
                 this.setState(this.initialState);
                 this.setState(() => ({ status: 'is-success', msgText: 'Thanks for the Note!' }));
-                const user = sessionStorage.getItem('crmUserName');
+                const user = localStorage.getItem('crmUserName');
                 const slackAPI = new SlackAPI(
                     'https://hooks.slack.com/services/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'
                 );

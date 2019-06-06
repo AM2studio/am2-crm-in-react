@@ -62,7 +62,7 @@ class RequestVacation extends Component {
                     msgText: 'Request sent! We will get back to you soon.'
                 }));
                 // Notify everyone on slack
-                const user = sessionStorage.getItem('crmUserName');
+                const user = localStorage.getItem('crmUserName');
                 const slackAPI = new SlackAPI(
                     'https://hooks.slack.com/services/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'
                 );
