@@ -27,6 +27,7 @@ export default class DataProvider extends Component {
             result.data.map(post => ({
                 id: post.id,
                 title: post.title,
+                toggl: post.toggl,
                 company: post.company_name
             }))
         );

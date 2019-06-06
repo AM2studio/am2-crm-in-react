@@ -8,7 +8,7 @@ const Projects = props => {
     const loading = data.length === 0;
     const formatedData = data.map(project => ({
         ...project,
-        btn: actionBtns(project.id)
+        btn: actionBtns(project.id, project.title, project.toggl)
     }));
 
     return (

@@ -18,6 +18,7 @@ const VacationsRequestsContainer = lazy(() => import('../views/VacationRequests/
 const TimeEntriesContainer = lazy(() => import('../views/TimeEntries/TimeEntriesContainer'));
 const ProjectEarningsContainer = lazy(() => import('../views/ProjectEarnings/ProjectEarningsContainer'));
 const ReportsContainer = lazy(() => import('../views/Reports/ReportsContainer'));
+const ProfileContainer = lazy(() => import('../views/Profile/ProfileContainer'));
 const PrivateRoute = lazy(() => import('./PrivateRoute'));
 const PublicRoute = lazy(() => import('./PublicRoute'));
 
@@ -35,6 +36,7 @@ const Routes = () => (
             <PrivateRoute path="/vacationrequests" component={VacationsRequestsContainer} />
             <PrivateRoute path="/projectearnings" component={ProjectEarningsContainer} />
             <PrivateRoute path="/reports" component={ReportsContainer} />
+            <PrivateRoute path="/profile" component={ProfileContainer} />
             <PublicRoute path="/login" component={LoginContainer} />
             <PublicRoute component={NotFound} />
         </Switch>

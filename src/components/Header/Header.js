@@ -1,5 +1,6 @@
 import React from 'react';
 import { FaUser, FaWrench } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 const Header = props => {
     const companies = 111; // Fix this with redux and array length.
@@ -27,12 +28,12 @@ const Header = props => {
                     <div className="navbar-end">
                         <div className="navbar-item">
                             <div className="buttons">
-                                <button type="button" className="button is-info">
+                                <Link className="button is-info" to="profile">
                                     <span className="icon is-small">
                                         <FaWrench />
                                     </span>
                                     <span>Settings</span>
-                                </button>
+                                </Link>
                                 <button type="button" onClick={logout} className="button is-light">
                                     <span className="icon is-small">
                                         <FaUser />

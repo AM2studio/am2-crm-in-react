@@ -7,6 +7,8 @@ import Milestones from './ProjectsMilestones';
 import WP_API from '../../data/Api';
 import { SharedDataConsumer } from '../../data/SharedDataContext';
 
+const data = new WP_API();
+
 class ProjectsContainer extends Component {
     constructor() {
         super();
@@ -29,7 +31,6 @@ class ProjectsContainer extends Component {
     editProject = (e, id) => {
         this.setState({ modal: true, modalType: 'project' });
         const { dataToFetch } = this.props;
-        const data = new WP_API();
         data.get('projects', id, dataToFetch).then(result => {
             this.setState({ singleProjectData: result });
         });
@@ -37,7 +38,6 @@ class ProjectsContainer extends Component {
 
     editMilestones = (e, id) => {
         this.setState({ modal: true, modalType: 'milestones' });
-        const data = new WP_API();
         data.get('milestones', id).then(result => {
             const milestones = result;
             this.setState({ projectMilestones: milestones.milestones, currentProject: id });
@@ -52,11 +52,22 @@ class ProjectsContainer extends Component {
         }
     };
 
+    syncToggl = (id, title) => {
+        const { refreshProjects } = this.context;
+        data.set('toggl', null, { projectId: id, projectName: title }).then(result => {
+            if (result.success === true) {
+                refreshProjects(true);
+            } else {
+                console.log('Something went wrong!');
+            }
+        });
+    };
+
     deleteProject = (e, id) => {
         console.log(`Deleting project with id: ${id}`);
     };
 
-    actionBtns = id => (
+    actionBtns = (id, title, toggl) => (
         <React.Fragment>
             <button
                 type="button"
@@ -85,6 +96,19 @@ class ProjectsContainer extends Component {
             >
                 <FaFlag />
             </button>
+            {!toggl ? (
+                <button
+                    type="button"
+                    className="button is-info"
+                    onClick={e => {
+                        this.syncToggl(id, title);
+                    }}
+                >
+                    Toggl Sync
+                </button>
+            ) : (
+                ''
+            )}
         </React.Fragment>
     );
 
