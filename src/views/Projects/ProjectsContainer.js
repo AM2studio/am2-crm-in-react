@@ -7,8 +7,6 @@ import Milestones from './ProjectsMilestones';
 import WP_API from '../../data/Api';
 import { SharedDataConsumer } from '../../data/SharedDataContext';
 
-const data = new WP_API();
-
 class ProjectsContainer extends Component {
     constructor() {
         super();
@@ -29,6 +27,8 @@ class ProjectsContainer extends Component {
     };
 
     editProject = (e, id) => {
+        const data = new WP_API();
+
         this.setState({ modal: true, modalType: 'project' });
         const { dataToFetch } = this.props;
         data.get('projects', id, dataToFetch).then(result => {
@@ -37,6 +37,8 @@ class ProjectsContainer extends Component {
     };
 
     editMilestones = (e, id) => {
+        const data = new WP_API();
+
         this.setState({ modal: true, modalType: 'milestones' });
         data.get('milestones', id).then(result => {
             const milestones = result;
@@ -53,6 +55,8 @@ class ProjectsContainer extends Component {
     };
 
     syncToggl = (id, title) => {
+        const data = new WP_API();
+
         const { refreshProjects } = this.context;
         data.set('toggl', null, { projectId: id, projectName: title }).then(result => {
             if (result.success === true) {
@@ -114,7 +118,7 @@ class ProjectsContainer extends Component {
 
     render() {
         const { modal, modalType, singleProjectData, projectMilestones, currentProject } = this.state;
-
+        console.log(singleProjectData);
         const columns = [
             { key: 'id', title: 'ID' },
             { key: 'title', title: 'Title' },
@@ -178,7 +182,8 @@ ProjectsContainer.defaultProps = {
         'staging_link',
         'slack_channel',
         'asanaID',
-        'projectFeatures'
+        'projectFeatures',
+        'jiraId'
     ],
     itemsPerPage: 20
 };

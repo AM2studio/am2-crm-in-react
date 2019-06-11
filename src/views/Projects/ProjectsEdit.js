@@ -77,6 +77,7 @@ class ProjectsEdit extends Component {
             staging_link, // eslint-disable-line camelcase
             slack_channel, // eslint-disable-line camelcase
             asanaID,
+            jiraId,
             company_id, // eslint-disable-line camelcase
             project_mngr, // eslint-disable-line camelcase
             active_project, // eslint-disable-line camelcase
@@ -133,6 +134,13 @@ class ProjectsEdit extends Component {
                 label: 'Asana Project ID',
                 required: true,
                 value: asanaID
+            },
+            {
+                type: Text,
+                name: 'jiraId',
+                label: 'Jira Project ID',
+                required: true,
+                value: jiraId
             },
             {
                 type: Select,

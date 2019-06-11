@@ -48,6 +48,7 @@ class ProjectsEdit extends Component {
             last_name, // eslint-disable-line camelcase
             email,
             toggl_api, // eslint-disable-line camelcase
+            jiraAccountId,
             workspace,
             workspaces // eslint-disable-line camelcase
         } = this.state;
@@ -73,6 +74,13 @@ class ProjectsEdit extends Component {
                 label: 'Email',
                 required: true,
                 value: email
+            },
+            {
+                type: Text,
+                name: 'jiraAccountId',
+                label: 'Jira Account Id',
+                required: true,
+                value: jiraAccountId
             },
             {
                 type: Text,
