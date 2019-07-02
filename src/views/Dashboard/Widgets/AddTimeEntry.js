@@ -189,7 +189,7 @@ class AddTime extends Component {
             {
                 type: Text,
                 name: 'asana_url',
-                label: 'Asana URL',
+                label: 'Asana/Jira URL',
                 value: asana_url
             },
             {

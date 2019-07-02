@@ -311,7 +311,7 @@ class TimeEntriesContainer extends Component {
             { key: 'feature', title: 'Feature' },
             { key: 'job_type', title: 'Job Type' },
             { key: 'comment', title: 'Comment' },
-            { key: 'asana_url', title: 'Asana URL' },
+            { key: 'asana_url', title: 'Asana/Jira URL' },
             { key: 'buttons', title: 'Action' }
         ];
         if (isAdmin) {

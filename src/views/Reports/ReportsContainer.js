@@ -150,6 +150,15 @@ class ReportsContainer extends Component {
                             }
                         ]
                     },
+                    featuresList: {
+                        labels: totals.features.labels,
+                        datasets: [
+                            {
+                                data: totals.features.hours,
+                                backgroundColor: this.generateRandomColors(totals.features.hours.length)
+                            }
+                        ]
+                    },
                     barChartData: Object.values(totals.users.dates)
                         ? Object.values(totals.users.dates).map(bar => ({
                               ...bar,
@@ -316,6 +325,7 @@ class ReportsContainer extends Component {
             projectData,
             jobTypeData,
             milestoneList,
+            featuresList,
             barChartData,
             hoursPerUser,
             hoursPerMilestone,
@@ -352,7 +362,7 @@ class ReportsContainer extends Component {
             { key: 'feature', title: 'Feature' },
             { key: 'job_type', title: 'Job Type' },
             { key: 'comment', title: 'Comment' },
-            { key: 'asana_url', title: 'Asana URL' },
+            { key: 'asana_url', title: 'Asana/Jira URL' },
             { key: 'buttons', title: 'Action' }
         ];
 
@@ -439,8 +449,8 @@ class ReportsContainer extends Component {
                                 />
                             )}
                             <MiniChart
-                                data={milestoneList}
-                                title="Total Hours per Milestone"
+                                data={featuresList}
+                                title="Total Hours per Feature"
                                 totalHours={totalHours}
                                 options={{
                                     legend: {
