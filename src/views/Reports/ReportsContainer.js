@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import lscache from 'lscache';
 import moment from 'moment';
 import randomColor from 'randomcolor';
 import { FaPencilAlt, FaTrashAlt } from 'react-icons/fa';
@@ -10,6 +11,7 @@ import UserPerDateChart from './components/UserPerDateChart';
 import TotalHoursTable from './components/TotalHoursTable';
 import Loading from '../../components/General/Loading';
 import AM2Modal from '../../components/General/AM2Modal';
+import Select from '../../components/Form/Select';
 import { SharedDataConsumer } from '../../data/SharedDataContext';
 // import TopStats from './components/TopStats';
 import WP_API from '../../data/Api';
@@ -97,7 +99,7 @@ class ReportsContainer extends Component {
                     milestone: post.milestone,
                     feature: post.feature,
                     date: post.date,
-                    // hours: post.hours,
+                    features: post.features,
                     job_type: post.job_type,
                     comment: post.comment,
                     asana_url: post.asana_url
@@ -107,7 +109,6 @@ class ReportsContainer extends Component {
                     loading: false
                 });
             } else {
-                console.log(result.report);
                 const { totals } = result.report.data;
                 this.setState({
                     projectReports: posts,
@@ -251,12 +252,46 @@ class ReportsContainer extends Component {
         });
     };
 
+    milestoneChange = e => {
+        api.set('time-entry', e.target.name, {
+            singleUpdate: true,
+            just_milestone: e.target.value
+        }).then(result => {
+            if (!result.success === true) {
+                console.log('Something went wrong!');
+            } else {
+                lscache.flush();
+            }
+        });
+    };
+
+    featureChange = e => {
+        api.set('time-entry', e.target.name, {
+            singleUpdate: true,
+            just_feature: e.target.value
+        }).then(result => {
+            if (!result.success === true) {
+                console.log('Something went wrong!');
+            } else {
+                lscache.flush();
+            }
+        });
+    };
+
     deleteTimeEntry = (e, id) => {
         api.delete('time-entry', id).then(result => {
             // Instead of another API call, remove from array?
             this.getEntries(true);
         });
     };
+
+    milestonesSelect = (id, milestones, milestone) => (
+        <Select name={id} value={milestone} list={milestones} inputChangeEvent={this.milestoneChange} />
+    );
+
+    featuresSelect = (id, features, feature) => (
+        <Select name={id} value={feature} list={features} inputChangeEvent={this.featureChange} />
+    );
 
     handleModalClose = update => {
         this.setState({ modal: false });
@@ -297,6 +332,8 @@ class ReportsContainer extends Component {
             hours: this.formatHours(entry.hours, entry.billable_hours),
             date: this.formatDate(entry.date, entry.month),
             asana_url: entry.asana_url && this.formatAsana(entry.asana_url),
+            milestone: this.milestonesSelect(entry.id, entry.milestones, entry.milestone),
+            feature: this.featuresSelect(entry.id, entry.features, entry.feature),
             buttons: this.actionBtns(entry.id)
         }));
 
