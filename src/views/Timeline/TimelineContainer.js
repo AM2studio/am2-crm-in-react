@@ -13,19 +13,6 @@ export default class TimelineContainer extends Component {
             filterRole: '',
             loading: true
         };
-        this.users = {
-            data: [
-                {
-                    id: 1,
-                    text: 'Task #1',
-                    start_date: '03-12-2018',
-                    duration: 3,
-                    color: '#39B34A'
-                },
-                { id: 2, text: 'Task #2', start_date: '07-12-2018', duration: 3, parent: 1 }
-            ],
-            links: [{ id: 1, source: 1, target: 2, type: '0' }]
-        };
     }
 
     componentWillMount() {
@@ -148,6 +135,7 @@ TimelineContainer.defaultProps = {
     ],
     departments: [
         { id: '', title: 'All Departments' },
+        { id: 'enterprise', title: 'Enterprise' },
         { id: 'wp', title: 'WordPress' },
         { id: 'ticketzone', title: 'TicketZone' },
         { id: 'greenrush', title: 'GreenRush' },

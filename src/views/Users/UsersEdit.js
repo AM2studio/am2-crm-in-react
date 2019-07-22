@@ -237,6 +237,7 @@ UsersEdit.defaultProps = {
         { id: 'wp', title: 'WordPress' },
         { id: 'ticketzone', title: 'TicketZone' },
         { id: 'greenrush', title: 'GreenRush' },
+        { id: 'enterprise', title: 'Enterprise' },
         { id: 'other', title: 'Other' }
     ],
     permissionsList: [

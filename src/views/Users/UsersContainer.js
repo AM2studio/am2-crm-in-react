@@ -106,6 +106,7 @@ class UsersContainer extends Component {
             .replace('wp', 'WordPress')
             .replace('greenrush', 'GreenRush')
             .replace('ticketzone', 'TicketZone')
+            .replace('enterprise', 'Enterprise')
             .replace('pm', 'PM')
             .replace('laravel', 'Laravel');
     };
