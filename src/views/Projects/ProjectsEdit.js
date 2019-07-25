@@ -240,6 +240,7 @@ ProjectsEdit.defaultProps = {
         { id: 51, title: 'Brankica Basta' },
         { id: 29, title: 'Ljiljana Tušek Puhalo' },
         { id: 32, title: 'Pero Tolic' },
-        { id: 4, title: 'Nikola Latin' }
+        { id: 4, title: 'Nikola Latin' },
+        { id: 77, title: 'Katarina Brezak' }
     ]
 };
