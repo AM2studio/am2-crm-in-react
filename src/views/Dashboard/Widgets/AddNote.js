@@ -64,7 +64,7 @@ class AddNote extends Component {
                 this.setState(() => ({ status: 'is-success', msgText: 'Thanks for the Note!' }));
                 const user = localStorage.getItem('crmUserName');
                 const slackAPI = new SlackAPI(
-                    'https://hooks.slack.com/services/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'
+                    'https://hooks.slack.com/services/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'
                 );
                 const notificationTitle = `New note added by ${user} for ${selectedUser}: ${content}`; // eslint-disable-line camelcase
                 slackAPI.send(notificationTitle, 'management-am2');
