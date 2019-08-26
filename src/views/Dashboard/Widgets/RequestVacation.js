@@ -64,7 +64,7 @@ class RequestVacation extends Component {
                 // Notify everyone on slack
                 const user = localStorage.getItem('crmUserName');
                 const slackAPI = new SlackAPI(
-                    'https://hooks.slack.com/services/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'
+                    'https://hooks.slack.com/services/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'
                 );
                 const notificationTitle = `New vacation request by ${user} From ${startDate} until ${endDate} Working days: ${days}. ${note}`; // eslint-disable-line camelcase
                 slackAPI.send(notificationTitle, 'management-am2');
