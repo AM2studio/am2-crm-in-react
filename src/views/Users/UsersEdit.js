@@ -4,6 +4,7 @@ import Select from '../../components/Form/Select';
 import Checkbox from '../../components/Form/Checkbox';
 import Radio from '../../components/Form/Radio';
 import Loading from '../../components/General/Loading';
+import Notification from '../../components/Form/Notification';
 import WP_API from '../../data/Api';
 
 class UsersEdit extends Component {
@@ -11,7 +12,8 @@ class UsersEdit extends Component {
         super(props);
         const { singleUserData } = props;
         this.state = {
-            loading: !!singleUserData
+            loading: !!singleUserData,
+            newUser: !singleUserData
         };
     }
 
@@ -36,9 +38,13 @@ class UsersEdit extends Component {
             if (result.success === true) {
                 handleModalClose(true);
             } else {
-                console.log('Something went wrong!');
+                this.setState({ error: result.data.error });
             }
         });
+    };
+
+    closeNotification = () => {
+        this.setState(() => ({ error: false }));
     };
 
     inputChangeEvent = e => {
@@ -80,7 +86,10 @@ class UsersEdit extends Component {
             hourly_rate, // eslint-disable-line camelcase
             daily_workable_hours, // eslint-disable-line camelcase,
             do_not_track_workable_hours, // eslint-disable-line camelcase
-            vacationDays
+            vacationDays,
+            password,
+            error,
+            newUser
         } = this.state;
 
         const fields = [
@@ -126,6 +135,13 @@ class UsersEdit extends Component {
                 label: 'Vacation Days',
                 required: true,
                 value: vacationDays
+            },
+            {
+                type: Text,
+                name: 'password',
+                label: 'Password',
+                required: true,
+                value: password
             },
             {
                 type: Select,
@@ -186,11 +202,12 @@ class UsersEdit extends Component {
                     <Loading />
                 ) : (
                     <div className="section__content">
+                        {error ? <Notification text={error} type="is-danger" close={this.closeNotification} /> : ''}
                         <form className="form">
                             <div className="columns is-multiline">
                                 {fields.map(field => {
                                     const { type, parentClass, name, ...rest } = field;
-                                    return (
+                                    return name === 'password' && newUser === false ? null : (
                                         <field.type
                                             key={name}
                                             name={name}
