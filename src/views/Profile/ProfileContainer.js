@@ -10,7 +10,7 @@ class ProjectsEdit extends Component {
     constructor(props) {
         super(props);
 
-        this.state = { loading: true };
+        this.state = { loading: true, status: false, msg: '' };
     }
 
     componentWillMount() {
@@ -21,7 +21,9 @@ class ProjectsEdit extends Component {
         data.set('profile', null, this.state).then(result => {
             if (result.success === true) {
                 this.getProfileData();
+                this.setState({ status: 'is-success', msg: 'Saved.' });
             } else {
+                this.setState({ status: 'is-danger', msg: 'Error, did not save.' });
                 console.log('Something went wrong!');
             }
         });
@@ -34,6 +36,10 @@ class ProjectsEdit extends Component {
                 ...result.data
             });
         });
+    };
+
+    closeNotification = () => {
+        this.setState(() => ({ status: false }));
     };
 
     inputChangeEvent = e => {
@@ -50,7 +56,10 @@ class ProjectsEdit extends Component {
             toggl_api, // eslint-disable-line camelcase
             jiraAccountId,
             workspace,
-            workspaces // eslint-disable-line camelcase
+            workspaces,
+            password,
+            status,
+            msg
         } = this.state;
 
         const fields = [
@@ -96,12 +105,22 @@ class ProjectsEdit extends Component {
                 required: true,
                 value: workspace,
                 list: workspaces
+            },
+            {
+                type: Text,
+                name: 'password',
+                label: 'password',
+                required: true,
+                value: password
             }
         ];
         return (
             <Profile
                 fields={fields}
                 loading={loading}
+                status={status}
+                msg={msg}
+                closeNotification={this.closeNotification}
                 inputChangeEvent={this.inputChangeEvent}
                 updateProfileData={this.updateProfileData}
             />

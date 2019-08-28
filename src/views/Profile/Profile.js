@@ -1,8 +1,9 @@
 import React from 'react';
 import Loading from '../../components/General/Loading';
+import Notification from '../../components/Form/Notification';
 
 const Profile = props => {
-    const { fields, loading, updateProfileData, inputChangeEvent } = props;
+    const { fields, loading, updateProfileData, inputChangeEvent, status, msg, closeNotification } = props;
     return (
         <div className="section">
             <header className="section__header">
@@ -13,6 +14,7 @@ const Profile = props => {
             ) : (
                 <div className="section__content">
                     <form className="form">
+                        {status ? <Notification text={msg} type={status} close={closeNotification} /> : ''}
                         <div className="columns is-multiline">
                             {fields.map(field => {
                                 const { name, ...rest } = field;
